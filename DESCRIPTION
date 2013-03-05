@@ -6,7 +6,7 @@ Version: 0.0.1
 Date: 2013-03-05
 Author: Kirill Müller
 Maintainer: Kirill Müller <kirill.mueller@ivt.baug.ethz.ch>
-Description: A collection of implementations of classical and 
+Description: A collection of implementations of classical and
     novel algorithms for weighted sampling without replacement
 License: GPL-3
 Depends:
@@ -17,3 +17,5 @@ Collate:
     'RcppExports.R'
     'rcpp_hello_world.R'
     'wrswoR-package.R'
+    'sample_int_rank.R'
+    'sample_int_rej.R'
