@@ -2,7 +2,7 @@ Encoding: UTF-8
 Package: wrswoR
 Type: Package
 Title: Weighted random sampling without replacement
-Version: 0.0.2
+Version: 0.0.3
 Date: 2013-03-05
 Author: Kirill Müller
 Maintainer: Kirill Müller <kirill.mueller@ivt.baug.ethz.ch>
