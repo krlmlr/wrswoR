@@ -1,4 +1,4 @@
-#'@exportPattern "^[[:alpha:]]+"
+#'@exportPattern "^[a-zA-Z][[:alpha:]]*"
 
 
 #'@title What the package does (short line)

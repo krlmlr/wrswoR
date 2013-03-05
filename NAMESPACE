@@ -1,2 +1,2 @@
-exportPattern("^[[:alpha:]]+")
+exportPattern("^[a-zA-Z][[:alpha:]]*")
 useDynLib(wrswoR)
