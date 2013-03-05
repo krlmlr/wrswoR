@@ -1,0 +1,2 @@
+useDynLib(wrswoR)
+exportPattern("^[[:alpha:]]+")
