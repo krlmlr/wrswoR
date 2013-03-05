@@ -1,14 +1,17 @@
+Encoding: UTF-8
 Package: wrswoR
 Type: Package
-Title: What the package does (short line)
-Version: 1.0
+Title: Weighted random sampling without replacement
+Version: 0.0.1
 Date: 2013-03-05
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
-License: What Licence is it under ?
+Author: Kirill Müller
+Maintainer: Kirill Müller <kirill.mueller@ivt.baug.ethz.ch>
+Description: A collection of implementations of classical and 
+    novel algorithms for weighted sampling without replacement
+License: GPL-3
 Depends:
-    Rcpp (>= 0.10.1)
+    Rcpp (>= 0.10.1),
+    logging (>= 0.4-13)
 LinkingTo: Rcpp
 Collate:
     'RcppExports.R'
