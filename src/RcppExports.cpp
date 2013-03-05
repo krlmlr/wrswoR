@@ -8,16 +8,19 @@
 using namespace Rcpp;
 
 List rcpp_hello_world();
+IntegerVector sample_int_crank(int n, int size, NumericVector prob);
 
 static bool validateExported(const std::string& sig) {
     static std::set<std::string> signatures;
     if (signatures.empty()) {
         signatures.insert("List(*rcpp_hello_world)()");
+        signatures.insert("IntegerVector(*sample.int.crank)(int,int,NumericVector)");
     }
     return signatures.find(sig) != signatures.end();
 }
 
 RCPP_MODULE(wrswoR_RcppExports) {
     Rcpp::function("rcpp_hello_world", &rcpp_hello_world, Rcpp::List::create());
+    Rcpp::function("sample.int.crank", &sample_int_crank, Rcpp::List::create(Rcpp::Named("n"), Rcpp::Named("size"), Rcpp::Named("prob")));
     Rcpp::function("RcppExports_validateExported", &validateExported);
 }

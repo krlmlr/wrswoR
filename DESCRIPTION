@@ -19,3 +19,4 @@ Collate:
     'wrswoR-package.R'
     'sample_int_rank.R'
     'sample_int_rej.R'
+    'sample_int_crank.R'
