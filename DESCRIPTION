@@ -7,5 +7,10 @@ Author: Who wrote it
 Maintainer: Who to complain to <yourfault@somewhere.net>
 Description: More about what it does (maybe more than one line)
 License: What Licence is it under ?
-Depends: Rcpp (>= 0.10.1)
+Depends:
+    Rcpp (>= 0.10.1)
 LinkingTo: Rcpp
+Collate:
+    'RcppExports.R'
+    'rcpp_hello_world.R'
+    'wrswoR-package.R'

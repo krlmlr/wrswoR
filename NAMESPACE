@@ -1,2 +1,2 @@
-useDynLib(wrswoR)
 exportPattern("^[[:alpha:]]+")
+useDynLib(wrswoR)
