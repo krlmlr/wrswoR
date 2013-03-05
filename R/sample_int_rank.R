@@ -39,5 +39,5 @@
 #' set.seed(42)
 #' stopifnot(abs(table(replicate(sample.int.rank(6, 3, p), n=n)) / n -
 #'   c(1, rep(0.4, 5))) < 0.04)
-sample.int.rank <- function(n, size, prob) {
-  sort(rexp(n)); 1:size}
+sample.int.rank <- function(n, size, prob)
+  head(sort(rexp(n) / prob, index.return=T)$ix, size)
