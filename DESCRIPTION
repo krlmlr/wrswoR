@@ -15,7 +15,6 @@ Depends:
 LinkingTo: Rcpp
 Collate:
     'RcppExports.R'
-    'rcpp_hello_world.R'
     'wrswoR-package.R'
     'sample_int_rank.R'
     'sample_int_rej.R'
