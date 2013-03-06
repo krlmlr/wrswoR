@@ -9,11 +9,15 @@ struct Comp{
   const Rcpp::NumericVector& _v;
 };
 
+template <class T>
+T _add_one(T t) { return t + 1; }
+
 // [[Rcpp::export(sample.int.crank)]]
 IntegerVector sample_int_crank(int n, int size, NumericVector prob) {
   Rcpp::NumericVector rnd = prob / rexp(n);
   Rcpp::IntegerVector vx = seq(0, n - 1);
   std::partial_sort(vx.begin(), vx.begin() + size, vx.end(), Comp(rnd));
-  IntegerVector vxp = vx + 1;
-  return IntegerVector(vxp.begin(), vxp.begin() + size);
+  
+  // Initialize with elements vx[1:size], applying transform "+ 1"
+  return IntegerVector(vx.begin(), vx.begin() + size, &_add_one<int>);
 }
