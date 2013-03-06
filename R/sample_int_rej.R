@@ -26,7 +26,7 @@
 #'   smaller problem.  See also 
 #'   \url{http://stats.stackexchange.com/q/20590/6432}.
 #' @author Kirill Müller
-#' @seealso \link[base]{sample.int}
+#' @seealso \code{\link[base]{sample.int}}
 #' @examples
 #' s <- sample.int.rej(200000, 100000, runif(200000))
 #' stopifnot(unique(s) == s)

@@ -1,6 +1,6 @@
 #' @title Weighted sampling without replacement using reservoir sampling
 #'   (Rcpp version)
-#' @description \code{sample.int.rank} takes a sample of the specified 
+#' @description \code{sample.int.crank} takes a sample of the specified 
 #'   \code{size} from the elements of \code{1:n} without replacement. 
 #'   This function is faster than \code{sample.int} in many cases, 
 #'   especially when \code{n} and \code{size} are large, even if the 
@@ -8,7 +8,7 @@
 #' @inheritParams base::sample.int
 #' @return An integer vector of length \code{size} with elements from 
 #'   \code{1:n}.
-#' @details The call \code{sample.int.rank(n, size, prob)} is equivalent
+#' @details The call \code{sample.int.crank(n, size, prob)} is equivalent
 #'   to \code{sample.int(n, size, replace=F, prob)}.  (The results will 
 #'   most probably be different for the same random seed, but the 
 #'   returned samples are distributed identically for both calls.) 
@@ -30,7 +30,6 @@
 #'   sampling with a reservoir, Information Processing Letters, Volume 
 #'   97, Issue 5, 16 March 2006, Pages 181-185, ISSN 0020-0190, 
 #'   10.1016/j.ipl.2005.11.003
-#' @seealso \link[base]{sample.int}
 #' @examples
 #' s <- sample.int.rank(200000, 100000, runif(200000))
 #' stopifnot(unique(s) == s)
@@ -39,5 +38,6 @@
 #' set.seed(42)
 #' stopifnot(abs(table(replicate(sample.int.crank(6, 3, p), n=n)) / n -
 #'   c(1, rep(0.4, 5))) < 0.04)
+#' @seealso \code{\link[base]{sample.int}}
 sample.int.crank <- function(n, size, prob) {
 }
