@@ -10,8 +10,8 @@ struct Comp{
 
 // [[Rcpp::export(sample.int.crank)]]
 IntegerVector sample_int_crank(int n, int size, NumericVector prob) {
-    Rcpp::NumericVector rnd = rexp(n) / prob;
-    Rcpp::IntegerVector vx = seq(0, n - 1);
-    std::partial_sort(vx.begin(), vx.begin() + size, vx.end(), Comp(rnd));
-    return vx[seq(0, size - 1)] + 1;
+  Rcpp::NumericVector rnd = rexp(n) / prob;
+  Rcpp::IntegerVector vx = seq(0, n - 1);
+  std::partial_sort(vx.begin(), vx.begin() + size, vx.end(), Comp(rnd));
+  return vx[seq(0, size - 1)] + 1;
 }
