@@ -1,30 +1,31 @@
 #'@exportPattern "^[a-zA-Z][[:alpha:]]*"
+#'@useDynLib wrswoR
 
-
-#'@title What the package does (short line)
-#'@description More about what it does (maybe more than one line) ~~ A
-#'  concise (1-5 lines) description of the package ~~
-#'@details
-#'  \tabular{ll}{ Package: \tab wrswoR\cr Type: \tab Package\cr Version:
-#'  \tab 1.0\cr Date: \tab 2013-03-05\cr License: \tab What license is
-#'  it under?\cr } ~~ An overview of how to use the package, including
-#'  the most important functions ~~
+#'@title Faster weighted sampling without replacement
+#'@description \R's default sampling without replacement using 
+#'  \code{\link[base]{sample.int}} seems to require quadratic run time, 
+#'  e.g. when using weights drawn from a uniform distribution. For large
+#'  sample sizes, this is too slow.  This package contains several 
+#'  alternative implementations.
+#'@details Implementations are adapted from 
+#'  \url{http://stackoverflow.com/q/15113650/946850}.
 #'  
 #'@name wrswoR-package
 #'@aliases wrswoR-package wrswoR
 #'@docType package
-#'@author Who wrote it
-#'  
-#'  Maintainer: Who to complain to <yourfault@@somewhere.net>
-#'@seealso ~~ Optional links to other man pages, e.g. ~~ ~~ 
-#'  \code{\link[<pkg>:<pkg>-package]{<pkg>}} ~~
-#'@references ~~ Literature or other references for background
-#'  information ~~
+#'@author Kirill Müller
+#'@references Efraimidis, Pavlos S., and Paul G. Spirakis. "Weighted
+#'random sampling with a reservoir." \emph{Information Processing Letters} 97,
+#'no. 5 (2006): 181-185.
+#'
+#'Wong, Chak-Kuen, and Malcolm C. Easton. "An efficient method for
+#'weighted sampling without replacement." \emph{SIAM Journal on Computing} 9,
+#'no. 1 (1980): 111-113.
+#'
+#'
 #'@keywords package
 #'@examples
-#'
-#'%% ~~ simple examples of the most important functions ~~
-#'
+#'sample.int.rej(100, 50, 1:100)
 NULL
 
 
