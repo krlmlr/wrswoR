@@ -1,3 +1,4 @@
+#'@name sample.int.crank
 #'@title Weighted sampling without replacement using reservoir sampling 
 #'  (Rcpp version)
 #'@description \code{sample.int.crank} takes a sample of the specified 
@@ -40,5 +41,4 @@
 #' stopifnot(abs(table(replicate(sample.int.crank(6, 3, p), n=n)) / n -
 #'   c(1, rep(0.4, 5))) < 0.04)
 #'@seealso \code{\link[base]{sample.int}}
-sample.int.crank <- function(n, size, prob) {
-}
+NULL

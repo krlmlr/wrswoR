@@ -2,22 +2,18 @@
 // Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 #include <Rcpp.h>
-#include <string>
-#include <set>
 
 using namespace Rcpp;
 
+// sample_int_crank
 IntegerVector sample_int_crank(int n, int size, NumericVector prob);
-
-static bool validateExported(const std::string& sig) {
-    static std::set<std::string> signatures;
-    if (signatures.empty()) {
-        signatures.insert("IntegerVector(*sample.int.crank)(int,int,NumericVector)");
-    }
-    return signatures.find(sig) != signatures.end();
-}
-
-RCPP_MODULE(wrswoR_RcppExports) {
-    Rcpp::function("sample.int.crank", &sample_int_crank, Rcpp::List::create(Rcpp::Named("n"), Rcpp::Named("size"), Rcpp::Named("prob")));
-    Rcpp::function("RcppExports_validateExported", &validateExported);
+RcppExport SEXP wrswoR_sample_int_crank(SEXP nSEXP, SEXP sizeSEXP, SEXP probSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope __rngScope;
+    int n = Rcpp::as<int >(nSEXP);
+    int size = Rcpp::as<int >(sizeSEXP);
+    NumericVector prob = Rcpp::as<NumericVector >(probSEXP);
+    IntegerVector __result = sample_int_crank(n, size, prob);
+    return Rcpp::wrap(__result);
+END_RCPP
 }
