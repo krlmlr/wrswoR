@@ -1,2 +1,3 @@
 exportPattern("^[a-zA-Z][[:alpha:]]*")
+importFrom(logging,logdebug)
 useDynLib(wrswoR)

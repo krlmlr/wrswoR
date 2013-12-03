@@ -61,10 +61,10 @@ sample.int.rej <- function(n, size, prob) {
 }
 
 #' Workhorse
+#' @importFrom logging logdebug
 .sample.int.rej <- function(
   n, size, prob, MAX_OVERSHOOT, BIAS) {
   
-  require(logging)
   logdebug('.sample.int.rej: parameters: %s, %s, %s', n, size, length(prob))
   
   #' How many draws *with replacement* are required on average, assuming
