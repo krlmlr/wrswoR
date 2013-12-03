@@ -9,11 +9,16 @@ using namespace Rcpp;
 IntegerVector sample_int_crank(int n, int size, NumericVector prob);
 RcppExport SEXP wrswoR_sample_int_crank(SEXP nSEXP, SEXP sizeSEXP, SEXP probSEXP) {
 BEGIN_RCPP
-    Rcpp::RNGScope __rngScope;
-    int n = Rcpp::as<int >(nSEXP);
-    int size = Rcpp::as<int >(sizeSEXP);
-    NumericVector prob = Rcpp::as<NumericVector >(probSEXP);
-    IntegerVector __result = sample_int_crank(n, size, prob);
-    return Rcpp::wrap(__result);
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< int >::type n(nSEXP );
+        Rcpp::traits::input_parameter< int >::type size(sizeSEXP );
+        Rcpp::traits::input_parameter< NumericVector >::type prob(probSEXP );
+        IntegerVector __result = sample_int_crank(n, size, prob);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
 END_RCPP
 }
