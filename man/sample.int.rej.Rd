@@ -3,7 +3,7 @@
 \title{Weighted sampling without replacement using
   repeated weighted sampling with replacement}
 \usage{
-  sample.int.rej(n, size, prob)
+sample.int.rej(n, size, prob)
 }
 \arguments{
   \item{n}{a positive number, the number of items to choose
@@ -16,38 +16,37 @@
   the elements of the vector being sampled.}
 }
 \value{
-  An integer vector of length \code{size} with elements
-  from \code{1:n}.
+An integer vector of length \code{size} with elements from
+\code{1:n}.
 }
 \description{
-  \code{sample.int.rej} takes a sample of the specified
-  \code{size} from the elements of \code{1:n} without
-  replacement.  This function is faster than
-  \code{sample.int} in many cases, especially when \code{n}
-  and \code{size} are large, even if the weights range over
-  many orders of magnitudes.
+\code{sample.int.rej} takes a sample of the specified
+\code{size} from the elements of \code{1:n} without
+replacement.  This function is faster than
+\code{sample.int} in many cases, especially when \code{n}
+and \code{size} are large, even if the weights range over
+many orders of magnitudes.
 }
 \details{
-  The call \code{sample.int.rej(n, size, prob)} is
-  equivalent to \code{sample.int(n, size, replace=F,
-  prob)}.  (The results will most probably be different for
-  the same random seed, but the returned samples are
-  distributed identically for both calls.)  However,
-  \code{sample.int} implements an algorithm with quadratic
-  runtime -- this is not suitable for large values of
-  \code{n} and \code{size} (see also
-  \url{http://stackoverflow.com/q/15113650/946850}).  (Note
-  that the performance of \code{sample.int} is just fine in
-  the "with replacement" case, and also for uniform
-  probabilities.)
+The call \code{sample.int.rej(n, size, prob)} is equivalent
+to \code{sample.int(n, size, replace=F, prob)}.  (The
+results will most probably be different for the same random
+seed, but the returned samples are distributed identically
+for both calls.)  However, \code{sample.int} implements an
+algorithm with quadratic runtime -- this is not suitable
+for large values of \code{n} and \code{size} (see also
+\url{http://stackoverflow.com/q/15113650/946850}).  (Note
+that the performance of \code{sample.int} is just fine in
+the "with replacement" case, and also for uniform
+probabilities.)
 
-  This function simulates weighted sampling without
-  replacement using somewhat more draws \emph{with}
-  replacement, and then discarding duplicate values
-  (rejection sampling).  If too few items are sampled, the
-  routine calls itself recursively on a (hopefully) much
-  smaller problem.  See also
-  \url{http://stats.stackexchange.com/q/20590/6432}.
+This function simulates weighted sampling without
+replacement using somewhat more draws \emph{with}
+replacement, and then discarding duplicate values
+(rejection sampling).  If too few items are sampled, the
+routine calls itself recursively on a (hopefully) much
+smaller problem.  See also
+\url{http://stats.stackexchange.com/q/20590/6432}.
 }
 \examples{
 s <- sample.int.rej(200000, 100000, runif(200000))
@@ -59,9 +58,9 @@ stopifnot(abs(table(replicate(sample.int.rej(6, 3, p), n=n)) / n -
   c(1, rep(0.4, 5))) < 0.04)
 }
 \author{
-  Kirill Müller
+Kirill Müller
 }
 \seealso{
-  \code{\link[base]{sample.int}}
+\code{\link[base]{sample.int}}
 }
 

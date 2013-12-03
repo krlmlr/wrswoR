@@ -13,9 +13,3 @@ Depends:
     Rcpp (>= 0.10.1),
     logging (>= 0.4-13)
 LinkingTo: Rcpp
-Collate:
-    'RcppExports.R'
-    'wrswoR-package.R'
-    'sample_int_rank.R'
-    'sample_int_rej.R'
-    'sample_int_crank.R'
