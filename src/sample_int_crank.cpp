@@ -17,6 +17,9 @@ T _add_one(T t) { return t + 1; }
 
 // [[Rcpp::export(sample.int.crank)]]
 IntegerVector sample_int_crank(int n, int size, NumericVector prob) {
+  if (n < size)
+    ::Rf_error("cannot take a sample larger than the population");
+
   // We need the last "size" elements of
   // U ^ (1 / prob) ~ log(U) / prob
   //                ~ -Exp(1) / prob
