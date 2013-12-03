@@ -9,8 +9,6 @@ Maintainer: Kirill Müller <kirill.mueller@ivt.baug.ethz.ch>
 Description: A collection of implementations of classical and
     novel algorithms for weighted sampling without replacement
 License: GPL-3
-Depends:
-    Rcpp (>= 0.10.1)
 Imports:
     logging (>= 0.4-13)
-LinkingTo: Rcpp
+LinkingTo: Rcpp (>= 0.10.1)
