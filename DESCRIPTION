@@ -2,8 +2,8 @@ Encoding: UTF-8
 Package: wrswoR
 Type: Package
 Title: Weighted random sampling without replacement
-Version: 0.0.7
-Date: 2013-04-03
+Version: 0.0.8
+Date: 2013-12-03
 Author: Kirill Müller
 Maintainer: Kirill Müller <kirill.mueller@ivt.baug.ethz.ch>
 Description: A collection of implementations of classical and
