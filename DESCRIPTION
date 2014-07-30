@@ -11,4 +11,4 @@ Description: A collection of implementations of classical and
 License: GPL-3
 Imports:
     logging (>= 0.4-13)
-LinkingTo: Rcpp
+LinkingTo: Rcpp (>= 0.10.1)
