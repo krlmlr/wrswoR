@@ -1,5 +1,4 @@
-#' @title Weighted sampling without replacement using
-#'   repeated weighted sampling with replacement
+#' Weighted sampling without replacement using repeated weighted sampling with replacement
 #' @description \code{sample.int.rej} takes a sample of the specified
 #'   \code{size} from the elements of \code{1:n} without replacement.
 #'   This function is faster than \code{sample.int} in many cases,
