@@ -3,3 +3,5 @@
 ^\.travis\.yml$
 /Makefile
 /makeR
+/Makefile
+/makeR
