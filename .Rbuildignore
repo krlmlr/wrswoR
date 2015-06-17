@@ -1,7 +1,8 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^\.travis\.yml$
-/Makefile
-/makeR
-/Makefile
-/makeR
+^makeR$
+^Makefile$
+^Makefile\.in$
+^wercker\.yml$
+^\.lintr$
