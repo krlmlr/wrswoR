@@ -66,13 +66,13 @@ branch-is-master: git-is-clean
 tag:
 	(echo Release v$$(sed -n -r '/^Version: / {s/.* ([0-9.-]+)$$/\1/;p}' DESCRIPTION); echo; sed -n '/^===/,/^===/{:a;N;/\n===/!ba;p;q}' NEWS.md | head -n -3 | tail -n +3) | git tag -a -F /dev/stdin v$$(sed -n -r '/^Version: / {s/.* ([0-9.-]+)$$/\1/;p}' DESCRIPTION)
 
-bump-cran-desc: branch-is-master rd
+bump-cran-desc: git-is-clean rd
 	crant -u 2 -C
 
-bump-gh-desc: branch-is-master rd
+bump-gh-desc: git-is-clean rd
 	crant -u 3 -C
 
-bump-desc: branch-is-master rd
+bump-desc: git-is-clean rd
 	test "$$(git status --porcelain | wc -c)" = "0"
 	sed -i -r '/^Version: / s/( [0-9.]+)$$/\1-0.0/' DESCRIPTION
 	git add DESCRIPTION
@@ -178,7 +178,7 @@ view-docs:
 
 ## wercker
 
-init-wercker: branch-is-master
+init-wercker: git-is-clean
 
 wercker-build:
 	wercker build --docker-host=unix://var/run/docker.sock --no-remove
