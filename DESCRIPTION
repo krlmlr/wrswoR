@@ -14,3 +14,4 @@ GitHub: https://github.com/krlmlr/wrswoR
 Suggests: testthat,
     knitr, rmarkdown, ggplot2
 VignetteBuilder: knitr
+LazyData: true
