@@ -8,3 +8,6 @@
 ^Makefile$
 ^Makefile\.in$
 ^makeR$
+^Makefile$
+^Makefile\.in$
+^makeR$
