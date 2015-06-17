@@ -11,4 +11,6 @@ License: GPL-3
 Imports: Rcpp, logging (>= 0.4-13)
 LinkingTo: Rcpp (>= 0.11.5)
 GitHub: https://github.com/krlmlr/wrswoR
-Suggests: testthat
+Suggests: testthat,
+    knitr, rmarkdown
+VignetteBuilder: knitr
