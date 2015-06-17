@@ -9,7 +9,19 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+
+```{r}
+library(wrswoR)
+```
+
 # Run time tests
+
+```{r}
+library(ggplot2)
+ggplot(overview_benchmark, aes(x=n, y=time * 1e-9, color=expr)) + geom_boxplot() +
+  scale_y_log10()
+```
+
 
 
 # Comparison of results

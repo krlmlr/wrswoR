@@ -14,6 +14,4 @@ overview_benchmark <- plyr::ldply(
   .id = "n"
 )
 
-library(ggplot2)
-ggplot(overview_benchmark, aes(x=n, y=time * 1e-9, color=expr)) + geom_boxplot() +
-  scale_y_log10()
+devtools::use_data(overview_benchmark, overwrite = TRUE, compress = "xz")
