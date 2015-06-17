@@ -11,3 +11,4 @@
 ^Makefile$
 ^Makefile\.in$
 ^makeR$
+^wercker\.yml$
