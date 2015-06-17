@@ -5,3 +5,6 @@
 /makeR
 /Makefile
 /makeR
+^Makefile$
+^Makefile\.in$
+^makeR$
