@@ -1,5 +1,5 @@
 library(magrittr)
-devtools::load_all()
+devtools::load_all(devtools::as.package("."))
 
 N <- trunc(10 ** seq(1.5, 5, by = 0.5))
 
