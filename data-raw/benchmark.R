@@ -13,8 +13,8 @@ overview_benchmark <- plyr::ldply(
       rej=sample.int.rej(n, n, prob),
       R=sample.int(n, n, replace = FALSE, prob)
     )
-  },
-  .id = "n"
-)
+  }
+) %>%
+  dplyr::rename(n = .id)
 
 devtools::use_data(overview_benchmark, overwrite = TRUE, compress = "xz")
