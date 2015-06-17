@@ -16,9 +16,20 @@ library(wrswoR)
 
 # Run time tests
 
-```{r}
+```{r fig.width=7}
 library(ggplot2)
-ggplot(overview_benchmark, aes(x=n, y=time * 1e-9, color=expr)) + geom_boxplot() +
+ggplot(overview_benchmark, aes(x=factor(n), y=time * 1e-9, color=expr)) +
+  geom_boxplot() +
+  scale_y_log10()
+
+library(dplyr)
+overview_benchmark %>%
+  group_by(n, expr) %>%
+  summarize(median_time = median(time)) %>%
+  ungroup %>%
+  ggplot(aes(x=n, y=median_time * 1e-9, color=expr)) +
+  geom_line() +
+  scale_x_log10() +
   scale_y_log10()
 ```
 
