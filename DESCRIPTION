@@ -8,8 +8,7 @@ Authors@R: as.person("Kirill Müller <krlmlr+r@mailbox.org> [aut, cre]")
 Description: A collection of implementations of classical and
     novel algorithms for weighted sampling without replacement
 License: GPL-3
-Imports: 
-    logging (>= 0.4-13)
+Imports: Rcpp, logging (>= 0.4-13)
 LinkingTo: Rcpp (>= 0.11.5)
 GitHub: https://github.com/krlmlr/wrswoR
 Suggests: testthat
