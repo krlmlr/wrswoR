@@ -1,3 +1,6 @@
+library(magrittr)
+devtools::load_all()
+
 N <- trunc(10 ** seq(1.5, 5, by = 0.5))
 
 overview_benchmark <- plyr::ldply(
