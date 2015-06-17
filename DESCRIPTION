@@ -3,7 +3,6 @@ Package: wrswoR
 Type: Package
 Title: Weighted random sampling without replacement
 Version: 0.0.8
-Date: 2013-12-03
 Authors@R: as.person("Kirill Müller <krlmlr+r@mailbox.org> [aut, cre]")
 Description: A collection of implementations of classical and
     novel algorithms for weighted sampling without replacement.
