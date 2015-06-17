@@ -1,6 +1,6 @@
-N <- 10 ** (2:5)
+N <- trunc(10 ** seq(1.5, 5, by = 0.5))
 
-results <- plyr::ldply(
+overview_benchmark <- plyr::ldply(
   setNames(nm = N),
   function(n) {
     prob <- rep(1, n)
@@ -15,5 +15,5 @@ results <- plyr::ldply(
 )
 
 library(ggplot2)
-ggplot(results, aes(x=N, y=time, color=expr)) + geom_boxplot() +
+ggplot(overview_benchmark, aes(x=n, y=time * 1e-9, color=expr)) + geom_boxplot() +
   scale_y_log10()
