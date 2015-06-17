@@ -41,4 +41,5 @@
 #' stopifnot(abs(table(replicate(sample.int.crank(6, 3, p), n=n)) / n -
 #'   c(1, rep(0.4, 5))) < 0.04)
 #'@seealso \code{\link[base]{sample.int}}
+#'@importFrom Rcpp evalCpp
 NULL
