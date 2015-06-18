@@ -56,7 +56,7 @@ struct UniqueNumber {
 
 
 // [[Rcpp::export(sample.int.ccrank)]]
-IntegerVector sample_int_ccrank(int n, int size, NumericVector prob) {
+SEXP sample_int_ccrank(int n, int size, NumericVector prob) {
   if (n < size)
     ::Rf_error("cannot take a sample larger than the population");
 
@@ -82,5 +82,5 @@ IntegerVector sample_int_ccrank(int n, int size, NumericVector prob) {
   // Initialize with elements vx[1:size], applying transform "+ 1" --
   // we return one-based values.
 
-  return IntegerVector(vx.begin(), vx.begin() + size);
+  return Rcpp::wrap(IntegerVector(vx.begin(), vx.begin() + size));
 }

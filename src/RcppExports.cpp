@@ -19,7 +19,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // sample_int_ccrank
-IntegerVector sample_int_ccrank(int n, int size, NumericVector prob);
+SEXP sample_int_ccrank(int n, int size, NumericVector prob);
 RcppExport SEXP wrswoR_sample_int_ccrank(SEXP nSEXP, SEXP sizeSEXP, SEXP probSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
