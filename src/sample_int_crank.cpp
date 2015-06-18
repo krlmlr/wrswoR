@@ -79,8 +79,8 @@ SEXP sample_int_ccrank(int n, int size, NumericVector prob) {
   std::generate(vx.begin(), vx.end(), UniqueNumber(1));
   std::partial_sort(vx.begin(), vx.begin() + size, vx.end(), CComp(rnd));
 
-  // Initialize with elements vx[1:size], applying transform "+ 1" --
-  // we return one-based values.
+  // Initialize with the first "size" elements of vx[1:size], they are already
+  // 1-based.
 
   return Rcpp::wrap(IntegerVector(vx.begin(), vx.begin() + size));
 }
