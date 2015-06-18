@@ -82,6 +82,9 @@ timings %>%
   scale_y_log10()
 ```
 
+
+## Compare distributions
+
 Box plots for relative differences beween non-uniform and uniform sampling.
 
 ```{r fig.width=7, fig.height=5}
