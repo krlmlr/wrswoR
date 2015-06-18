@@ -51,7 +51,7 @@ struct CComp{
 struct UniqueNumber {
   int current;
   UniqueNumber(int start = 0) { current=start; }
-  int operator()() { return ++current; }
+  int operator()() { return current++; }
 };
 
 
@@ -75,11 +75,12 @@ IntegerVector sample_int_ccrank(int n, int size, NumericVector prob) {
 
   // Find the indexes of the first "size" elements under inverted
   // comparison.  Here, vx is zero-based.
-  IntegerVector vx = seq(0, n - 1);
+  std::vector<double> vx = std::vector<double>(n);
+  std::generate(vx.begin(), vx.end(), UniqueNumber(1));
   std::partial_sort(vx.begin(), vx.begin() + size, vx.end(), CComp(rnd));
 
   // Initialize with elements vx[1:size], applying transform "+ 1" --
   // we return one-based values.
 
-  return IntegerVector(vx.begin(), vx.begin() + size, &_add_one<int>);
+  return IntegerVector(vx.begin(), vx.begin() + size);
 }
