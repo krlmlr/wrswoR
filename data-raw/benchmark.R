@@ -15,10 +15,11 @@ timings <-
       function(n) {
         prob <- probf(n)
         microbenchmark::microbenchmark(
+          ccrank=sample.int.ccrank(n, n, prob),
           crank=sample.int.crank(n, n, prob),
           rank=sample.int.rank(n, n, prob),
           rej=sample.int.rej(n, n, prob),
-          R=sample.int(n, n, replace = FALSE, prob)
+          R=sample.int.R(n, n, prob)
         )
       }) %>%
       dplyr::mutate(n = as.integer(.id), .id = NULL)
