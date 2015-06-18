@@ -18,12 +18,12 @@ library(wrswoR)
 
 ```{r fig.width=7}
 library(ggplot2)
-ggplot(overview_benchmark, aes(x=factor(n), y=time * 1e-9, color=expr)) +
+ggplot(timings, aes(x=factor(n), y=time * 1e-9, color=expr)) +
   geom_boxplot() +
   scale_y_log10()
 
 library(dplyr)
-overview_benchmark %>%
+timings %>%
   group_by(n, expr) %>%
   summarize(median_time = median(time)) %>%
   ungroup %>%

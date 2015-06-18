@@ -3,4 +3,4 @@
 #' Run times.
 #'
 #' @docType data
-"overview_benchmark"
+"timings"
