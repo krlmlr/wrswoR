@@ -47,9 +47,11 @@ timings %>%
   mutate(id = seq_along(time)) %>%
   ungroup %>%
   spread(prob, time) %>%
-  gather(diff_to, other_time, uniform) %>%
-  mutate(time_diff = other_time - linear, linear = NULL, other_time = NULL) %>%
-  ggplot(aes(x=factor(n), y=time_diff * 1e-9, color=expr)) +
+  gather_("diff_to", "other_time", unique(timings$prob) %>% setdiff("uniform")) %>%
+  mutate(time_diff = (other_time - uniform) / uniform, uniform = NULL, other_time = NULL) %>%
+  ggplot(aes(x=factor(n), y=time_diff, color=expr)) +
+  facet_wrap(~diff_to) +
+  scale_y_continuous(limits = c(-1, 1)) +
   geom_boxplot()
 ```
 
