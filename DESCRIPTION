@@ -12,6 +12,6 @@ Imports: Rcpp, logging (>= 0.4-13)
 LinkingTo: Rcpp (>= 0.11.5)
 GitHub: https://github.com/krlmlr/wrswoR
 Suggests: testthat,
-    knitr, rmarkdown, ggplot2
+    knitr, rmarkdown, ggplot2, dplyr, tidyr
 VignetteBuilder: knitr
 LazyData: true
