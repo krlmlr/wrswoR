@@ -82,6 +82,41 @@ timings %>%
   scale_y_log10()
 ```
 
+## More detailed data for break-even analysis
+
+Min-max very sensitive to garbage collection
+(see also https://radfordneal.wordpress.com/2014/02/02/inaccurate-results-from-microbenchmark/):
+
+```{r fig.width=7, fig.height=5}
+break_even %>%
+  group_by(n, expr, prob) %>%
+  summarize(minmax = if (expr[[1]] == "R") min(time) else max(time)) %>%
+  ungroup %>%
+  gather(metric, time, minmax) %>%
+  ggplot(aes(x=n, y=time * 1e-9, color=expr)) +
+  facet_wrap(~prob, ncol = 1) +
+  geom_line() +
+  scale_x_log10() +
+  scale_y_log10()
+```
+
+Better take a quantile (say, 95th):
+
+```{r fig.width=7, fig.height=5}
+break_even %>%
+  group_by(n, expr, prob) %>%
+  summarize(minmax = if (expr[[1]] == "R") quantile(time, 0.05) else quantile(time, 0.95)) %>%
+  ungroup %>%
+  gather(metric, time, minmax) %>%
+  ggplot(aes(x=n, y=time * 1e-9, color=expr)) +
+  facet_wrap(~prob, ncol = 1) +
+  geom_line() +
+  scale_x_log10() +
+  scale_y_log10()
+```
+
+Even better, avoid allocation of R vectors in Rcpp code.
+
 
 ## Compare distributions
 
