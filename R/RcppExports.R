@@ -5,3 +5,7 @@ sample.int.crank <- function(n, size, prob) {
     .Call('wrswoR_sample_int_crank', PACKAGE = 'wrswoR', n, size, prob)
 }
 
+sample.int.ccrank <- function(n, size, prob) {
+    .Call('wrswoR_sample_int_ccrank', PACKAGE = 'wrswoR', n, size, prob)
+}
+
