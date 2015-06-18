@@ -8,8 +8,7 @@ test_that("zero-length output", {
 
 test_that("heavily skewed probability", {
   prob <- c(1, 1e10)
-  expect_equal(sample.int(length(prob), 1, replace = FALSE, prob = prob), 2)
-  expect_equal(sample.int.crank(length(prob), 1, prob = prob), 2)
-  expect_equal(sample.int.rank(length(prob), 1, prob = prob), 2)
-  expect_equal(sample.int.rej(length(prob), 1, prob = prob), 2)
+  for (funcname in funcnames) {
+    expect_equal(funcs[[funcname]](length(prob), 1, prob), 2, label = funcname)
+  }
 })
