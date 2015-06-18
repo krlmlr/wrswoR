@@ -2,7 +2,9 @@ library(magrittr)
 devtools::load_all(devtools::as.package("."))
 
 N <- trunc(10 ** seq(1.5, 5, by = 0.5)) %>% setNames(nm = .)
-PROB <- list(uniform = function(n) rep(1, n), linear = seq_len)
+PROB <- list(uniform = function(n) rep(1, n),
+             linear = seq_len,
+             rev_linear = . %>% seq_len %>% rev)
 
 timings <-
   plyr::ldply(
