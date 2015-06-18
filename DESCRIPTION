@@ -3,7 +3,6 @@ Package: wrswoR
 Type: Package
 Title: Weighted random sampling without replacement
 Version: 0.0.8
-Date: 2013-12-03
 Authors@R: as.person("Kirill Müller <krlmlr+r@mailbox.org> [aut, cre]")
 Description: A collection of implementations of classical and
     novel algorithms for weighted sampling without replacement.
@@ -12,4 +11,7 @@ Depends: R (>= 3.0.2)
 Imports: Rcpp, logging (>= 0.4-13)
 LinkingTo: Rcpp (>= 0.11.5)
 GitHub: https://github.com/krlmlr/wrswoR
-Suggests: testthat
+Suggests: testthat,
+    knitr, rmarkdown, ggplot2, dplyr, tidyr
+VignetteBuilder: knitr
+LazyData: true
