@@ -38,5 +38,17 @@
 #' set.seed(42)
 #' stopifnot(abs(table(replicate(sample.int.rank(6, 3, p), n=n)) / n -
 #'   c(1, rep(0.4, 5))) < 0.04)
-sample.int.rank <- function(n, size, prob)
+sample.int.rank <- function(n, size, prob) {
+  check_args(n, size, prob)
   head(sort(rexp(n) / prob, index.return=T)$ix, size)
+}
+
+check_args <- function(n, size, prob) {
+  if (n < size) {
+    stop("cannot take a sample larger than the population", call. = FALSE)
+  }
+
+  if (length(prob) != n) {
+    stop("incorrect number of probabilities", call. = FALSE)
+  }
+}

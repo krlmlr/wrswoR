@@ -35,6 +35,7 @@
 #' stopifnot(abs(table(replicate(sample.int.rej(6, 3, p), n=n)) / n -
 #'   c(1, rep(0.4, 5))) < 0.04)
 sample.int.rej <- function(n, size, prob) {
+  check_args(n, size, prob)
   .sample.int.rej(n, size, prob, 2, 1)
 }
 
