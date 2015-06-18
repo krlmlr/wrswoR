@@ -47,4 +47,8 @@ check_args <- function(n, size, prob) {
   if (n < size) {
     stop("cannot take a sample larger than the population", call. = FALSE)
   }
+
+  if (length(prob) != n) {
+    stop("incorrect number of probabilities", call. = FALSE)
+  }
 }
