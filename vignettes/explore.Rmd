@@ -12,20 +12,20 @@ vignette: >
 
 ```{r}
 library(wrswoR)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
 ```
 
 # Run time tests
 
 ```{r fig.width=7, fig.height=5}
-library(ggplot2)
-library(dplyr)
 timings %>%
   filter(prob == "uniform") %>%
   ggplot(aes(x=factor(n), y=time * 1e-9, color=expr)) +
   geom_boxplot() +
   scale_y_log10()
 
-library(tidyr)
 timings %>%
   filter(prob == "uniform") %>%
   group_by(n, expr) %>%
