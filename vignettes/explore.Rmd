@@ -50,8 +50,41 @@ timings %>%
   scale_y_log10()
 ```
 
+Worst-best comparison: best for R, worst for others (but per probability distribution).
 
-```{r}
+```{r fig.width=7, fig.height=5}
+timings %>%
+  filter(n >= 100 & n < 10000) %>%
+  group_by(n, expr, prob) %>%
+  summarize(minmax = if (expr[[1]] == "R") min(time) else max(time)) %>%
+  ungroup %>%
+  gather(metric, time, minmax) %>%
+  ggplot(aes(x=n, y=time * 1e-9, color=expr)) +
+  facet_wrap(~prob, ncol = 1) +
+  geom_line() +
+  scale_x_log10() +
+  scale_y_log10()
+```
+
+Same as above, now taking 5% and 95% quantiles.
+
+```{r fig.width=7, fig.height=5}
+timings %>%
+  filter(n >= 100 & n <= 10000) %>%
+  group_by(n, expr, prob) %>%
+  summarize(minmax = if (expr[[1]] == "R") min(time) else max(time)) %>%
+  ungroup %>%
+  gather(metric, time, minmax) %>%
+  ggplot(aes(x=n, y=time * 1e-9, color=expr)) +
+  facet_wrap(~prob, ncol = 1) +
+  geom_line() +
+  scale_x_log10() +
+  scale_y_log10()
+```
+
+Box plots for relative differences beween non-uniform and uniform sampling.
+
+```{r fig.width=7, fig.height=5}
 timings %>%
   arrange(prob, n, expr, time) %>%
   group_by(prob, n, expr) %>%
