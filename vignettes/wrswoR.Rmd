@@ -16,7 +16,7 @@ library(wrswoR)
 
 # Run time tests
 
-```{r fig.width=7}
+```{r fig.width=7, fig.height=5}
 library(ggplot2)
 library(dplyr)
 timings %>%
@@ -25,16 +25,32 @@ timings %>%
   geom_boxplot() +
   scale_y_log10()
 
-library(dplyr)
+library(tidyr)
 timings %>%
   filter(prob == "uniform") %>%
   group_by(n, expr) %>%
-  summarize(median_time = median(time)) %>%
+  summarize(median = median(time), max = max(time)) %>%
   ungroup %>%
-  ggplot(aes(x=n, y=median_time * 1e-9, color=expr)) +
+  gather(metric, time, median, max) %>%
+  ggplot(aes(x=n, y=time * 1e-9, color=expr)) +
+  facet_wrap(~metric, ncol = 1) +
   geom_line() +
   scale_x_log10() +
   scale_y_log10()
+```
+
+
+```{r}
+timings %>%
+  arrange(prob, n, expr, time) %>%
+  group_by(prob, n, expr) %>%
+  mutate(id = seq_along(time)) %>%
+  ungroup %>%
+  spread(prob, time) %>%
+  gather(diff_to, other_time, uniform) %>%
+  mutate(time_diff = other_time - linear, linear = NULL, other_time = NULL) %>%
+  ggplot(aes(x=factor(n), y=time_diff * 1e-9, color=expr)) +
+  geom_boxplot()
 ```
 
 
