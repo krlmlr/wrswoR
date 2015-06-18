@@ -19,7 +19,7 @@ timings <-
           R=sample.int(n, n, replace = FALSE, prob)
         )
       }) %>%
-      dplyr::rename(n = .id)
+      dplyr::mutate(n = as.integer(.id), .id = NULL)
   }) %>%
   dplyr::rename(prob = .id)
 
