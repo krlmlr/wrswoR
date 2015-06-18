@@ -1,10 +1,10 @@
 ---
-title: "Weighted random sampling without replacement"
+title: "Exploring timing data"
 author: "Kirill Müller"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Weighted random sampling without replacement}
+  %\VignetteIndexEntry{Exploring timing data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
