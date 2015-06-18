@@ -19,13 +19,24 @@ library(tidyr)
 
 # Run time tests
 
+- Input sizes: `r unique(timings$n)`
+- Probability distributions: `r unique(timings$prob)`
+- Algorithms: `r unique(timings$expr)`
+- Total measurements: `r nrow(timings)`
+
+Clearly worse performance of R implementation for large inputs.
+
 ```{r fig.width=7, fig.height=5}
 timings %>%
   filter(prob == "uniform") %>%
   ggplot(aes(x=factor(n), y=time * 1e-9, color=expr)) +
   geom_boxplot() +
   scale_y_log10()
+```
 
+Compare median and worst performance (for uniform distribution).
+
+```{r fig.width=7, fig.height=5}
 timings %>%
   filter(prob == "uniform") %>%
   group_by(n, expr) %>%
