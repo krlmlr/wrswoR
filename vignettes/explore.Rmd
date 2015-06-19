@@ -127,6 +127,21 @@ break_even %>%
   scale_y_log10()
 ```
 
+What about the mean:
+
+```{r fig.width=7, fig.height=5}
+break_even %>%
+  group_by(n, expr, prob) %>%
+  summarize(mean = mean(time)) %>%
+  ungroup %>%
+  gather(metric, time, mean) %>%
+  ggplot(aes(x=n, y=time * 1e-9, color=expr)) +
+  facet_wrap(~prob, ncol = 1) +
+  geom_line() +
+  scale_x_log10() +
+  scale_y_log10()
+```
+
 Even better, avoid allocation of R vectors in Rcpp code, as done by `ccrank`.
 
 
@@ -147,6 +162,26 @@ timings %>%
   facet_wrap(~diff_to) +
   scale_y_continuous(limits = c(-1, 1)) +
   geom_boxplot()
+```
+
+
+Show differences of means:
+
+```{r fig.width=7, fig.height=5}
+timings %>%
+  group_by(n, expr, prob) %>%
+  summarize(time = mean(time)) %>%
+  ungroup %>%
+  group_by(n, prob) %>%
+  mutate(id = seq_along(time)) %>%
+  ungroup %>%
+  spread(prob, time) %>%
+  gather_("diff_to", "other_time", unique(timings$prob) %>% setdiff("uniform")) %>%
+  mutate(rel_time_diff = (other_time - uniform) / uniform, uniform = NULL, other_time = NULL) %>%
+  ggplot(aes(x=n, y=rel_time_diff, color=expr)) +
+  facet_wrap(~diff_to) +
+  scale_x_log10() +
+  geom_line()
 ```
 
 
