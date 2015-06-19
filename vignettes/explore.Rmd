@@ -127,7 +127,7 @@ break_even %>%
   scale_y_log10()
 ```
 
-Even better, avoid allocation of R vectors in Rcpp code.
+Even better, avoid allocation of R vectors in Rcpp code, as done by `ccrank`.
 
 
 ## Compare distributions
