@@ -52,11 +52,17 @@ timings %>%
 
 Worst-best comparison: best for R, worst for others (but per probability distribution).
 
+```{r}
+best_worst <- function(expr, time) {
+  if (expr[[1]] == "R") min(time) else max(time)
+}
+```
+
 ```{r fig.width=7, fig.height=5}
 timings %>%
   filter(n >= 100 & n < 10000) %>%
   group_by(n, expr, prob) %>%
-  summarize(minmax = if (expr[[1]] == "R") min(time) else max(time)) %>%
+  summarize(minmax = best_worst(expr, time)) %>%
   ungroup %>%
   gather(metric, time, minmax) %>%
   ggplot(aes(x=n, y=time * 1e-9, color=expr)) +
@@ -68,11 +74,17 @@ timings %>%
 
 Same as above, now taking 5% and 95% quantiles.
 
+```{r}
+best_worst_q <- function(expr, time) {
+  if (expr[[1]] == "R") quantile(time, 0.05) else quantile(time, 0.95)
+}
+```
+
 ```{r fig.width=7, fig.height=5}
 timings %>%
   filter(n >= 100 & n <= 10000) %>%
   group_by(n, expr, prob) %>%
-  summarize(minmax = if (expr[[1]] == "R") min(time) else max(time)) %>%
+  summarize(minmax = best_worst_q(expr, time)) %>%
   ungroup %>%
   gather(metric, time, minmax) %>%
   ggplot(aes(x=n, y=time * 1e-9, color=expr)) +
@@ -90,7 +102,7 @@ Min-max very sensitive to garbage collection
 ```{r fig.width=7, fig.height=5}
 break_even %>%
   group_by(n, expr, prob) %>%
-  summarize(minmax = if (expr[[1]] == "R") min(time) else max(time)) %>%
+  summarize(minmax = best_worst(expr, time)) %>%
   ungroup %>%
   gather(metric, time, minmax) %>%
   ggplot(aes(x=n, y=time * 1e-9, color=expr)) +
@@ -105,7 +117,7 @@ Better take a quantile (say, 95th):
 ```{r fig.width=7, fig.height=5}
 break_even %>%
   group_by(n, expr, prob) %>%
-  summarize(minmax = if (expr[[1]] == "R") quantile(time, 0.05) else quantile(time, 0.95)) %>%
+  summarize(minmax = best_worst_q(expr, time)) %>%
   ungroup %>%
   gather(metric, time, minmax) %>%
   ggplot(aes(x=n, y=time * 1e-9, color=expr)) +
