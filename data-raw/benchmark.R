@@ -1,10 +1,13 @@
 library(magrittr)
 devtools::load_all(devtools::as.package("."))
 
+set.seed(20150619L)
+
 N <- trunc(10 ** seq(1.5, 5, by = 0.5)) %>% setNames(nm = .)
 PROB <- list(uniform = function(n) rep(1, n),
              linear = seq_len,
-             rev_linear = . %>% seq_len %>% rev)
+             rev_linear = . %>% seq_len %>% rev,
+             shuffled_linear = sample.int)
 
 timings <-
   plyr::ldply(
