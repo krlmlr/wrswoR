@@ -7,7 +7,7 @@
 #'   \code{1:n}.
 #' @seealso \code{\link[base]{sample.int}}
 #' @examples
-#' s <- sample.int.R(200000, 100000, runif(200000))
+#' s <- sample.int.R(2000, 1000, runif(2000))
 #' stopifnot(unique(s) == s)
 #' p <- c(995, rep(1, 5))
 #' n <- 1000
