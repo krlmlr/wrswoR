@@ -1,3 +1,5 @@
+set.seed(20150619L)
+
 .benchmark <- function() {
   plyr::ldply(
     PROB,
