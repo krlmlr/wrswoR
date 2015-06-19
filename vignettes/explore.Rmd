@@ -188,4 +188,30 @@ timings %>%
 
 
 
+## Compare algorithms
+
+Show differences of means:
+
+```{r fig.width=7, fig.height=5}
+timings %>%
+  filter(expr %in% c("crank", "ccrank")) %>%
+  group_by(n, expr, prob) %>%
+  summarize(time = mean(time)) %>%
+  ungroup %>%
+  group_by(n, expr) %>%
+  mutate(id = seq_along(time)) %>%
+  ungroup %>%
+  (function(x) {
+    spread(x, expr, time) %>%
+    gather_("diff_to", "other_time", unique(x$expr) %>% setdiff("crank"))
+  }) %>%
+  mutate(rel_time_diff = (other_time - crank) / crank, crank = NULL, other_time = NULL) %>%
+  ggplot(aes(x=n, y=rel_time_diff,  color=prob)) +
+  facet_wrap(~diff_to) +
+  scale_x_log10() +
+  geom_line()
+```
+
+
+
 # Comparison of results
