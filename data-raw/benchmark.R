@@ -20,7 +20,7 @@ timings <-
           rank=sample.int.rank(n, n, prob),
           rej=sample.int.rej(n, n, prob),
           R=sample.int.R(n, n, prob),
-          control = list(order = "block")
+          control = list(order = "block", warmup = 10)
         )
       }) %>%
       dplyr::mutate(n = as.integer(.id), .id = NULL)
