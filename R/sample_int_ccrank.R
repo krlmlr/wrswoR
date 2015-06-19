@@ -36,7 +36,7 @@
 #' p <- c(995, rep(1, 5))
 #' n <- 1000
 #' set.seed(42)
-#' stopifnot(abs(table(replicate(sample.int.crank(6, 3, p), n=n)) / n -
+#' stopifnot(abs(table(replicate(sample.int.ccrank(6, 3, p), n=n)) / n -
 #'   c(1, rep(0.4, 5))) < 0.04)
 #'@seealso \code{\link[base]{sample.int}}
 #'@importFrom Rcpp evalCpp
