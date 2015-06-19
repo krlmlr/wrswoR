@@ -19,7 +19,8 @@ break_even <-
           crank=sample.int.crank(n, n, prob),
           rank=sample.int.rank(n, n, prob),
           rej=sample.int.rej(n, n, prob),
-          R=sample.int.R(n, n, prob)
+          R=sample.int.R(n, n, prob),
+          control = list(order = "block")
         )
       }) %>%
       dplyr::mutate(n = as.integer(.id), .id = NULL)
