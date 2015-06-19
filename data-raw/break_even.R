@@ -3,7 +3,7 @@ devtools::load_all(devtools::as.package("."))
 
 set.seed(20150619L)
 
-N <- trunc(10 ** seq(2, 4, by = 0.01)) %>% setNames(nm = .)
+N <- trunc(10 ** seq(1, 4, by = 0.01)) %>% setNames(nm = .)
 PROB <- list(uniform = function(n) rep(1, n),
              linear = seq_len,
              rev_linear = . %>% seq_len %>% rev,
