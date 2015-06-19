@@ -116,6 +116,7 @@ Better take a quantile (say, 95th):
 
 ```{r fig.width=7, fig.height=5}
 break_even %>%
+  filter(n < 3000) %>%
   group_by(n, expr, prob) %>%
   summarize(minmax = best_worst_q(expr, time)) %>%
   ungroup %>%
@@ -131,6 +132,7 @@ What about the mean:
 
 ```{r fig.width=7, fig.height=5}
 break_even %>%
+  filter(n < 3000) %>%
   group_by(n, expr, prob) %>%
   summarize(mean = mean(time)) %>%
   ungroup %>%
