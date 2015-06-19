@@ -20,14 +20,17 @@ library(tidyr)
 # Run time tests
 
 - Input sizes: `r unique(timings$n)`
+- Output ratios: `r scales::percent(unique(timings$r))`
 - Probability distributions: `r unique(timings$prob)`
 - Algorithms: `r unique(timings$expr)`
 - Total measurements: `r nrow(timings)`
 
 Clearly worse performance of R implementation for large inputs.
+(Default output ratio 10% for now.)
 
 ```{r fig.width=7, fig.height=5}
 timings %>%
+  filter(r == 0.1) %>%
   filter(prob == "uniform") %>%
   ggplot(aes(x=factor(n), y=time * 1e-9, color=expr)) +
   geom_boxplot() +
@@ -38,6 +41,7 @@ Compare median and worst performance (for uniform distribution).
 
 ```{r fig.width=7, fig.height=5}
 timings %>%
+  filter(r == 0.1) %>%
   filter(prob == "uniform") %>%
   group_by(n, expr) %>%
   summarize(median = median(time), max = max(time)) %>%
@@ -60,6 +64,7 @@ best_worst <- function(expr, time) {
 
 ```{r fig.width=7, fig.height=5}
 timings %>%
+  filter(r == 0.1) %>%
   filter(n >= 100 & n < 10000) %>%
   group_by(n, expr, prob) %>%
   summarize(minmax = best_worst(expr, time)) %>%
@@ -82,6 +87,7 @@ best_worst_q <- function(expr, time) {
 
 ```{r fig.width=7, fig.height=5}
 timings %>%
+  filter(r == 0.1) %>%
   filter(n >= 100 & n <= 10000) %>%
   group_by(n, expr, prob) %>%
   summarize(minmax = best_worst_q(expr, time)) %>%
@@ -101,6 +107,7 @@ Min-max very sensitive to garbage collection
 
 ```{r fig.width=7, fig.height=5}
 break_even %>%
+  filter(r == 0.1) %>%
   group_by(n, expr, prob) %>%
   summarize(minmax = best_worst(expr, time)) %>%
   ungroup %>%
@@ -116,6 +123,7 @@ Better take a quantile (say, 95th):
 
 ```{r fig.width=7, fig.height=5}
 break_even %>%
+  filter(r == 0.1) %>%
   filter(n < 3000) %>%
   group_by(n, expr, prob) %>%
   summarize(minmax = best_worst_q(expr, time)) %>%
@@ -132,7 +140,8 @@ What about the mean:
 
 ```{r fig.width=7, fig.height=5}
 break_even %>%
-  filter(n < 3000) %>%
+  filter(r == 0.1) %>%
+  filter(n >= 100) %>%
   group_by(n, expr, prob) %>%
   summarize(mean = mean(time)) %>%
   ungroup %>%
@@ -144,6 +153,26 @@ break_even %>%
   scale_y_log10()
 ```
 
+R is best with uniform distribution (compared to the others);
+compare different ratios:
+
+```{r fig.width=7, fig.height=5}
+break_even %>%
+  filter(prob == "uniform") %>%
+  filter(n >= 100) %>%
+  group_by(n, expr, r) %>%
+  summarize(mean = mean(time)) %>%
+  ungroup %>%
+  gather(metric, time, mean) %>%
+  mutate(percent_r = scales::percent(r)) %>%
+  ggplot(aes(x=n, y=time * 1e-9, color=expr)) +
+  facet_wrap(~percent_r, ncol = 1) +
+  geom_line() +
+  scale_x_log10() +
+  scale_y_log10()
+```
+
+
 Even better, avoid allocation of R vectors in Rcpp code, as done by `ccrank`.
 
 
@@ -153,6 +182,7 @@ Box plots for relative differences beween non-uniform and uniform sampling.
 
 ```{r fig.width=7, fig.height=5}
 timings %>%
+  filter(r == 0.1) %>%
   arrange(prob, n, expr, time) %>%
   group_by(prob, n, expr) %>%
   mutate(id = seq_along(time)) %>%
@@ -171,6 +201,7 @@ Show differences of means:
 
 ```{r fig.width=7, fig.height=5}
 timings %>%
+  filter(r == 0.1) %>%
   group_by(n, expr, prob) %>%
   summarize(time = mean(time)) %>%
   ungroup %>%
@@ -194,6 +225,7 @@ Show differences of means:
 
 ```{r fig.width=7, fig.height=5}
 timings %>%
+  filter(r == 0.1) %>%
   filter(expr %in% c("crank", "ccrank")) %>%
   group_by(n, expr, prob) %>%
   summarize(time = mean(time)) %>%
