@@ -1,5 +1,11 @@
 set.seed(20150619L)
 
+R <- c(0.01, 0.1, 1) %>% setNames(nm = .)
+PROB <- list(uniform = function(n) rep(1, n),
+             linear = seq_len,
+             rev_linear = . %>% seq_len %>% rev,
+             shuffled_linear = sample.int)
+
 .benchmark <- function() {
   plyr::ldply(
     PROB,
