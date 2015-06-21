@@ -2,6 +2,16 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
+void check_args(int n, int size, const NumericVector& prob) {
+  if (n < size) {
+    Rcpp::stop("cannot take a sample larger than the population");
+  }
+
+  if (prob.length() != n) {
+    Rcpp::stop("incorrect number of probabilities");
+  }
+}
+
 struct Comp{
   Comp(const Rcpp::NumericVector& v ) : _v(v) {}
   // Inverted comparison!
@@ -17,11 +27,7 @@ T _add_one(T t) { return t + 1; }
 
 // [[Rcpp::export(sample.int.crank)]]
 IntegerVector sample_int_crank(int n, int size, NumericVector prob) {
-  if (n < size)
-    ::Rf_error("cannot take a sample larger than the population");
-
-  if (prob.length() != n)
-    ::Rf_error("incorrect number of probabilities");
+  check_args(n, size, prob);
 
   // We need the last "size" elements of
   // U ^ (1 / prob) ~ log(U) / prob
@@ -57,11 +63,7 @@ struct UniqueNumber {
 
 // [[Rcpp::export(sample.int.ccrank)]]
 SEXP sample_int_ccrank(int n, int size, NumericVector prob) {
-  if (n < size)
-    ::Rf_error("cannot take a sample larger than the population");
-
-  if (prob.length() != n)
-    ::Rf_error("incorrect number of probabilities");
+  check_args(n, size, prob);
 
   // We need the last "size" elements of
   // U ^ (1 / prob) ~ log(U) / prob
