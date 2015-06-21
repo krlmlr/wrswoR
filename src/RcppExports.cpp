@@ -18,3 +18,16 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// sample_int_ccrank
+SEXP sample_int_ccrank(int n, int size, NumericVector prob);
+RcppExport SEXP wrswoR_sample_int_ccrank(SEXP nSEXP, SEXP sizeSEXP, SEXP probSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< int >::type size(sizeSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type prob(probSEXP);
+    __result = Rcpp::wrap(sample_int_ccrank(n, size, prob));
+    return __result;
+END_RCPP
+}

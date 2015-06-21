@@ -1,7 +1,8 @@
-with_defaults(
-  multiple_dots_linter = NULL, # 15
-  single_quotes_linter = NULL, # 5
-  trailing_blank_lines_linter = NULL, # 4
-  absolute_paths_linter = NULL, # 1
+linters: with_defaults(
+    multiple_dots_linter = NULL, # 15
+    single_quotes_linter = NULL, # 5
+    trailing_blank_lines_linter = NULL, # 4
+    assignment_linter = NULL, # 1
+    camel_case_linter = NULL, # 1
   NULL
-)
+  )
