@@ -39,9 +39,6 @@ sample_int_rej <- function(n, size, prob) {
   .sample_int_rej(n, size, prob, 2, 1)
 }
 
-.harmonic.series <- NULL
-.harmonic.series.max <- 50
-
 # Euler-Mascheroni constant
 .EM = 0.57721566490153286060651209008240243104215933593992
 
@@ -51,9 +48,7 @@ sample_int_rej <- function(n, size, prob) {
 #' http://en.wikipedia.org/wiki/Harmonic_number
 .harmonic <- function(a) {
   stopifnot(a >= 0)
-  if (a <= .harmonic.series.max) {
-    if (length(.harmonic.series) != .harmonic.series.max + 1)
-      .harmonic.series <- c(0, cumsum(1 / (1:.harmonic.series.max)))
+  if (a < length(.harmonic.series)) {
     .harmonic.series[a + 1]
   } else {
     log(a) + .EM + .5 / a
