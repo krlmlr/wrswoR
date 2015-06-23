@@ -25,7 +25,7 @@ T _divide_by_rexp(T t) { return t / Rf_rexp(1.0); }
 template <class T>
 T _add_one(T t) { return t + 1; }
 
-// [[Rcpp::export(sample.int.crank)]]
+// [[Rcpp::export(sample_int_crank)]]
 IntegerVector sample_int_crank(int n, int size, NumericVector prob) {
   check_args(n, size, prob);
 
@@ -61,7 +61,7 @@ struct UniqueNumber {
 };
 
 
-// [[Rcpp::export(sample.int.ccrank)]]
+// [[Rcpp::export(sample_int_ccrank)]]
 SEXP sample_int_ccrank(int n, int size, NumericVector prob) {
   check_args(n, size, prob);
 
