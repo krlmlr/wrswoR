@@ -42,10 +42,10 @@ sample_int_rej <- function(n, size, prob) {
 # Euler-Mascheroni constant
 .EM = 0.57721566490153286060651209008240243104215933593992
 
-#' Computes the harmonic series. Exact for the first
-#' .harmonic.series.max values (through table lookup), otherwise using
-#' the approximation ln(a) + \gamma + 1 / (2a). Source:
-#' http://en.wikipedia.org/wiki/Harmonic_number
+# Computes the harmonic series. Exact for the first
+# .harmonic.series.max values (through table lookup), otherwise using
+# the approximation ln(a) + \gamma + 1 / (2a). Source:
+# http://en.wikipedia.org/wiki/Harmonic_number
 .harmonic <- function(a) {
   stopifnot(a >= 0)
   if (a < length(.harmonic.series)) {
@@ -55,8 +55,8 @@ sample_int_rej <- function(n, size, prob) {
   }
 }
 
-#' Workhorse
 #' @importFrom logging logdebug
+# Workhorse
 .sample_int_rej <- function(
   n, size, prob, MAX_OVERSHOOT, BIAS) {
 
