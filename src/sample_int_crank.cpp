@@ -86,3 +86,25 @@ SEXP sample_int_ccrank(int n, int size, NumericVector prob) {
 
   return Rcpp::wrap(IntegerVector(vx.begin(), vx.begin() + size));
 }
+
+// [[Rcpp::export(sample_int_expj)]]
+IntegerVector sample_int_expj(int n, int size, NumericVector prob) {
+  check_args(n, size, prob);
+
+  // We need the last "size" elements of
+  // U ^ (1 / prob) ~ log(U) / prob
+  //                ~ -Exp(1) / prob
+  //                ~ prob / Exp(1)
+  // Here, ~ means "doesn't change order statistics".
+  NumericVector rnd = NumericVector(prob.begin(), prob.end(),
+                                    &_divide_by_rexp<double>);
+
+  // Find the indexes of the first "size" elements under inverted
+  // comparison.  Here, vx is zero-based.
+  IntegerVector vx = seq(0, n - 1);
+  std::partial_sort(vx.begin(), vx.begin() + size, vx.end(), Comp(rnd));
+
+  // Initialize with elements vx[1:size], applying transform "+ 1" --
+  // we return one-based values.
+  return IntegerVector(vx.begin(), vx.begin() + size, &_add_one<int>);
+}
