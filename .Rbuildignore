@@ -7,3 +7,6 @@
 ^Makefile\.in$
 ^wercker\.yml$
 ^\.lintr$
+^Makefile$
+^Makefile\.in$
+^makeR$
