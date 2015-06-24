@@ -25,7 +25,7 @@
 #'
 #'@keywords package
 #'@examples
-#'sample.int.rej(100, 50, 1:100)
+#'sample_int_rej(100, 50, 1:100)
 NULL
 
 

@@ -1,5 +1,5 @@
 #' Weighted sampling without replacement using repeated weighted sampling with replacement
-#' @description \code{sample.int.rej} takes a sample of the specified
+#' @description \code{sample_int_rej} takes a sample of the specified
 #'   \code{size} from the elements of \code{1:n} without replacement.
 #'   This function is faster than \code{sample.int} in many cases,
 #'   especially when \code{n} and \code{size} are large, even if the
@@ -7,7 +7,7 @@
 #' @inheritParams base::sample.int
 #' @return An integer vector of length \code{size} with elements from
 #'   \code{1:n}.
-#' @details The call \code{sample.int.rej(n, size, prob)} is equivalent
+#' @details The call \code{sample_int_rej(n, size, prob)} is equivalent
 #'   to \code{sample.int(n, size, replace=F, prob)}.  (The results will
 #'   most probably be different for the same random seed, but the
 #'   returned samples are distributed identically for both calls.)
@@ -27,45 +27,40 @@
 #' @author Kirill Müller
 #' @seealso \code{\link[base]{sample.int}}
 #' @examples
-#' s <- sample.int.rej(200000, 100000, runif(200000))
+#' s <- sample_int_rej(200000, 100000, runif(200000))
 #' stopifnot(unique(s) == s)
 #' p <- c(995, rep(1, 5))
 #' n <- 1000
 #' set.seed(42)
-#' stopifnot(abs(table(replicate(sample.int.rej(6, 3, p), n=n)) / n -
+#' stopifnot(abs(table(replicate(sample_int_rej(6, 3, p), n=n)) / n -
 #'   c(1, rep(0.4, 5))) < 0.04)
-sample.int.rej <- function(n, size, prob) {
+sample_int_rej <- function(n, size, prob) {
   .check_args(n, size, prob)
-  .sample.int.rej(n, size, prob, 2, 1)
+  .sample_int_rej(n, size, prob, 2, 1)
 }
-
-.harmonic.series <- NULL
-.harmonic.series.max <- 50
 
 # Euler-Mascheroni constant
 .EM = 0.57721566490153286060651209008240243104215933593992
 
-#' Computes the harmonic series. Exact for the first
-#' .harmonic.series.max values (through table lookup), otherwise using
-#' the approximation ln(a) + \gamma + 1 / (2a). Source:
-#' http://en.wikipedia.org/wiki/Harmonic_number
+# Computes the harmonic series. Exact for the first
+# .harmonic.series.max values (through table lookup), otherwise using
+# the approximation ln(a) + \gamma + 1 / (2a). Source:
+# http://en.wikipedia.org/wiki/Harmonic_number
 .harmonic <- function(a) {
   stopifnot(a >= 0)
-  if (a <= .harmonic.series.max) {
-    if (length(.harmonic.series) != .harmonic.series.max + 1)
-      .harmonic.series <- c(0, cumsum(1 / (1:.harmonic.series.max)))
+  if (a < length(.harmonic.series)) {
     .harmonic.series[a + 1]
   } else {
     log(a) + .EM + .5 / a
   }
 }
 
-#' Workhorse
 #' @importFrom logging logdebug
-.sample.int.rej <- function(
+# Workhorse
+.sample_int_rej <- function(
   n, size, prob, MAX_OVERSHOOT, BIAS) {
 
-  logdebug('.sample.int.rej: parameters: %s, %s, %s', n, size, length(prob))
+  logdebug('.sample_int_rej: parameters: %s, %s, %s', n, size, length(prob))
 
   #' How many draws *with replacement* are required on average, assuming
   #' *uniform* weights? (With non-uniform weights, this number can only
@@ -76,14 +71,14 @@ sample.int.rej <- function(n, size, prob) {
   #' parameters, ideal values are still to be found through simulation.
   wr.size <- ceiling(n * min(BIAS * (.harmonic(n) - .harmonic(n - size)),
                              MAX_OVERSHOOT))
-  logdebug('.sample.int.rej: wr.size=%s', wr.size)
+  logdebug('.sample_int_rej: wr.size=%s', wr.size)
 
   #' Do the sampling with replacement...
   wr.sample <- sample.int(n, size=wr.size, replace=T, prob)
   #' ...but keep only unique values.
   wr.sample <- unique(wr.sample)
   wr.sample.len <- length(wr.sample)
-  logdebug('.sample.int.rej: wr.sample.len=%s', wr.sample.len)
+  logdebug('.sample_int_rej: wr.sample.len=%s', wr.sample.len)
 
   #' How much still left to do?
   rem.size <- size - wr.sample.len
@@ -100,7 +95,7 @@ sample.int.rej <- function(n, size, prob) {
 
   #' Recursive call to sample without replacement from the remaining
   #' weights
-  rem.sample <- .sample.int.rej(rem.n, rem.size,
+  rem.sample <- .sample_int_rej(rem.n, rem.size,
                                 prob[rem.indexes],
                                 MAX_OVERSHOOT, BIAS)
 
