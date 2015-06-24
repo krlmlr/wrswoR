@@ -1,8 +1,0 @@
-#!/bin/sh
-
-set -e
-
-cp makeR/res/wercker.yml .
-echo "^wercker\.yml$" >> .Rbuildignore
-git add wercker.yml .Rbuildignore
-git commit -m "init wercker"
