@@ -40,7 +40,7 @@
 #'   c(1, rep(0.4, 5))) < 0.04)
 sample_int_rank <- function(n, size, prob) {
   .check_args(n, size, prob)
-  head(sort(rexp(n) / prob, index.return = TRUE)$ix, size)
+  head(order(rexp(n) / prob), size)
 }
 
 .check_args <- function(n, size, prob) {
