@@ -212,6 +212,10 @@ IntegerVector sample_int_expjs(int n, int size, NumericVector prob) {
       // Step 9: Let t_w = T_w^{w_i}, r_2 = random(t_w, 1) and v_i’s key: k_i = (r_2)^{1/w_i}
       // (Mod: Let t_w = log(T_w) * {w_i}, e_2 = log(random(e^{t_w}, 1)) and v_i’s key: k_i = e_2 / w_i)
       double t_w = std::pow(*T_w, *iprob);
+      if (t_w < 0.0)
+        Rcpp::stop("t_w < 0");
+      if (t_w > 1.0)
+        Rcpp::stop("t_w > 1");
       double r_2 = Rf_runif(t_w, 1.0);
       double k_i = std::pow(r_2, 1.0 / *iprob);
 
