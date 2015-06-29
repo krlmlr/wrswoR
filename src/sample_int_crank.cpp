@@ -87,24 +87,77 @@ SEXP sample_int_ccrank(int n, int size, NumericVector prob) {
   return Rcpp::wrap(IntegerVector(vx.begin(), vx.begin() + size));
 }
 
+template <class T>
+T _minus_rexp_divide_by(T t) { return -Rf_rexp(1.0) / t; }
+
+template <class T>
+T find_min_item(T begin, T end) {
+  T T_w = begin;
+  for (NumericVector::iterator iT_w = T_w + 1; iT_w != end; iT_w++) {
+    if (*iT_w < *T_w)
+      T_w = iT_w;
+  }
+
+  return T_w;
+}
+
 // [[Rcpp::export(sample_int_expj)]]
 IntegerVector sample_int_expj(int n, int size, NumericVector prob) {
   check_args(n, size, prob);
 
-  // We need the last "size" elements of
-  // U ^ (1 / prob) ~ log(U) / prob
-  //                ~ -Exp(1) / prob
-  //                ~ prob / Exp(1)
-  // Here, ~ means "doesn't change order statistics".
-  NumericVector rnd = NumericVector(prob.begin(), prob.end(),
-                                    &_divide_by_rexp<double>);
-
-  // Find the indexes of the first "size" elements under inverted
-  // comparison.  Here, vx is zero-based.
+  // Step 1: The first m items of V are inserted into R
   IntegerVector vx = seq(0, n - 1);
-  std::partial_sort(vx.begin(), vx.begin() + size, vx.end(), Comp(rnd));
 
-  // Initialize with elements vx[1:size], applying transform "+ 1" --
+  // Step 2: For each item v_i ∈ R: Calculate a key k_i = u_i^(1/w),
+  // where u_i = random(0, 1)
+  // (Modification: Calculate and store log k_i = -e_i / w where e_i = exp(1))
+  NumericVector R = NumericVector(prob.begin(), prob.begin() + size,
+                                  &_minus_rexp_divide_by<double>);
+
+  // Step 3: The threshold T_w is the minimum key of R
+  // (Modification: This is now the logarithm)
+  NumericVector::iterator T_w = find_min_item(R.begin(), R.end());
+
+  // Step 4: Repeat Steps 5–10 until the population is exhausted
+  {
+    NumericVector::iterator iprob = prob.begin() + size;
+    for (;;) {
+      // Step 5: Let r = random(0, 1) and X_w = log(r) / log(T_w)
+      // (Modification: Use e = -exp(1) instead of log(r))
+      double X_w = -Rf_rexp(1.0) / *T_w;
+
+      // Step 6: From the current item v_c skip items until item v_i, such that:
+      double w = 0;
+
+      // Step 7: w_c + w_{c+1} + ··· + w_{i−1} < X_w <= w_c + w_{c+1} + ··· + w_{i−1} + w_i
+      for (; iprob != prob.end(); ++iprob) {
+        w += *iprob;
+        if (X_w <= w)
+          break;
+      }
+
+      // Step 7: No such item, terminate
+      if (iprob == prob.end())
+        break;
+
+      // Step 9: Let t_w = T_w^{w_i}, r_2 = random(t_w, 1) and v_i’s key: k_i = (r_2)^{1/w_i}
+      // (Mod: Let t_w = log(T_w) * {w_i}, e_2 = log(random(e^{t_w}, 1)) and v_i’s key: k_i = e_2 / w_i)
+      double t_w = *T_w * *iprob;
+      double e_2 = std::log(Rf_runif(std::exp(t_w), 1.0));
+      double k_i = e_2 / *iprob;
+
+      // Step 8: The item in R with the minimum key is replaced by item v_i
+      vx[(size_t)(T_w - R.begin())] = iprob - prob.begin();
+      *T_w = k_i;
+
+      // Step 10: The new threshold T w is the new minimum key of R
+      T_w = find_min_item(R.begin(), R.end());
+    }
+  }
+
+  std::sort(vx.begin(), vx.end(), Comp(R));
+
+  // Initialize with elements from vx, applying transform "+ 1" --
   // we return one-based values.
-  return IntegerVector(vx.begin(), vx.begin() + size, &_add_one<int>);
+  return IntegerVector(vx.begin(), vx.end(), &_add_one<int>);
 }
