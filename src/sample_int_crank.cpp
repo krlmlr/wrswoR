@@ -93,7 +93,7 @@ T _minus_rexp_divide_by(T t) { return -Rf_rexp(1.0) / t; }
 template <class T>
 T find_min_item(T begin, T end) {
   T T_w = begin;
-  for (NumericVector::iterator iT_w = T_w + 1; iT_w != end; ++iT_w) {
+  for (T iT_w = T_w + 1; iT_w != end; ++iT_w) {
     if (*iT_w < *T_w)
       T_w = iT_w;
   }
