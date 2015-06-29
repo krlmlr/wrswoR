@@ -105,6 +105,10 @@ T find_min_item(T begin, T end) {
 IntegerVector sample_int_expj(int n, int size, NumericVector prob) {
   check_args(n, size, prob);
 
+  // Corner case
+  if (size == 0)
+    return IntegerVector();
+
   // Step 1: The first m items of V are inserted into R
   IntegerVector vx = seq(0, size - 1);
 
