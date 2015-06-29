@@ -201,6 +201,7 @@ IntegerVector sample_int_expjs(int n, int size, NumericVector prob) {
     for (NumericVector::iterator iprob = prob.begin() + size; iprob != prob.end(); ++iprob) {
       Rcpp::print(vx);
       Rcpp::print(R);
+      Rcpp::print(wrap("*T_w"));
       Rcpp::print(wrap(*T_w));
 
       // Step 5: Let r = random(0, 1) and X_w = log(r) / log(T_w)
@@ -216,6 +217,7 @@ IntegerVector sample_int_expjs(int n, int size, NumericVector prob) {
       // Step 7: w_c + w_{c+1} + ··· + w_{i−1} < X_w <= w_c + w_{c+1} + ··· + w_{i−1} + w_i
       for (; iprob != prob.end(); ++iprob) {
         w += *iprob;
+        Rcpp::print(wrap("w"));
         Rcpp::print(wrap(w));
         if (X_w <= w)
           break;
