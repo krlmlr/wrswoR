@@ -1,32 +1,17 @@
-#' Weighted sampling without replacement using repeated weighted sampling with replacement
-#' @description \code{sample_int_rej} takes a sample of the specified
-#'   \code{size} from the elements of \code{1:n} without replacement.
-#'   This function is faster than \code{sample.int} in many cases,
-#'   especially when \code{n} and \code{size} are large, even if the
-#'   weights range over many orders of magnitudes.
-#' @inheritParams base::sample.int
-#' @return An integer vector of length \code{size} with elements from
-#'   \code{1:n}.
-#' @details The call \code{sample_int_rej(n, size, prob)} is equivalent
-#'   to \code{sample.int(n, size, replace=F, prob)}.  (The results will
-#'   most probably be different for the same random seed, but the
-#'   returned samples are distributed identically for both calls.)
-#'   However, \code{sample.int} implements an algorithm with quadratic
-#'   runtime -- this is not suitable for large values of \code{n} and
-#'   \code{size} (see also
-#'   \url{http://stackoverflow.com/q/15113650/946850}).  (Note that the
-#'   performance of \code{sample.int} is just fine in the "with
-#'   replacement" case, and also for uniform probabilities.)
+#' @rdname sample_int
 #'
+#' @details \code{sample_int_rej} uses repeated weighted sampling with
+#'   replacement and a variant of rejection sampling. It is implemented purely
+#'   in R.
 #'   This function simulates weighted sampling without replacement using
 #'   somewhat more draws \emph{with} replacement, and then discarding
 #'   duplicate values (rejection sampling).  If too few items are
 #'   sampled, the routine calls itself recursively on a (hopefully) much
 #'   smaller problem.  See also
 #'   \url{http://stats.stackexchange.com/q/20590/6432}.
-#' @author Kirill Müller
-#' @seealso \code{\link[base]{sample.int}}
+#' @author Kirill Müller (for \code{sample_int_rej})
 #' @examples
+#' ## Rejection sampling
 #' s <- sample_int_rej(200000, 100000, runif(200000))
 #' stopifnot(unique(s) == s)
 #' p <- c(995, rep(1, 5))
