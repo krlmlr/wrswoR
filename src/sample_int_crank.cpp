@@ -109,6 +109,9 @@ IntegerVector sample_int_expj(int n, int size, NumericVector prob) {
   if (size == 0)
     return IntegerVector();
 
+  // Need normalized weights
+  prob = prob / Rcpp::sum(prob);
+
   // Step 1: The first m items of V are inserted into R
   IntegerVector vx = seq(0, size - 1);
 
@@ -177,6 +180,9 @@ IntegerVector sample_int_expjs(int n, int size, NumericVector prob) {
   // Corner case
   if (size == 0)
     return IntegerVector();
+
+  // Need normalized weights
+  prob = prob / Rcpp::sum(prob);
 
   // Step 1: The first m items of V are inserted into R
   IntegerVector vx = seq(0, size - 1);
