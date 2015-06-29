@@ -197,6 +197,9 @@ IntegerVector sample_int_expjs(int n, int size, NumericVector prob) {
       // Step 5: Let r = random(0, 1) and X_w = log(r) / log(T_w)
       double X_w = std::log(Rf_runif(0.0, 1.0)) / std::log(*T_w);
 
+      if (X_w < 0)
+        Rcpp::stop("X_w < 0");
+
       // Step 6: From the current item v_c skip items until item v_i, such that:
       double w = 0;
 
