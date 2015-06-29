@@ -2,15 +2,15 @@ Encoding: UTF-8
 Package: wrswoR
 Type: Package
 Title: Weighted random sampling without replacement
-Version: 0.1
+Version: 0.2
 Authors@R: as.person("Kirill Müller <krlmlr+r@mailbox.org> [aut, cre]")
-Description: A collection of implementations of classical and
-    novel algorithms for weighted sampling without replacement.
+Description: A collection of implementations of classical and novel
+        algorithms for weighted sampling without replacement.
 License: GPL-3
 Depends: R (>= 3.0.2)
 Imports: Rcpp, logging (>= 0.4-13)
 LinkingTo: Rcpp (>= 0.11.5)
 URL: https://github.com/krlmlr/wrswoR
 BugReports: https://github.com/krlmlr/wrswoR/issues
-Suggests: testthat
+Suggests: testthat, autoroxy
 LazyData: true
