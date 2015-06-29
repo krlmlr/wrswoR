@@ -11,8 +11,8 @@
 #'   distribution). To increase numerical stability, \eqn{\log(U) /
 #'   w_i}{log(U) / w_i} is computed instead; the log transform does not
 #'   change the order statistic.
-#' @author Dinre (for \code{sample_int_rank}), Kirill Müller
-#'   (for \code{sample_int_*rank})
+#' @author Dinre (for \code{*_rank}), Kirill Müller
+#'   (for \code{*_*crank})
 #' @references Efraimidis, Pavlos S., and Paul G. Spirakis. "Weighted
 #' random sampling with a reservoir." \emph{Information Processing
 #' Letters} 97, no. 5 (2006): 181-185.
