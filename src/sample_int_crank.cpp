@@ -106,7 +106,7 @@ IntegerVector sample_int_expj(int n, int size, NumericVector prob) {
   check_args(n, size, prob);
 
   // Step 1: The first m items of V are inserted into R
-  IntegerVector vx = seq(0, n - 1);
+  IntegerVector vx = seq(0, size - 1);
 
   // Step 2: For each item v_i ∈ R: Calculate a key k_i = u_i^(1/w),
   // where u_i = random(0, 1)
