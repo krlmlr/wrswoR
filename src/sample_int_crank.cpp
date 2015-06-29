@@ -124,8 +124,9 @@ IntegerVector sample_int_expj(int n, int size, NumericVector prob) {
 
   // Step 4: Repeat Steps 5–10 until the population is exhausted
   {
-    NumericVector::iterator iprob = prob.begin() + size;
-    for (;;) {
+    // Incrementing iprob is part of Step 7
+    for (NumericVector::iterator iprob = prob.begin() + size;; ++iprob) {
+
       // Step 5: Let r = random(0, 1) and X_w = log(r) / log(T_w)
       // (Modification: Use e = -exp(1) instead of log(r))
       double X_w = -Rf_rexp(1.0) / *T_w;
@@ -190,8 +191,9 @@ IntegerVector sample_int_expjs(int n, int size, NumericVector prob) {
 
   // Step 4: Repeat Steps 5–10 until the population is exhausted
   {
-    NumericVector::iterator iprob = prob.begin() + size;
-    for (;;) {
+    // Incrementing iprob is part of Step 7
+    for (NumericVector::iterator iprob = prob.begin() + size;; ++iprob) {
+
       // Step 5: Let r = random(0, 1) and X_w = log(r) / log(T_w)
       double X_w = std::log(Rf_runif(0.0, 1.0)) / std::log(*T_w);
 
