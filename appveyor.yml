@@ -15,6 +15,7 @@ install:
 branches:
   only:
     - master
+    - release/*
 
 build_script:
   - travis-tool.sh install_deps
