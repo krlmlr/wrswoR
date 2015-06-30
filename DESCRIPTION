@@ -12,5 +12,5 @@ Imports: Rcpp, logging (>= 0.4-13)
 LinkingTo: Rcpp (>= 0.11.5)
 URL: https://github.com/krlmlr/wrswoR
 BugReports: https://github.com/krlmlr/wrswoR/issues
-Suggests: testthat
+Suggests: testthat, roxygen2
 LazyData: true
