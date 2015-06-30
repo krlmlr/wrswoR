@@ -9,3 +9,11 @@ sample_int_ccrank <- function(n, size, prob) {
     .Call('wrswoR_sample_int_ccrank', PACKAGE = 'wrswoR', n, size, prob)
 }
 
+sample_int_expj <- function(n, size, prob) {
+    .Call('wrswoR_sample_int_expj', PACKAGE = 'wrswoR', n, size, prob)
+}
+
+sample_int_expjs <- function(n, size, prob) {
+    .Call('wrswoR_sample_int_expjs', PACKAGE = 'wrswoR', n, size, prob)
+}
+
