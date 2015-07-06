@@ -55,15 +55,12 @@ often run faster than R's implementation, especially when \code{n} and
 \details{
 \code{sample_int_R} is a simple wrapper for \code{\link[base]{sample.int}}.
 
-\code{sample_int_expj} and \code{sample_int_expjs} are
-  \bold{currently broken} attempts to
+\code{sample_int_expj} and \code{sample_int_expjs}
   implement one-pass random sampling with a reservor with exponential jumps
   (Efraimidis and Spirakis, 2006, Algorithm A-ExpJ).  Both functions are
   implemented in \code{Rcpp}; \code{*_expj} uses log-transformed keys,
   \code{*_expjs} implements the algorithm in the paper verbatim
-  (at the cost of numerical stability). Both implementations exhibit similar
-  deficiencies with \code{size=2} and non-uniform weights.
-  Furthermore, with large inputs, the functions cause a segfault.
+  (at the cost of numerical stability).
 
 \code{sample_int_rank}, \code{sample_int_crank} and
   \code{sample_int_ccrank} implement one-pass random sampling
@@ -115,23 +112,23 @@ stopifnot(abs(table(replicate(sample_int_crank(6, 3, p), n=n)) / n -
 ## Algorithm A-ExpJ (with log-transformed keys)
 \dontrun{
 s <- sample_int_expj(200000, 100000, runif(200000))
+}
 stopifnot(unique(s) == s)
 p <- c(995, rep(1, 5))
 n <- 1000
 set.seed(42)
 stopifnot(abs(table(replicate(sample_int_expjs(6, 3, p), n=n)) / n -
   c(1, rep(0.4, 5))) < 0.04)
-}
 ## Algorithm A-ExpJ (paper version)
 \dontrun{
 s <- sample_int_expjs(200000, 100000, runif(200000))
+}
 stopifnot(unique(s) == s)
 p <- c(995, rep(1, 5))
 n <- 1000
 set.seed(42)
 stopifnot(abs(table(replicate(sample_int_expjs(6, 3, p), n=n)) / n -
   c(1, rep(0.4, 5))) < 0.04)
-}
 ## Algorithm A
 s <- sample_int_rank(200000, 100000, runif(200000))
 stopifnot(unique(s) == s)
