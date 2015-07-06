@@ -101,6 +101,13 @@ T find_min_item(T begin, T end) {
   return T_w;
 }
 
+struct Indirection{
+  Indirection(const Rcpp::IntegerVector& v ) : _v(v) {}
+  // Inverted comparison!
+  int operator ()(int a) { return _v[a]; }
+  const Rcpp::IntegerVector& _v;
+};
+
 // [[Rcpp::export(sample_int_expj)]]
 IntegerVector sample_int_expj(int n, int size, NumericVector prob) {
   check_args(n, size, prob);
@@ -109,11 +116,8 @@ IntegerVector sample_int_expj(int n, int size, NumericVector prob) {
   if (size == 0)
     return IntegerVector();
 
-  // Need normalized weights
-  prob = prob / Rcpp::sum(prob);
-
   // Step 1: The first m items of V are inserted into R
-  IntegerVector vx = seq(0, size - 1);
+  IntegerVector vx = seq(1, size);
 
   // Step 2: For each item v_i ∈ R: Calculate a key k_i = u_i^(1/w),
   // where u_i = random(0, 1)
@@ -135,7 +139,7 @@ IntegerVector sample_int_expj(int n, int size, NumericVector prob) {
       double X_w = -Rf_rexp(1.0) / *T_w;
 
       // Step 6: From the current item v_c skip items until item v_i, such that:
-      double w = 0;
+      double w = 0.0;
 
       // Step 7: w_c + w_{c+1} + ··· + w_{i−1} < X_w <= w_c + w_{c+1} + ··· + w_{i−1} + w_i
       for (; iprob != prob.end(); ++iprob) {
@@ -155,7 +159,7 @@ IntegerVector sample_int_expj(int n, int size, NumericVector prob) {
       double k_i = e_2 / *iprob;
 
       // Step 8: The item in R with the minimum key is replaced by item v_i
-      vx[(size_t)(T_w - R.begin())] = iprob - prob.begin();
+      vx[(size_t)(T_w - R.begin())] = iprob - prob.begin() + 1;
       *T_w = k_i;
 
       // Step 10: The new threshold T w is the new minimum key of R
@@ -163,11 +167,15 @@ IntegerVector sample_int_expj(int n, int size, NumericVector prob) {
     }
   }
 
-  std::sort(vx.begin(), vx.end(), Comp(R));
+  // Create an array of indices in vx
+  std::vector<double> vvx = std::vector<double>(size);
+  std::generate(vvx.begin(), vvx.end(), UniqueNumber(0));
 
-  // Initialize with elements from vx, applying transform "+ 1" --
-  // we return one-based values.
-  return IntegerVector(vx.begin(), vx.end(), &_add_one<int>);
+  // Sort it according to the key values in the reservoir
+  std::sort(vvx.begin(), vvx.end(), Comp(R));
+
+  // Map to indices in the input array
+  return IntegerVector(vvx.begin(), vvx.end(), Indirection(vx));
 }
 
 template <class T>
@@ -181,11 +189,8 @@ IntegerVector sample_int_expjs(int n, int size, NumericVector prob) {
   if (size == 0)
     return IntegerVector();
 
-  // Need normalized weights
-  prob = prob / Rcpp::sum(prob);
-
   // Step 1: The first m items of V are inserted into R
-  IntegerVector vx = seq(0, size - 1);
+  IntegerVector vx = seq(1, size);
 
   // Step 2: For each item v_i ∈ R: Calculate a key k_i = u_i^(1/w),
   // where u_i = random(0, 1)
@@ -207,7 +212,7 @@ IntegerVector sample_int_expjs(int n, int size, NumericVector prob) {
         Rcpp::stop("X_w < 0");
 
       // Step 6: From the current item v_c skip items until item v_i, such that:
-      double w = 0;
+      double w = 0.0;
 
       // Step 7: w_c + w_{c+1} + ··· + w_{i−1} < X_w <= w_c + w_{c+1} + ··· + w_{i−1} + w_i
       for (; iprob != prob.end(); ++iprob) {
@@ -231,7 +236,7 @@ IntegerVector sample_int_expjs(int n, int size, NumericVector prob) {
       double k_i = std::pow(r_2, 1.0 / *iprob);
 
       // Step 8: The item in R with the minimum key is replaced by item v_i
-      vx[(size_t)(T_w - R.begin())] = iprob - prob.begin();
+      vx[(size_t)(T_w - R.begin())] = iprob - prob.begin() + 1;
       *T_w = k_i;
 
       // Step 10: The new threshold T w is the new minimum key of R
@@ -239,9 +244,13 @@ IntegerVector sample_int_expjs(int n, int size, NumericVector prob) {
     }
   }
 
-  std::sort(vx.begin(), vx.end(), Comp(R));
+  // Create an array of indices in vx
+  std::vector<double> vvx = std::vector<double>(size);
+  std::generate(vvx.begin(), vvx.end(), UniqueNumber(0));
 
-  // Initialize with elements from vx, applying transform "+ 1" --
-  // we return one-based values.
-  return IntegerVector(vx.begin(), vx.end(), &_add_one<int>);
+  // Sort it according to the key values in the reservoir
+  std::sort(vvx.begin(), vvx.end(), Comp(R));
+
+  // Map to indices in the input array
+  return IntegerVector(vvx.begin(), vvx.end(), Indirection(vx));
 }
