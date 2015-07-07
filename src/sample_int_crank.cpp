@@ -122,11 +122,14 @@ IntegerVector sample_int_expj(int n, int size, NumericVector prob) {
   // Step 2: For each item v_i ∈ R: Calculate a key k_i = u_i^(1/w),
   // where u_i = random(0, 1)
   // (Modification: Calculate and store log k_i = -e_i / w where e_i = exp(1))
-  std::priority_queue<std::pair<double, int> > R;
+  std::priority_queue<std::pair<double, int>,
+                      std::vector<std::pair<double, int> >,
+                      std::greater<std::pair<double, int> > > R;
 
   for (NumericVector::iterator iprob = prob.begin();
        iprob != prob.begin() + size; ++iprob) {
-    R.push(std::make_pair(_minus_rexp_divide_by<double>(*iprob), iprob - prob.begin() + 1));
+    double k_i = _minus_rexp_divide_by<double>(*iprob);
+    R.push(std::make_pair(k_i, iprob - prob.begin() + 1));
   }
 
   // Step 4: Repeat Steps 5–10 until the population is exhausted
@@ -134,7 +137,7 @@ IntegerVector sample_int_expj(int n, int size, NumericVector prob) {
     // Step 3: The threshold T_w is the minimum key of R
     // (Modification: This is now the logarithm)
     // Step 10: The new threshold T w is the new minimum key of R
-    std::priority_queue<std::pair<double, int> >::const_reference T_w = R.top();
+    const std::pair<double, int>& T_w = R.top();
 
     // Incrementing iprob is part of Step 7
     for (NumericVector::iterator iprob = prob.begin() + size; iprob != prob.end(); ++iprob) {
