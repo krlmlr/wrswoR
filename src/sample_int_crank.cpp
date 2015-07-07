@@ -143,7 +143,7 @@ IntegerVector sample_int_expj(int n, int size, NumericVector prob) {
 
       // Step 5: Let r = random(0, 1) and X_w = log(r) / log(T_w)
       // (Modification: Use e = -exp(1) instead of log(r))
-      double X_w = -Rf_rexp(1.0) / T_w.first;
+      double X_w = Rf_rexp(1.0) / T_w.first;
 
       // Step 6: From the current item v_c skip items until item v_i, such that:
       double w = 0.0;
@@ -161,7 +161,7 @@ IntegerVector sample_int_expj(int n, int size, NumericVector prob) {
 
       // Step 9: Let t_w = T_w^{w_i}, r_2 = random(t_w, 1) and v_i’s key: k_i = (r_2)^{1/w_i}
       // (Mod: Let t_w = log(T_w) * {w_i}, e_2 = log(random(e^{t_w}, 1)) and v_i’s key: k_i = -e_2 / w_i)
-      double t_w = T_w.first * *iprob;
+      double t_w = -T_w.first * *iprob;
       double e_2 = std::log(Rf_runif(std::exp(t_w), 1.0));
       double k_i = -e_2 / *iprob;
 
