@@ -174,7 +174,9 @@ IntegerVector sample_int_expj(int n, int size, NumericVector prob) {
 
   IntegerVector ret(size);
 
-  for (IntegerVector::iterator iret = ret.begin(); iret != ret.end(); iret++) {
+  for (IntegerVector::iterator iret = ret.end(); iret != ret.begin(); ) {
+    --iret;
+
     if (R.empty()) {
       stop("Reservoir empty before all elements have been filled");
     }
