@@ -90,7 +90,7 @@ SEXP sample_int_ccrank(int n, int size, NumericVector prob) {
 }
 
 template <class T>
-T _minus_rexp_divide_by(T t) { return -Rf_rexp(1.0) / t; }
+T _rexp_divide_by(T t) { return Rf_rexp(1.0) / t; }
 
 template <class T>
 T find_min_item(T begin, T end) {
@@ -121,14 +121,13 @@ IntegerVector sample_int_expj(int n, int size, NumericVector prob) {
   // Step 1: The first m items of V are inserted into R
   // Step 2: For each item v_i ∈ R: Calculate a key k_i = u_i^(1/w),
   // where u_i = random(0, 1)
-  // (Modification: Calculate and store log k_i = -e_i / w where e_i = exp(1))
-  std::priority_queue<std::pair<double, int>,
-                      std::vector<std::pair<double, int> >,
-                      std::greater<std::pair<double, int> > > R;
+  // (Modification: Calculate and store -log k_i = e_i / w where e_i = exp(1),
+  //  reservoir is a priority queue that pops the *maximum* elements)
+  std::priority_queue<std::pair<double, int> > R;
 
   for (NumericVector::iterator iprob = prob.begin();
        iprob != prob.begin() + size; ++iprob) {
-    double k_i = _minus_rexp_divide_by<double>(*iprob);
+    double k_i = _rexp_divide_by<double>(*iprob);
     R.push(std::make_pair(k_i, iprob - prob.begin() + 1));
   }
 
@@ -161,10 +160,10 @@ IntegerVector sample_int_expj(int n, int size, NumericVector prob) {
         break;
 
       // Step 9: Let t_w = T_w^{w_i}, r_2 = random(t_w, 1) and v_i’s key: k_i = (r_2)^{1/w_i}
-      // (Mod: Let t_w = log(T_w) * {w_i}, e_2 = log(random(e^{t_w}, 1)) and v_i’s key: k_i = e_2 / w_i)
+      // (Mod: Let t_w = log(T_w) * {w_i}, e_2 = log(random(e^{t_w}, 1)) and v_i’s key: k_i = -e_2 / w_i)
       double t_w = T_w.first * *iprob;
       double e_2 = std::log(Rf_runif(std::exp(t_w), 1.0));
-      double k_i = e_2 / *iprob;
+      double k_i = -e_2 / *iprob;
 
       // Step 8: The item in R with the minimum key is replaced by item v_i
       R.pop();
