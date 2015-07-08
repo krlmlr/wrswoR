@@ -48,12 +48,13 @@ The paper concludes with suggestions for incorporating the findings into base
 # Sampling from discrete populations
 
 We use \cref{alg:sample} as a definition of sampling from discrete populations
-with or without replacement from arbitrary (including uniform) probability distributions:
+with or without replacement from arbitrary (including uniform) probability distributions.
+From this definition, the following can be observed:
 
 \begin{algorithm}
   \caption{$\text{sample}(n, s, \text{replace}, p_i)$}
   \label{alg:sample}
-  \begin{algorithmic}
+  \begin{algorithmic}[1]
     \REQUIRE $n$: Size of the population
     \REQUIRE $s$: Number of items to sample
     \REQUIRE $\text{replace}$: \TRUE{} to request sampling with replacement
@@ -64,8 +65,8 @@ with or without replacement from arbitrary (including uniform) probability distr
       \RETURN vector of length 0
     \ENDIF
     \STATE Randomly select $k$ so that $\mathrm{P}(k=i) = \frac{p_k}{\sum_{j}p_j}$
-      for all $i$
-    \IF{not replace}
+      for all $i$ \label{alg:sample:norm}
+    \IF{not replace}\label{alg:sample:if}
       \STATE $n \leftarrow n - 1$
       \STATE remove item $k$ from $p_i$
     \ENDIF
@@ -73,14 +74,25 @@ with or without replacement from arbitrary (including uniform) probability distr
   \end{algorithmic}
 \end{algorithm}
 
+- Sampling with replacement appears to be a simpler problem than sampling without
+  replacement, as the block starting at line \ref{alg:sample:if} is not required.
+- If all probabilities $p_i$ are equal, the selection probability $\mathrm{P}(i=k)$
+  of the sampled items in line \ref{alg:sample:norm} always equals $\frac{1}{n}$
+  and does not have to be computed explicitly.
 
-## Framework
+In this framework, sampling without replacement with nonuniform probabilities
+is the hardest problem.
+This intuition carries over to actual implementations.
+The next two sections separately discuss the "with replacement" and the
+"without replacement" cases.
+
 
 ## With replacement
 
-## Without replacement, uniform
 
-## Without replacement, nonuniform
+
+
+## Without replacement
 
 
 
