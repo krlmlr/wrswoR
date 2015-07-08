@@ -8,11 +8,11 @@ author:
     email: kirill.mueller@ivt.baug.ethz.ch
     url: http://www.ivt.ethz.ch
 title:
-  formatted: "Weighted random sampling with a reservoir"
+  formatted: "Accelerating weighted random sampling without replacement"
   # If you use tex in the formatted title, also supply version without
-  plain:     "Weighted random sampling with a reservoir"
+  plain:     "Accelerating weighted random sampling without replacement"
   # For running headers, if needed
-  short:     "wrswoR"
+  short:     "Accelerating weighted random sampling without replacement"
 abstract: >
   The abstract of the article.
 keywords:
