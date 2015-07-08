@@ -22,7 +22,10 @@ keywords:
 preamble: >
   \usepackage{amsmath}
   \usepackage[USenglish]{babel}
+  \usepackage{algorithm}
+  \usepackage{algorithmic}
   \usepackage[draft]{fixme}
+  \usepackage[capitalize]{cleveref}
 output: rticles::jss_article
 ---
 
@@ -43,6 +46,33 @@ The paper concludes with suggestions for incorporating the findings into base
 
 
 # Sampling from discrete populations
+
+We use \cref{alg:sample} as a definition of sampling from discrete populations
+with or without replacement from arbitrary (including uniform) probability distributions:
+
+\begin{algorithm}
+  \caption{$\text{sample}(n, s, \text{replace}, p_i)$}
+  \label{alg:sample}
+  \begin{algorithmic}
+    \REQUIRE $n$: Size of the population
+    \REQUIRE $s$: Number of items to sample
+    \REQUIRE $\text{replace}$: \TRUE{} to request sampling with replacement
+    \REQUIRE $p_i$: Relative probability of each item for $i \in \{1,\ldots,n\}$
+    \ENSURE Returns a vector $x_j \in \{1,\ldots,n\} $ with
+      $j \in \{1,\ldots,s\}$ that contains the indexes of the items sampled
+    \IF{$s = 0$}
+      \RETURN vector of length 0
+    \ENDIF
+    \STATE Randomly select $k$ so that $\mathrm{P}(k=i) = \frac{p_k}{\sum_{j}p_j}$
+      for all $i$
+    \IF{not replace}
+      \STATE $n \leftarrow n - 1$
+      \STATE remove item $k$ from $p_i$
+    \ENDIF
+    \RETURN $k \oplus \text{sample}(n, s - 1, \text{replace}, p_i)$
+  \end{algorithmic}
+\end{algorithm}
+
 
 ## Framework
 
