@@ -1,10 +1,46 @@
 ---
-title: "Weighted random sampling with a reservoir"
-author: "Kirill Müller"
-date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Vignette Title}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+author:
+  - name: Kirill Müller
+    affiliation: IVT, ETH Zurich
+    address: >
+      Stefano-Franscini-Platz 9
+      8093 Zürich
+    email: kirill.mueller@ivt.baug.ethz.ch
+    url: http://www.ivt.ethz.ch
+title:
+  formatted: "Weighted random sampling with a reservoir"
+  # If you use tex in the formatted title, also supply version without
+  plain:     "Weighted random sampling with a reservoir"
+  # For running headers, if needed
+  short:     "wrswoR"
+abstract: >
+  The abstract of the article.
+keywords:
+  # at least one keyword must be supplied
+  formatted: [keywords, not capitalized, "\\proglang{Java}"]
+  plain:     [keywords, not capitalized, Java]
+preamble: >
+  \usepackage{amsmath}
+output: rticles::jss_article
 ---
+
+# Introduction
+
+This template demonstrates some of the basic latex you'll need to know to create a JSS article.
+
+## Code formatting
+
+Don't use markdown, instead use the more precise latex commands:
+
+* \proglang{Java}
+* \pkg{plyr}
+* \code{print("abc")}
+
+# R code
+
+Can be inserted in regular R markdown blocks.
+
+```{r}
+x <- 1:10
+x
+```
