@@ -84,13 +84,8 @@ In this framework, sampling without replacement with non-uniform probabilities
 is the hardest problem.
 This intuition carries over to the more specialized algorithms that implement
 each case.
-The following two sections discuss the "with replacement" and the
-"without replacement" cases separately.
 
-
-## With replacement
-
-This case corresponds to repeated selection of $k$ from *the same*
+The *with replacement* case corresponds to repeated selection of $k$ from *the same*
 discrete probability distribution.
 The uniform case can be implemented easily by scaling and discretizing the
 output of a random number generator.
@@ -105,8 +100,15 @@ is distributed over $n$ boxes so that each box $i$ "contains" at most two items
 $l_i$ and $r_i$, and the share occupied by item $l_i$ in box $i$ is given by $s_i$.
 Each item can be distributed over several boxes.)
 
-
-## Without replacement
+In the *without replacement* case, each selected item is removed from the
+collection of candidate items.
+Again, the uniform case is much simpler.
+An unordered array of size $n$, initialized with the natural sequence,
+can be used for storing the candidate items.
+The selection of the item corresponds to choosing an index at random in this
+unordered array.
+Removal of an item with known index can be done in $O(1)$ time.
+\fxwarning{Reservoir for $s \ll n$}
 
 
 
