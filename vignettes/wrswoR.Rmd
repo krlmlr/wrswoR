@@ -33,14 +33,26 @@ Random sampling is one of the basic primitives in statistical computing.
 
 This paper focuses on a specific variant: sampling without replacement from a finite population
 with nonuniform probability distribution.
+\fxwarning{Application?}
 
-First, different techniques for sampling from discrete distributions are reviewed.
+First, different techniques for sampling from discrete populations are reviewed.
 Several implementations for sampling without replacement are discussed,
 this includes evaluation of correctness and runtime performance.
 The paper concludes with suggestions for incorporating the findings into base
 \proglang{R}.
 
-# Description of the statistical technique
+
+# Sampling from discrete populations
+
+## Framework
+
+## With replacement
+
+## Without replacement, uniform
+
+## Without replacement, nonuniform
+
+
 
 # Explanation of the code
 
