@@ -68,7 +68,7 @@ From this definition, the following can be observed:
       for all $i$ \label{alg:sample:norm}
     \IF{not replace}\label{alg:sample:if}
       \STATE $n \leftarrow n - 1$
-      \STATE remove item $k$ from $p_i$
+      \STATE remove item $k$ from $p_i$\label{alg:sample:remove}
     \ENDIF
     \RETURN $k \oplus \text{sample}(n, s - 1, \text{replace}, p_i)$
   \end{algorithmic}
@@ -125,6 +125,24 @@ The selection of the item corresponds to choosing an index at random in this
 unordered array.
 Removal of an item with known index can be done in $O(1)$ time.
 \fxwarning{Reservoir for $s \ll n$}
+For the non-uniform case,
+lines \ref{alg:sample:norm} and \ref{alg:sample:remove}
+in \cref{alg:sample} can be implemented with
+a data structure that maintains a subdivision of an interval
+into $n$ subintervals and allows lookups and updates.
+Walker's alias method seems to be ill-suited for this purpose,
+as each item potentially spreads over several "boxes",
+which can make updates costly.
+A partial sum tree is a data structure similar to a heap
+\fxwarning{double-check name, cite Wong and Easton}
+that can be initialized in $O(n \log n)$ time and supports
+lookup and updates in $O(\log n)$ time.
+
+This paper explores alternative approaches:
+rejection sampling and reservoir sampling.
+Only the former can be fit in the framework of \cref{alg:sample},
+the latter is based on arithmetic transformation
+of a probability distribution.
 
 
 
