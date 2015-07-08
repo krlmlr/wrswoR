@@ -59,7 +59,7 @@ From this definition, the following can be observed:
     \REQUIRE $s$: Number of items to sample
     \REQUIRE $\text{replace}$: \TRUE{} to request sampling with replacement
     \REQUIRE $p_i$: Relative probability of each item for $i \in \{1,\ldots,n\}$
-    \ENSURE Returns a vector $x_j \in \{1,\ldots,n\} $ with
+    \ENSURE Returns a vector $k_j \in \{1,\ldots,n\} $ with
       $j \in \{1,\ldots,s\}$ that contains the indexes of the items sampled
     \IF{$s = 0$}
       \RETURN vector of length 0
