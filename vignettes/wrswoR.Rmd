@@ -17,16 +17,38 @@ abstract: >
   The abstract of the article.
 keywords:
   # at least one keyword must be supplied
-  formatted: [keywords, not capitalized, "\\proglang{Java}"]
-  plain:     [keywords, not capitalized, Java]
+  formatted: [keywords, not capitalized, "\\proglang{R}"]
+  plain:     [keywords, not capitalized, R]
 preamble: >
   \usepackage{amsmath}
+  \usepackage[USenglish]{babel}
+  \usepackage[draft]{fixme}
 output: rticles::jss_article
 ---
 
 # Introduction
 
-This template demonstrates some of the basic latex you'll need to know to create a JSS article.
+Random sampling is one of the basic primitives in statistical computing.
+\fxwarning{Used where?}
+
+This paper focuses on a specific variant: sampling without replacement from a finite population
+with nonuniform probability distribution.
+
+First, different techniques for sampling from discrete distributions are reviewed.
+Several implementations for sampling without replacement are discussed,
+this includes evaluation of correctness and runtime performance.
+The paper concludes with suggestions for incorporating the findings into base
+\proglang{R}.
+
+# Description of the statistical technique
+
+# Explanation of the code
+
+# Code
+
+# Examples
+
+# From template
 
 ## Code formatting
 
@@ -36,7 +58,7 @@ Don't use markdown, instead use the more precise latex commands:
 * \pkg{plyr}
 * \code{print("abc")}
 
-# R code
+## R code
 
 Can be inserted in regular R markdown blocks.
 
