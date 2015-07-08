@@ -98,10 +98,20 @@ it is possible to construct (in $O(n)$ time) a subdivision
 $(l_i, r_i, s_i)$ with $i, l_i, r_i \in \{1,\ldots,n\}$
 and $0 < s_i \leq 1$ so that $$p_i = \sum_{j:l_j=i}{s_j} + \sum_{j:r_j=i}{(1-s_j)}$$
 \fxwarning{Cite Walker's alias method}.
+Choosing an item requires sampling from $\{1,\ldots,n\}$ (to choose $i$) 
+and then sampling from $[0, 1)$ (to choose $l_i$ or $r_i$).
 (Figuratively speaking, the probability mass given by $p_i$
 is distributed over $n$ boxes so that each box $i$ "contains" at most two items
 $l_i$ and $r_i$, and the share occupied by item $l_i$ in box $i$ is given by $s_i$.
-Each item can be distributed over several boxes.)
+Each item can be distributed over several boxes.
+Choosing an items means selecting a box and choosing between the two items in this box.)
+
+The preprocessing time of $O(n)$ required for Walker's alias method
+is also the lower bound for arbitrary probability distributions.
+It is easy to see that the entire probability vector must be read at least once.
+Hence, for nonuniform probabilities,
+the run time is at least $O(n + s)$, and the input size $n$ will dominate
+unless $s \gg 1$.
 
 
 ## Without replacement
