@@ -142,9 +142,9 @@ lookup and updates in $O(\log n)$ time.
 
 This paper explores alternative approaches:
 rejection sampling and reservoir sampling.
-Neither of both approaches fits in the framework of \cref{alg:sample}.
-The former uses sampling *with* replacement as a subroutine, and
-the latter is based on arithmetic transformation of a probability distribution.
+Only the former can be described formally within the framework of \cref{alg:sample},
+however an actual implementation would use sampling *with* replacement as a subroutine.
+The latter is based on arithmetic transformation of a probability distribution.
 
 
 ## Rejection sampling
