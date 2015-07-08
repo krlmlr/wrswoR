@@ -142,10 +142,68 @@ lookup and updates in $O(\log n)$ time.
 
 This paper explores alternative approaches:
 rejection sampling and reservoir sampling.
-Only the former can be fit in the framework of \cref{alg:sample},
-the latter is based on arithmetic transformation
-of a probability distribution.
+Neither of both approaches fits in the framework of \cref{alg:sample}.
+The former uses sampling *with* replacement as a subroutine, and
+the latter is based on arithmetic transformation of a probability distribution.
 
+
+## Rejection sampling
+
+Sampling without replacement can be emulated by sampling with replacement.
+In the framework of \cref{alg:sample},
+this corresponds to flagging sampled items as "invalid" (instead of removing them)
+and repeating the sampling in line \ref{alg:sample:norm}
+until a valid item is found.
+Here, rejection sampling is used to sample a valid item from a (larger)
+set of potentially invalid items.
+Note that the distribution of the result is not modified if invalid items
+are purged occasionally.
+
+This approach can be implemented by repeatedly calling a subroutine that
+returns a sample with replacement, as shown in \cref{alg:sample-rej}.
+\fxwarning{Reference?}
+The general idea is to sample slightly more items than necessary (with replacement),
+and then to throw away the duplicate items.
+If the resulting sequence of items is shorter than requested,
+the result for a much smaller problem is appended to it.
+In \cref{alg:sample-rej},
+duplicate items in the result of a sampling with replacement
+(line \ref{alg:sample-rej:sample})
+correspond to invalid items in the rejection sampling,
+and the recursive call in line \ref{alg:sample-rej:rec} corresponds to
+purging the invalid items.
+
+
+
+\begin{algorithm}
+  \caption{$\text{sample.rej}(n, s, p_i)$}
+  \label{alg:sample-rej}
+  \begin{algorithmic}[1]
+    \REQUIRE $n$: Size of the population
+    \REQUIRE $s$: Number of items to sample
+    \REQUIRE $p_i$: Relative probability of each item for $i \in \{1,\ldots,n\}$
+    \ENSURE Returns a vector $k_j \in \{1,\ldots,n\} $ with
+      $j \in \{1,\ldots,s\}$ that contains the indexes of the items sampled
+    \STATE $k_i \leftarrow \text{unique}(\text{sample}(n, \text{expected.items}(s), \FALSE, p_i))$
+      \label{alg:sample-rej:sample}
+    \STATE $l \leftarrow \text{length}(k_i)$
+    \IF{$l \geq s$}
+      \RETURN the first $s$ items of $k_i$
+    \ENDIF
+    \STATE remove items $k_i$ from $p_i$\label{alg:sample-rej:remove}
+    \RETURN $k_i \oplus \text{sample.rej}(n - l, s - l, p_i)$\label{alg:sample-rej:rec}
+  \end{algorithmic}
+\end{algorithm}
+
+Here, the function expected.items should evaluate to a reasonable estimate
+of the number of items that need to be drawn with replacement,
+so that the result can be expected to contain at least $s$ unique items.
+
+
+For $\text{expected.items}(s) \equiv 1$,
+\cref{alg:sample,alg:sample-rej} are in fact identical.
+A formal proof for the more interesting case $\text{expected.items}(s) > 1$
+is beyond the scope of this paper.
 
 
 # Explanation of the code
