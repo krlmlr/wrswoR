@@ -35,7 +35,7 @@ Random sampling is one of the basic primitives in statistical computing.
 \fxwarning{Used where?}
 
 This paper focuses on a specific variant: sampling without replacement from a finite population
-with nonuniform probability distribution.
+with non-uniform probability distribution.
 \fxwarning{Application?}
 
 First, different techniques for sampling from discrete populations are reviewed.
@@ -80,16 +80,30 @@ From this definition, the following can be observed:
   of the sampled items in line \ref{alg:sample:norm} always equals $\frac{1}{n}$
   and does not have to be computed explicitly.
 
-In this framework, sampling without replacement with nonuniform probabilities
+In this framework, sampling without replacement with non-uniform probabilities
 is the hardest problem.
-This intuition carries over to actual implementations.
-The next two sections separately discuss the "with replacement" and the
-"without replacement" cases.
+This intuition carries over to the more specialized algorithms that implement
+each case.
+The following two sections discuss the "with replacement" and the
+"without replacement" cases separately.
 
 
 ## With replacement
 
-
+This case corresponds to repeated selection of $k$ from *the same*
+discrete probability distribution.
+The uniform case can be implemented easily by scaling and discretizing the
+output of a random number generator.
+More work is needed in the non-uniform case.
+Assuming w.l.o.g.\ $\sum_j p_j = n$,
+it is possible to construct (in $O(n)$ time) a subdivision
+$(l_i, r_i, s_i)$ with $i, l_i, r_i \in \{1,\ldots,n\}$
+and $0 < s_i \leq 1$ so that $$p_i = \sum_{j:l_j=i}{s_j} + \sum_{j:r_j=i}{(1-s_j)}$$
+\fxwarning{Cite Walker's alias method}.
+(Figuratively speaking, the probability mass given by $p_i$
+is distributed over $n$ boxes so that each box $i$ "contains" at most two items
+$l_i$ and $r_i$, and the share occupied by item $l_i$ in box $i$ is given by $s_i$.
+Each item can be distributed over several boxes.)
 
 
 ## Without replacement
