@@ -139,6 +139,7 @@ A partial sum tree is a data structure similar to a heap
 \fxwarning{double-check name, cite Wong and Easton}
 that can be initialized in $O(n \log n)$ time and supports
 lookup and updates in $O(\log n)$ time.
+\fxwarning{double-check complexity}
 
 This paper explores alternative approaches:
 rejection sampling and reservoir sampling.
@@ -153,7 +154,7 @@ Sampling without replacement can be emulated by sampling with replacement.
 In the framework of \cref{alg:sample},
 this corresponds to flagging sampled items as "invalid" (instead of removing them)
 and repeating the sampling in line \ref{alg:sample:norm}
-until a valid item is found.
+until hitting a valid item.
 Here, rejection sampling is used to sample a valid item from a (larger)
 set of potentially invalid items.
 Note that the distribution of the result is not modified if invalid items
