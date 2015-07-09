@@ -204,10 +204,54 @@ of the algorithm.)
 For a uniform distribution, it can be shown that, with
 $\text{expected.items}(n, s) \geq n (H_n - H_{n-s}) = n \sum_{i=n-s+1}^n \frac{1}{i}$,
 the result has $s$ unique items in expectation.
+\fxnote{Expected amortized run time? Look it up in a reference}
 With $\text{expected.items}(n, s) \equiv 1$,
 \cref{alg:sample,alg:sample-rej} are in fact identical.
 A formal proof for the more interesting case $\text{expected.items}(n, s) > 1$
 is beyond the scope of this paper.
+
+
+## Reservoir sampling
+
+A particularly interesting algorithm has been devised only recently by
+\fxwarning{EfSpir}.
+In the simplest version, it is sufficient to draw $n$ random numbers,
+combine them arithmetically with the probability distribution $p_i$,
+and perform a partial sort to find the indexes of the $s$ smallest items.
+\Cref{alg:sample-rank} is a modified version of Algorithm A in the original paper
+that operates on the logarithmic scale and uses multiplication
+instead of exponentiation
+for increased numeric stability.
+In line \ref{alg:sample-rank:sample}, $\text{Exp}(1)$ refers to i.i.d.\ samples
+from the exponential distribution with rate 1.
+
+\begin{algorithm}
+  \caption{$\text{sample.rank}(n, s, p_i)$}
+  \label{alg:sample-rank}
+  \begin{algorithmic}[1]
+    \REQUIRE $n$: Size of the population
+    \REQUIRE $s$: Number of items to sample
+    \REQUIRE $p_i$: Relative probability of each item for $i \in \{1,\ldots,n\}$
+    \ENSURE Returns a vector $k_j \in \{1,\ldots,n\}$ with
+      $j \in \{1,\ldots,s\}$ that contains the indexes of the items sampled
+    \STATE $r_i \leftarrow \text{Exp}(1) / p_i$ for all $i \in \{1,\ldots,n\}$
+      \label{alg:sample-rank:sample}
+    \RETURN the positions of the $s$ smallest elements in $r_i$\label{alg:sample-rank:rec}
+  \end{algorithmic}
+\end{algorithm}
+
+For a proof of correctness we refer to the original paper.
+The algorithm amazes with its elegance and simplicity.
+Computational complexity is dominated by the partial sort
+(which can be implemented in $O(n + s \log n)$,
+or even in $O(n)$ for floating-point numbers
+\fxwarning{cite radix sort}).
+However, generating random variates is computationally expensive,
+and for $s \ll n$ this may dominate the actual run time cost.
+To overcome this issue,
+\fxwarning{EfSpir}
+introduce a variation of this algorithm that uses a reservoir
+and requires fewer random variates in this case.
 
 
 # Explanation of the code
