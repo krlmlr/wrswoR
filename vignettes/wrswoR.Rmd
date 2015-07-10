@@ -266,22 +266,46 @@ an extension where each generated random number decides how many items are skipp
 until the current "least likely" item is removed from the reservoir.
 Only $O(s \log \frac{n}{s})$ random numbers (in expectation) are needed with this extension,
 the simple version always requires $n$ random numbers.
-We refer to the original paper for more details including proofs of correctness.
+We refer to the original paper for more details, including formal proofs of correctness.
 
-
-# Explanation of the code
-
-The \pkg{wrswoR} package contains implementations for the two algorithms
-presented in the previous section, one \proglang{R} implementation
-of rejection sampling (\cref{alg:sample-rej}),
-two implementations (\proglang{R} and \proglang{C++})
-of simplified reservoir sampling (\cref{alg:sample-rank})
-and one \proglang{C++} implementation of reservoir sampling with exponential jumps.
-\fxwarning{Rcpp}
 
 # Code
 
+The \pkg{wrswoR} package contains implementations for the two algorithms
+presented in the previous section, one \proglang{R} implementation
+of rejection sampling (\cref{alg:sample-rej}, denoted by *rej*),
+two implementations (\proglang{R} and \proglang{C++})
+of simplified reservoir sampling (\cref{alg:sample-rank}, *rank* and *crank*)
+and one \proglang{C++} implementation of reservoir sampling with exponential jumps
+(*expj*).
+\fxwarning{Rcpp}
+In the package, the corresponding functions are prefixed with \code{sample_int_}.
+The \proglang{R} implementations are very similar to the pseudocode:
+As an example, the *rank* implementation is shown below.
+
+```{r}
+sample_int_rank
+```
+
+The *crank* implementation has been somewhat optimized for cache efficiency.
+Due to its relative complexity, the *expj* implementation is kept very close
+to the pseudocode in the original paper,
+still this function also operates on the logarithmic scale for numeric stability.
+The transformation works in a fashion very similar to that of
+\cref{alg:sample-rank}.
+
+All functions share the same interface.
+Compared to \code{sample.int}, the name of the base \proglang{R} function,
+the \code{replace} parameter has been removed, and \code{prob} cannot be \code{NULL}.
+To simplify testing the new routines against the \proglang{R} implementation,
+a wrapper function \code{sample_int_R} is provided.
+The subsequent section shows performance characteristics and correctness
+of the new implementations compared to the base \proglang{R} version.
+
+
 # Examples
+
+# Conclusions and future work
 
 # From template
 
