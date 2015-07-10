@@ -240,7 +240,6 @@ from the exponential distribution with rate 1.
   \end{algorithmic}
 \end{algorithm}
 
-For a proof of correctness we refer to the original paper.
 The algorithm amazes with its elegance and simplicity.
 Computational complexity is dominated by the partial sort
 (which can be implemented in $O(n + s \log n)$,
@@ -248,10 +247,13 @@ or even in $O(n)$ for floating-point numbers
 \fxwarning{cite radix sort}).
 However, generating random variates is computationally expensive,
 and for $s \ll n$ this may dominate the actual run time cost.
-To overcome this issue,
+To overcome this issue in this case,
 \fxwarning{EfSpir}
-introduce a variation of this algorithm that uses a reservoir
-and requires fewer random variates in this case.
+describe an extension of this algorithm that uses a reservoir
+and requires fewer random variates.
+In this extension, each random variate decides how many items are skipped
+until the current "least likely" item is removed from the reservoir.
+We refer to the original paper for more details including proofs of correctness.
 
 
 # Explanation of the code
