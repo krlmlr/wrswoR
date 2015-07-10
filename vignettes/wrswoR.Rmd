@@ -303,25 +303,6 @@ The subsequent section shows performance characteristics and correctness
 of the new implementations compared to the base \proglang{R} version.
 
 
-# Examples
+# Tests
 
 # Conclusions and future work
-
-# From template
-
-## Code formatting
-
-Don't use markdown, instead use the more precise latex commands:
-
-* \proglang{Java}
-* \pkg{plyr}
-* \code{print("abc")}
-
-## R code
-
-Can be inserted in regular R markdown blocks.
-
-```{r}
-x <- 1:10
-x
-```
