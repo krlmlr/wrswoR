@@ -29,8 +29,8 @@ preamble: >
 output: rticles::jss_article
 ---
 
-```{r echo=FALSE}
-knitr::opts_chunk$set(cache=TRUE)
+```{r echo=FALSE, message=FALSE}
+library(wrswoR)
 library(tidyr)
 library(dplyr)
 library(cluster)
