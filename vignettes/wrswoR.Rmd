@@ -321,7 +321,7 @@ in the \pkg{wrswoR.benchmark} package.
 
 ```{r echo=FALSE}
 ggplot_perf_base <- list(
-  theme_bw(),
+  theme_bw(11),
   ylab("Run time (s)"),
   scale_color_discrete(name = "Algorithm")
 )
