@@ -318,8 +318,129 @@ in the \pkg{wrswoR.benchmark} package.
 
 ## Run time
 
+
+```{r echo=FALSE}
+ggplot_perf_base <- list(
+  theme_bw(),
+  ylab("Run time (s)"),
+  scale_color_discrete(name = "Algorithm")
+)
+```
+
+
+
+```{r run-time-sclinear, echo=FALSE, fig.cap="Hot shit"}
+wrswoR.benchmark::timings %>%
+  filter(r == 1) %>%
+  filter(prob == "uniform") %>%
+  filter(expr != "ccrank") %>%
+  group_by(n, expr) %>%
+  summarize(median = median(time)) %>%
+  ungroup %>%
+  ggplot(aes(x=n, y=median * 1e-9, color=expr)) +
+  ggplot_perf_base +
+  geom_line() +
+  scale_x_log10()
+```
+
+```{r run-time-log, echo=FALSE}
+wrswoR.benchmark::timings %>%
+  filter(r == 1) %>%
+  filter(prob == "uniform") %>%
+  filter(expr != "ccrank") %>%
+  group_by(n, expr) %>%
+  summarize(median = median(time)) %>%
+  ungroup %>%
+  ggplot(aes(x=n, y=median * 1e-9, color=expr)) +
+  scale_y_log10() +
+  ggplot_perf_base +
+  geom_line() +
+  scale_x_log10()
+```
+
+
+```{r run-time-10-log, echo=FALSE}
+wrswoR.benchmark::timings %>%
+  filter(r == 0.1) %>%
+  filter(prob == "uniform") %>%
+  filter(expr != "ccrank") %>%
+  group_by(n, expr) %>%
+  summarize(median = median(time)) %>%
+  ungroup %>%
+  ggplot(aes(x=n, y=median * 1e-9, color=expr)) +
+  scale_y_log10() +
+  ggplot_perf_base +
+  geom_line() +
+  scale_x_log10()
+```
+
+
+```{r run-time-100-log, echo=FALSE}
+wrswoR.benchmark::timings %>%
+  filter(r == 0.01) %>%
+  filter(prob == "uniform") %>%
+  filter(expr != "ccrank") %>%
+  group_by(n, expr) %>%
+  summarize(median = median(time)) %>%
+  ungroup %>%
+  ggplot(aes(x=n, y=median * 1e-9, color=expr)) +
+  scale_y_log10() +
+  ggplot_perf_base +
+  geom_line() +
+  scale_x_log10()
+```
+
+
+```{r run-time-100-linear-log, echo=FALSE}
+wrswoR.benchmark::timings %>%
+  filter(r == 0.01) %>%
+  filter(prob == "shuffled_linear") %>%
+  filter(expr != "ccrank") %>%
+  group_by(n, expr) %>%
+  summarize(median = median(time)) %>%
+  ungroup %>%
+  ggplot(aes(x=n, y=median * 1e-9, color=expr)) +
+  scale_y_log10() +
+  ggplot_perf_base +
+  geom_line() +
+  scale_x_log10()
+```
+
+
+```{r run-time-10-linear-log, echo=FALSE}
+wrswoR.benchmark::timings %>%
+  filter(r == 0.1) %>%
+  filter(prob == "linear") %>%
+  filter(expr != "ccrank") %>%
+  group_by(n, expr) %>%
+  summarize(median = median(time)) %>%
+  ungroup %>%
+  ggplot(aes(x=n, y=median * 1e-9, color=expr)) +
+  scale_y_log10() +
+  ggplot_perf_base +
+  geom_line() +
+  scale_x_log10()
+```
+
+```{r run-time-linear-log, echo=FALSE}
+wrswoR.benchmark::timings %>%
+  filter(r == 1) %>%
+  filter(prob == "linear") %>%
+  filter(expr != "ccrank") %>%
+  group_by(n, expr) %>%
+  summarize(median = median(time)) %>%
+  ungroup %>%
+  ggplot(aes(x=n, y=median * 1e-9, color=expr)) +
+  scale_y_log10() +
+  ggplot_perf_base +
+  geom_line() +
+  scale_x_log10()
+```
+
+
 ## Linear model
 
 ## Correctness
 
 # Conclusions and future work
+
