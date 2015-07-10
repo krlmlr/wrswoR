@@ -305,14 +305,13 @@ of the new implementations compared to the base \proglang{R} version.
 
 # Tests
 
-This section presents run time tests
-
+This section presents run time tests for various combinations of input parameters,
+attempts to provide guidance when to choose which implementation,
+and discusses the correctness of the implementation.
 All test results shown in this section are available
 in the \pkg{wrswoR.benchmark} package.
 
 ## Run time
-
-## Tradeoff
 
 ## Linear model
 
