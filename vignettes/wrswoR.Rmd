@@ -224,6 +224,7 @@ instead of exponentiation
 for increased numeric stability.
 In line \ref{alg:sample-rank:sample}, $\text{Exp}(1)$ refers to i.i.d.\ samples
 from the exponential distribution with rate 1.
+\fxnote{Logarithm of the uniform}
 
 \begin{algorithm}
   \caption{$\text{sample.rank}(n, s, p_i)$}
@@ -249,14 +250,23 @@ However, generating random variates is computationally expensive,
 and for $s \ll n$ this may dominate the actual run time cost.
 To overcome this issue in this case,
 \fxwarning{EfSpir}
-describe an extension of this algorithm that uses a reservoir
-and requires fewer random variates.
-In this extension, each random variate decides how many items are skipped
+describe *reservoir sampling with exponential jumps* -- 
+an extension where each generated random number decides how many items are skipped
 until the current "least likely" item is removed from the reservoir.
+Only $O(s \log \frac{n}{s})$ random numbers (in expectation) are needed with this extension,
+the simple version always requires $n$ random numbers.
 We refer to the original paper for more details including proofs of correctness.
 
 
 # Explanation of the code
+
+The \pkg{wrswoR} package contains implementations for the two algorithms
+presented in the previous section, one \proglang{R} implementation
+of rejection sampling (\cref{alg:sample-rej}),
+two implementations (\proglang{R} and \proglang{C++})
+of simplified reservoir sampling (\cref{alg:sample-rank})
+and one \proglang{C++} implementation of reservoir sampling with exponential jumps.
+\fxwarning{Rcpp}
 
 # Code
 
