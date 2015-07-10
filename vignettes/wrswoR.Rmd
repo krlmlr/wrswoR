@@ -29,6 +29,11 @@ preamble: >
 output: rticles::jss_article
 ---
 
+```{r echo=FALSE}
+knitr::opts_chunk$set(cache=TRUE)
+library(wrswoR)
+```
+
 # Introduction
 
 Random sampling is one of the basic primitives in statistical computing.
@@ -141,6 +146,10 @@ that can be initialized in $O(n \log n)$ time and supports
 lookup and updates in $O(\log n)$ time.
 \fxwarning{double-check complexity}
 
+\fxwarning{introduce next section}
+
+# Explanation of the code
+
 This paper explores alternative approaches:
 rejection sampling and reservoir sampling.
 Only the former can be described formally within the framework of \cref{alg:sample},
@@ -222,6 +231,7 @@ and perform a partial sort to find the indexes of the $s$ smallest items.
 that operates on the logarithmic scale and uses multiplication
 instead of exponentiation
 for increased numeric stability.
+\fxnote{Describe transformation}
 In line \ref{alg:sample-rank:sample}, $\text{Exp}(1)$ refers to i.i.d.\ samples
 from the exponential distribution with rate 1.
 \fxnote{Logarithm of the uniform}
@@ -245,9 +255,10 @@ The algorithm amazes with its elegance and simplicity.
 Computational complexity is dominated by the partial sort
 (which can be implemented in $O(n + s \log n)$,
 or even in $O(n)$ for floating-point numbers
-\fxwarning{cite radix sort}).
+\fxwarning{cite radix sort}.
 However, generating random variates is computationally expensive,
 and for $s \ll n$ this may dominate the actual run time cost.
+\fxnote{Parallelize}.
 To overcome this issue in this case,
 \fxwarning{EfSpir}
 describe *reservoir sampling with exponential jumps* -- 
