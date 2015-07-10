@@ -31,7 +31,12 @@ output: rticles::jss_article
 
 ```{r echo=FALSE}
 knitr::opts_chunk$set(cache=TRUE)
-library(wrswoR)
+library(tidyr)
+library(dplyr)
+library(cluster)
+library(magrittr)
+library(ggplot2)
+set.seed(20150710L)
 ```
 
 # Introduction
