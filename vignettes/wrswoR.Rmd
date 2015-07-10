@@ -305,4 +305,17 @@ of the new implementations compared to the base \proglang{R} version.
 
 # Tests
 
+This section presents run time tests
+
+All test results shown in this section are available
+in the \pkg{wrswoR.benchmark} package.
+
+## Run time
+
+## Tradeoff
+
+## Linear model
+
+## Correctness
+
 # Conclusions and future work
