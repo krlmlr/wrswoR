@@ -29,12 +29,13 @@ preamble: >
 output: rticles::jss_article
 ---
 
+
 ```{r echo=FALSE, message=FALSE}
 library(wrswoR)
-library(tidyr)
-library(dplyr)
-library(cluster)
-library(magrittr)
+import::from(tidyr, spread, gather, gather_)
+import::from(dplyr, filter, mutate, select, group_by, summarize, ungroup, tbl_df)
+import::from(cluster, daisy, .library = .libPaths())
+import::from(magrittr, "%>%")
 library(ggplot2)
 set.seed(20150710L)
 ```
