@@ -317,7 +317,6 @@ and discusses the correctness of the implementation.
 All test results shown in this section are based on data available
 in the \pkg{wrswoR.benchmark} package.
 
-## Run time
 
 
 ```{r echo=FALSE}
@@ -326,42 +325,56 @@ ggplot_perf_base <- list(
   ylab("Run time (s)"),
   scale_color_discrete(name = "Algorithm")
 )
+
+ALGOS <- c("R", "rej", "rank", "crank", "expj")
+
+timings <- 
+  wrswoR.benchmark::timings %>%
+  tbl_df %>%
+  filter(expr %in% ALGOS) %>%
+  mutate(expr = factor(expr, levels = ALGOS))
 ```
 
 
+## Run time
 
-```{r run-time-sclinear, echo=FALSE, fig.cap="Hot shit"}
-wrswoR.benchmark::timings %>%
+```{r run-time-mag, echo=FALSE}
+timings %>%
   filter(r == 1) %>%
-  filter(prob == "uniform") %>%
-  filter(expr != "ccrank") %>%
-  group_by(n, expr) %>%
-  summarize(median = median(time)) %>%
+  filter(n == max(n)) %>%
+  group_by(n, prob, expr) %>%
+  summarize(mean_time = mean(time)) %>%
   ungroup %>%
-  ggplot(aes(x=n, y=median * 1e-9, color=expr)) +
-  ggplot_perf_base +
-  geom_line() +
-  scale_x_log10()
+  spread(expr, mean_time) %>%
+  gather_("other_algo", "time", ALGOS %>% setdiff("R")) %>%
+  with(R / time) %>%
+  magrittr::is_greater_than(100) %>%
+  stopifnot
 ```
 
-```{r run-time-log, echo=FALSE}
-wrswoR.benchmark::timings %>%
-  filter(r == 1) %>%
-  filter(prob == "uniform") %>%
-  filter(expr != "ccrank") %>%
-  group_by(n, expr) %>%
+For $n = 10000$, the mean run time of the \proglang{R} implementation
+is about two orders of magnitude larger than the mean run time for the other
+implementations presented here.
+All measurement graphs use the logarithmic scale for the run time.
+
+
+
+```{r run-time-log, echo=FALSE, fig.cap="More hot shit"}
+timings %>%
+  group_by(n, expr, prob, r) %>%
   summarize(median = median(time)) %>%
   ungroup %>%
   ggplot(aes(x=n, y=median * 1e-9, color=expr)) +
   scale_y_log10() +
   ggplot_perf_base +
   geom_line() +
-  scale_x_log10()
+  scale_x_log10() +
+  facet_grid(prob~r)
 ```
 
 
 ```{r run-time-10-log, echo=FALSE}
-wrswoR.benchmark::timings %>%
+timings %>%
   filter(r == 0.1) %>%
   filter(prob == "uniform") %>%
   filter(expr != "ccrank") %>%
@@ -377,7 +390,7 @@ wrswoR.benchmark::timings %>%
 
 
 ```{r run-time-100-log, echo=FALSE}
-wrswoR.benchmark::timings %>%
+timings %>%
   filter(r == 0.01) %>%
   filter(prob == "uniform") %>%
   filter(expr != "ccrank") %>%
@@ -393,7 +406,7 @@ wrswoR.benchmark::timings %>%
 
 
 ```{r run-time-100-linear-log, echo=FALSE}
-wrswoR.benchmark::timings %>%
+timings %>%
   filter(r == 0.01) %>%
   filter(prob == "shuffled_linear") %>%
   filter(expr != "ccrank") %>%
@@ -409,7 +422,7 @@ wrswoR.benchmark::timings %>%
 
 
 ```{r run-time-10-linear-log, echo=FALSE}
-wrswoR.benchmark::timings %>%
+timings %>%
   filter(r == 0.1) %>%
   filter(prob == "linear") %>%
   filter(expr != "ccrank") %>%
@@ -424,7 +437,7 @@ wrswoR.benchmark::timings %>%
 ```
 
 ```{r run-time-linear-log, echo=FALSE}
-wrswoR.benchmark::timings %>%
+timings %>%
   filter(r == 1) %>%
   filter(prob == "linear") %>%
   filter(expr != "ccrank") %>%
