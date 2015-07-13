@@ -313,7 +313,7 @@ of the new implementations compared to the base \proglang{R} version.
 This section presents run time tests for various combinations of input parameters,
 attempts to provide guidance when to choose which implementation,
 and discusses the correctness of the implementation.
-All test results shown in this section are available
+All test results shown in this section are based on data available
 in the \pkg{wrswoR.benchmark} package.
 
 ## Run time
