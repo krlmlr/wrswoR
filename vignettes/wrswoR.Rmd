@@ -27,6 +27,7 @@ preamble: >
   \usepackage[draft]{fixme}
   \usepackage[capitalize]{cleveref}
 output: rticles::jss_article
+bibliography: my.bib
 ---
 
 
@@ -230,7 +231,7 @@ is beyond the scope of this paper.
 ## Reservoir sampling
 
 A particularly interesting algorithm has been devised only recently by
-\fxwarning{EfSpir}.
+@efraimidis_weighted_2006.
 In the simplest version, it is sufficient to draw $n$ random numbers,
 combine them arithmetically with the probability distribution $p_i$,
 and perform a partial sort to find the indexes of the $s$ smallest items.
@@ -459,3 +460,4 @@ timings %>%
 
 # Conclusions and future work
 
+# References {.unnumbered}
