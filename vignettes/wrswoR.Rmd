@@ -367,7 +367,7 @@ All measurement graphs use the logarithmic scale for the run time.
 \fxwarning{Show probability distributions}
 
 
-```{r run-time-log, echo=FALSE, fig.cap="More hot shit"}
+```{r run-time-log, echo=FALSE, fig.height=7, fig.cap="More hot shit"}
 timings %>%
   group_by(n, expr, prob, r) %>%
   summarize(median = median(time)) %>%
