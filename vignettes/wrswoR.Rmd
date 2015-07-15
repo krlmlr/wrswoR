@@ -26,6 +26,7 @@ preamble: >
   \usepackage{algorithmic}
   \usepackage[draft]{fixme}
   \usepackage[capitalize]{cleveref}
+  \usepackage{ragged2e}
 output: rticles::jss_article
 bibliography: my.bib
 ---
@@ -461,3 +462,5 @@ timings %>%
 # Conclusions and future work
 
 # References {.unnumbered}
+
+\justifying
