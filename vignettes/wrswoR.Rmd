@@ -29,6 +29,10 @@ preamble: >
   \usepackage{ragged2e}
 output: rticles::jss_article
 bibliography: my.bib
+vignette: >
+  %\VignetteIndexEntry{Accelerating weighted random sampling without replacement}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 
