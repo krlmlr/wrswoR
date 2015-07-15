@@ -364,6 +364,7 @@ is about two orders of magnitude larger than the mean run time for the other
 implementations presented here.
 All measurement graphs use the logarithmic scale for the run time.
 
+\fxwarning{Show probability distributions}
 
 
 ```{r run-time-log, echo=FALSE, fig.cap="More hot shit"}
