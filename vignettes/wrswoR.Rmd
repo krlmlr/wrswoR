@@ -268,7 +268,7 @@ The algorithm amazes with its elegance and simplicity.
 Computational complexity is dominated by the partial sort
 (which can be implemented in $O(n + s \log n)$,
 or even in $O(n)$ for floating-point numbers
-\fxwarning{cite radix sort}.
+[@terdiman_radix_2000].
 However, generating random variates is computationally expensive,
 and for $s \ll n$ this may dominate the actual run time cost.
 \fxnote{Parallelize}.
