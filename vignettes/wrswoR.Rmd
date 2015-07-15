@@ -38,6 +38,7 @@ import::from(cluster, daisy, .library = .libPaths())
 import::from(magrittr, "%>%")
 library(ggplot2)
 set.seed(20150710L)
+knitr::opts_chunk$set(cache=TRUE)
 ```
 
 # Introduction
