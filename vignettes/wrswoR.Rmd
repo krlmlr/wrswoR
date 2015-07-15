@@ -273,7 +273,7 @@ However, generating random variates is computationally expensive,
 and for $s \ll n$ this may dominate the actual run time cost.
 \fxnote{Parallelize}.
 To overcome this issue in this case,
-\fxwarning{EfSpir}
+@efraimidis_weighted_2006
 describe *reservoir sampling with exponential jumps* -- 
 an extension where each generated random number decides how many items are skipped
 until the current "least likely" item is removed from the reservoir.
