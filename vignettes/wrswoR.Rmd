@@ -158,6 +158,10 @@ which can make updates costly.
 that can be initialized in $O(n)$ time and supports
 simultaneous lookup and update in $O(\log n)$ time.
 
+\proglang{R} offers efficient implementations for all cases except
+non-uniform sampling without replacement.
+
+
 \fxwarning{introduce next section}
 
 # Explanation of the code
