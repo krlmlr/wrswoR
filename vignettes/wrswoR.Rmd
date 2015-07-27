@@ -206,7 +206,7 @@ purging the invalid items.
     \REQUIRE $p_i$: Relative probability of each item for $i \in \{1,\ldots,n\}$
     \ENSURE Returns a vector $k_j \in \{1,\ldots,n\} $ with
       $j \in \{1,\ldots,s\}$ that contains the indexes of the items sampled
-    \STATE $k_i \leftarrow \text{unique}(\text{sample}(n, \text{expected.items}(n, s), \FALSE, p_i))$
+    \STATE $k_i \leftarrow \text{unique}(\text{sample}(n, \text{expected.items}(n, s), \TRUE, p_i))$
       \label{alg:sample-rej:sample}
     \STATE $l \leftarrow \text{length}(k_i)$
     \IF{$l \geq s$}
