@@ -314,7 +314,7 @@ The transformation works in a fashion very similar to that of
 \cref{alg:sample-rank}.
 
 All functions share the same interface.
-Compared to \code{sample.int}, the name of the base \proglang{R} function,
+Compared to \code{sample.int}, the base \proglang{R} function,
 the \code{replace} parameter has been removed, and \code{prob} cannot be \code{NULL}.
 To simplify testing the new routines against the \proglang{R} implementation,
 a wrapper function \code{sample_int_R} is provided.
