@@ -154,11 +154,9 @@ into $n$ subintervals and allows lookups and updates.
 Walker's alias method seems to be ill-suited for this purpose,
 as each item potentially spreads over several "boxes",
 which can make updates costly.
-A partial sum tree is a data structure similar to a heap
-\fxwarning{double-check name, cite Wong and Easton}
+@Wong__1980 propose a data structure similar to a heap
 that can be initialized in $O(n \log n)$ time and supports
-lookup and updates in $O(\log n)$ time.
-\fxwarning{double-check complexity}
+simultaneous lookup and update in $O(\log n)$ time.
 
 \fxwarning{introduce next section}
 
