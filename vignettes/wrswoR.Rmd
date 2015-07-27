@@ -124,15 +124,15 @@ is distributed over $n$ "boxes" so that the space in each box $i$
 is assigned to at most two items
 $l_i$ and $r_i$.
 The share occupied by item $l_i$ in box $i$ is given by $s_i$.
-Each item can be distributed over several boxes.  
-Choosing an items means selecting a box and choosing between the two items in this box.)
+Some items can be distributed over several boxes.
+Choosing an item means selecting a box and choosing between the two items in this box.)
 
 The preprocessing time of $O(n)$ required for Walker's alias method
 is also the lower bound for arbitrary probability distributions.
 It is easy to see that the entire probability vector must be read at least once.
 Hence, for nonuniform probabilities,
 the run time is at least $O(n + s)$, and the input size $n$ will dominate
-unless $s \ge O(n)$.
+unless $s \gg O(n)$.
 
 
 ## Without replacement
