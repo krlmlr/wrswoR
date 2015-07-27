@@ -28,7 +28,7 @@ preamble: >
   \usepackage[capitalize]{cleveref}
   \usepackage{ragged2e}
 output: rticles::jss_article
-bibliography: my.bib
+bibliography: [ my.bib, knitcitations.bib ]
 vignette: >
   %\VignetteIndexEntry{Accelerating weighted random sampling without replacement}
   %\VignetteEngine{knitr::rmarkdown}
@@ -45,6 +45,7 @@ import::from(magrittr, "%>%")
 library(ggplot2)
 set.seed(20150710L)
 knitr::opts_chunk$set(cache=TRUE)
+knitcitations::cite_options("pandoc")
 ```
 
 # Introduction
@@ -291,7 +292,7 @@ two implementations (\proglang{R} and \proglang{C++})
 of simplified reservoir sampling (\cref{alg:sample-rank}, *rank* and *crank*)
 and one \proglang{C++} implementation of reservoir sampling with exponential jumps
 (*expj*).
-\fxwarning{Rcpp}
+`r knitcitations::citep(citation("Rcpp"))`
 In the package, the corresponding functions are prefixed with \code{sample_int_}.
 The \proglang{R} implementations are very similar to the pseudocode:
 As an example, the *rank* implementation is shown below.
@@ -469,3 +470,7 @@ timings %>%
 # References {.unnumbered}
 
 \justifying
+
+```{r echo=FALSE, message=FALSE, cache=FALSE}
+knitcitations::write.bibtex()
+```
