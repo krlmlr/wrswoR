@@ -155,7 +155,7 @@ Walker's alias method seems to be ill-suited for this purpose,
 as each item potentially spreads over several "boxes",
 which can make updates costly.
 @Wong__1980 propose a data structure similar to a heap
-that can be initialized in $O(n \log n)$ time and supports
+that can be initialized in $O(n)$ time and supports
 simultaneous lookup and update in $O(\log n)$ time.
 
 \fxwarning{introduce next section}
