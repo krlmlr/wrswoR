@@ -269,7 +269,7 @@ Computational complexity is dominated by the partial sort
 or even in $O(n)$ for floating-point numbers
 [@terdiman_radix_2000].
 However, generating random variates is computationally expensive,
-and for $s \ll n$ this may be the most expensive part.
+and for $s \ll n$ this may dominate.
 \fxnote{Parallelize}.
 To overcome this issue in this case,
 @efraimidis_weighted_2006
