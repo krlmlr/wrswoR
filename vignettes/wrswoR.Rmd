@@ -294,8 +294,11 @@ two implementations (\proglang{R} and \proglang{C++})
 of simplified reservoir sampling (\cref{alg:sample-rank}, *rank* and *crank*)
 and one \proglang{C++} implementation of reservoir sampling with exponential jumps
 (*expj*).
-`r knitcitations::citep(citation("Rcpp"))`
 In the package, the corresponding functions are prefixed with \code{sample_int_}.
+The \pkg{Rcpp} package
+`r knitcitations::citep(citation("Rcpp"))`
+is used to generate the glue between \proglang{R} and \proglang{C++}.
+
 The \proglang{R} implementations are very similar to the pseudocode:
 As an example, the *rank* implementation is shown below.
 
