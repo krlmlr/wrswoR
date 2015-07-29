@@ -372,6 +372,18 @@ BASE <- 1.007
 N <- max(timings$n)
 ```
 
+```{r}
+break_even <- 
+  wrswoR.benchmark::break_even %>%
+  tbl_df %>%
+  filter(expr %in% ALGOS) %>%
+  filter(!(prob %in% REMOVE_PROB)) %>%
+  mutate(expr = factor(expr, levels = ALGOS)) %>%
+  mutate(prob = factor(
+    prob, levels = c("uniform", "linear", "rev_linear", "shuffled_linear", "exp", "rexp"),
+    labels = c("Uniform", "Linear asc.", "Linear desc.", "Linear shuffled", "Geometric asc.", "Geometric desc.")))
+```
+
 
 ```{r echo=FALSE}
 probs <- wrswoR.benchmark::prob(1.007)
@@ -481,8 +493,20 @@ timings %>%
 
 For the break-even analysis, *expj* is compared to the stock implementation.
 
-```
-{r run-time-log, echo=FALSE, fig.height=7, fig.cap="Median run times"}
+```{r run-time-break-even, echo=FALSE, fig.cap="Comparison of \\proglang{R} and \\emph{expj} run times for \\emph{linear ascending} weights"}
+break_even %>%
+  filter(expr %in% c("R", "expj")) %>%
+  filter(prob == "Linear asc.") %>%
+  group_by(n, expr, prob, r) %>%
+  summarize(median = median(time)) %>%
+  ungroup %>%
+  spread(expr, median) %>%
+  mutate(R_vs_expj = R / expj) %>%
+  ggplot(aes(x=n, y=R_vs_expj, linetype=factor(r))) +
+  ggplot_base +
+  geom_line() +
+  scale_x_log10() +
+  scale_y_log10(breaks = 2 ** (-1:5))
 ```
 
 
