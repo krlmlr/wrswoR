@@ -51,6 +51,8 @@ knitcitations::cite_options("pandoc")
 
 # Introduction
 
+\fxwarning{(Everywhere) Refer to weights and not probabilities}
+
 Random sampling is one of the basic primitives in statistical computing.
 \fxwarning{Used where?}
 
@@ -337,7 +339,7 @@ in the \pkg{wrswoR.benchmark} package.
 The run time tests used different values for the function arguments
 \code{n}, \code{size} and \code{prob}.
 Instead of directly specifying \code{size}, it is given as a fraction of \code{n}.
-The following values for \code{prob} were tested:
+The following weight distributions (used for \code{prob}) were tested:
 
 - *Uniform*
 - *Linear*: Sequence from \code{1} to \code{n}, *ascending*, *descending* and *shuffled*
