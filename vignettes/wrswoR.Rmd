@@ -388,16 +388,6 @@ prob_data <- ldply(
 )
 ```
 
-```{r prob-dist, echo=FALSE, fig.height=3, fig.cap="More shit"}
-prob_data %>%
-  filter(.id != "shuffled_linear") %>%
-  ggplot(aes(x, y, linetype=.id)) +
-  ggplot_base +
-  geom_line() +
-  scale_y_continuous(limits = c(0, 0.005))
-```
-
-
 ```{r echo=FALSE}
 ggplot_perf_base <-
   ggplot_base %>%
