@@ -285,6 +285,7 @@ an extension where each generated random number decides how many items are skipp
 until the current "least likely" item is removed from the reservoir.
 Only $O(s \log \frac{n}{s})$ random numbers (in expectation) are needed with this extension,
 the simple version always requires $n$ random numbers.
+\fxwarning{Show algorithm}
 We refer to the original paper for more details, including formal proofs of correctness.
 
 
@@ -452,13 +453,14 @@ have a non-negligible weight, and hence most sampled items are rejected as dupli
 The remainder of the paper will focus on evaluating the *crank* and *expj* implementations.
 
 \Cref{fig:run-time-crank-expj} compares run times for *crank* and *expj*
-for the different weight distributions.
+for the different weight distributions,
+values above 1 mean that *expj* is faster.
 The *expj* algorithm seems to be favorable if $r$ is small or
 $n$ is large.
 For the pathological *geometric* cases, the run time differences between
 *ascending* and *descending* weights are substantial for small $r$.
 The advantage of the *expj* algorithm for $r = 1$ and large $n$ is surprising.
-
+\fxwarning{Explain once expj algorithm has been described}
 
 
 
