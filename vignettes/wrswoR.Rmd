@@ -405,7 +405,14 @@ ggplot_time_per_item_base <-
 
 ## Run time
 
-\Cref{fig:run-time-log} presents an overview of the runtime measurements
+The run time was measured using the \pkg{microbenchmark} package
+`r knitcitations::citep(citation("microbenchmark"))`
+in block order with a warmup of 10 iterations
+using the default 100 iterations.
+The tests ran on a single core of an Intel(R) Xeon(R) CPU E5-2643 clocked at 3.30 GHz
+with 10 MB cache.
+
+\Cref{fig:run-time-log} presents an overview of the median run time
 for different input sizes, output size ratios, weight distributions and algorithms.
 The \proglang{R} implementation is clearly outperformed by all other implementations
 for $n = `r max(timings$n)`$, in many cases even for much smaller inputs.
