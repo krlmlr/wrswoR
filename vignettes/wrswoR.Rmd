@@ -450,7 +450,6 @@ In addition, the *rej* algorithm is by far the slowest
 for *geometric* distributions, because in each step only a tiny fraction of items
 have a non-negligible weight, and hence most sampled items are rejected as duplicates
 (line \ref{alg:sample-rej:sample} of \cref{alg:sample-rej}).
-The remainder of the paper will focus on evaluating the *crank* and *expj* implementations.
 
 \Cref{fig:run-time-crank-expj} compares run times for *crank* and *expj*
 for the different weight distributions,
