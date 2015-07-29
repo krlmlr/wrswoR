@@ -437,14 +437,21 @@ have a non-negligible weight, and hence most sampled items are rejected as dupli
 (line \ref{alg:sample-rej:sample} of \cref{alg:sample-rej}).
 The remainder of the paper will focus on evaluating the *crank* and *expj* implementations.
 
+\Cref{fig:run-time-crank-expj} compares run times for *crank* and *expj*
+for the different weight distributions.
+The *expj* algorithm seems to be favorable if $r$ is small or
+$n$ is large.
+For the pathological *geometric* cases, the run time differences between
+*ascending* and *descending* weights are substantial for small $r$.
+The advantage of the *expj* algorithm for $r = 1$ and large $n$ is surprising.
+
+
 
 
 
 
 - Distribution type matters only for expj and $r \ll 1$, and somewhat for crank and rank
     - expj: pre-sorted data
-- analyze difference between rank and crank
-- focus on crank and expj
 - 
 
 \fxwarning{Show probability distributions}
