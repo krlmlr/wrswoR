@@ -461,17 +461,6 @@ For the pathological *geometric* cases, the run time differences between
 The advantage of the *expj* algorithm for $r = 1$ and large $n$ is surprising.
 \fxwarning{Explain once expj algorithm has been described}
 
-
-
-
-
-- Distribution type matters only for expj and $r \ll 1$, and somewhat for crank and rank
-    - expj: pre-sorted data
-- 
-
-\fxwarning{Show probability distributions}
-
-
 ```{r run-time-crank-expj, echo=FALSE, fig.cap="Comparison of \\emph{crank} and \\emph{expj} run times"}
 timings %>%
   filter(expr %in% c("crank", "expj")) %>%
@@ -489,6 +478,23 @@ timings %>%
   scale_color_continuous(trans="log", breaks = as.integer(10 ** (2:5))) +
   facet_wrap(~r)
 ```
+
+For the break-even analysis, *expj* is compared to the stock implementation.
+
+```
+{r run-time-log, echo=FALSE, fig.height=7, fig.cap="Median run times"}
+```
+
+
+
+
+
+- Distribution type matters only for expj and $r \ll 1$, and somewhat for crank and rank
+    - expj: pre-sorted data
+- 
+
+\fxwarning{Show probability distributions}
+
 
 
 ```{r run-time-log-2, echo=FALSE, fig.height=7, fig.cap="More shit 2"}
