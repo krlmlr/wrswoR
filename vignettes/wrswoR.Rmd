@@ -421,6 +421,20 @@ In the log-log scale used here, the slope of the curves translates to computatio
 the steeper slope for the \proglang{R} implementation corresponds to its quadratic complexity
 compared to the (in most cases) slightly superlinear complexity of the other algorithms.
 
+```{r run-time-log, echo=FALSE, fig.height=7, fig.cap="Median run times"}
+timings %>%
+  group_by(n, expr, prob, r) %>%
+  summarize(median = median(time)) %>%
+  ungroup %>%
+  ggplot(aes(x=n, y=median * 1e-9, color=expr)) +
+  scale_y_log10() +
+  ggplot_time_base +
+  geom_line() +
+  scale_x_log10() +
+  facet_grid(prob~r) +
+  theme(legend.position="bottom")
+```
+
 As expected, the *expj* algorithm is among the fastest, especially for $r \ll 1$.
 In the case $r = 0.01$ for the *geometric ascending* distribution,
 the new implementations win only by a margin;
@@ -456,20 +470,6 @@ The advantage of the *expj* algorithm for $r = 1$ and large $n$ is surprising.
 
 \fxwarning{Show probability distributions}
 
-
-```{r run-time-log, echo=FALSE, fig.height=7, fig.cap="Median run times"}
-timings %>%
-  group_by(n, expr, prob, r) %>%
-  summarize(median = median(time)) %>%
-  ungroup %>%
-  ggplot(aes(x=n, y=median * 1e-9, color=expr)) +
-  scale_y_log10() +
-  ggplot_time_base +
-  geom_line() +
-  scale_x_log10() +
-  facet_grid(prob~r) +
-  theme(legend.position="bottom")
-```
 
 ```{r run-time-crank-expj, echo=FALSE, fig.cap="Comparison of \\emph{crank} and \\emph{expj} run times"}
 timings %>%
