@@ -620,6 +620,10 @@ timings %>%
 # Conclusions and future work
 
 - Pre-sort weights using radix sort
+    - Sorting by exponent may already be enough
+- Faster heap (g-heap?)
+- Generic C library
+- Allow termination of loop in R
 
 # References {.unnumbered}
 
