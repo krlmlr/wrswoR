@@ -394,7 +394,7 @@ ggplot_perf_base <-
   ))
 
 ggplot_time_base <-
-  ggplot_base %>%
+  ggplot_perf_base %>%
   c(list(ylab("Run time (s)")))
 
 ggplot_time_per_item_base <-
