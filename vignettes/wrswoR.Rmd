@@ -460,7 +460,7 @@ timings %>%
   ggplot_perf_base +
   geom_line() +
   scale_x_log10() +
-  facet_grid(prob~r, labeller = label_both)
+  facet_grid(prob~r)
 ```
 
 ```{r run-time-log-2, echo=FALSE, fig.height=7, fig.cap="More shit 2"}
