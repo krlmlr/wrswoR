@@ -470,7 +470,7 @@ timings %>%
   facet_grid(prob~r)
 ```
 
-```{r run-time-crank-expj, echo=FALSE, fig.cap="Comparison of *crank* and *expj* run times"}
+```{r run-time-crank-expj, echo=FALSE, fig.cap="Comparison of \emph{crank} and \emph{expj} run times"}
 timings %>%
   filter(expr %in% c("crank", "expj")) %>%
   group_by(n, expr, prob, r) %>%
