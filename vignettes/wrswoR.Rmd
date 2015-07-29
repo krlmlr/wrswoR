@@ -450,14 +450,14 @@ The remainder of the paper will focus on evaluating the *crank* and *expj* imple
 \fxwarning{Show probability distributions}
 
 
-```{r run-time-crank-expj, echo=FALSE, fig.height=7, fig.cap="More shit"}
+```{r run-time-log, echo=FALSE, fig.height=7, fig.cap="Median run times"}
 timings %>%
   group_by(n, expr, prob, r) %>%
   summarize(median = median(time)) %>%
   ungroup %>%
   ggplot(aes(x=n, y=median * 1e-9, color=expr)) +
   scale_y_log10() +
-  ggplot_perf_base +
+  ggplot_time_base +
   geom_line() +
   scale_x_log10() +
   facet_grid(prob~r)
