@@ -372,7 +372,7 @@ BASE <- 1.007
 N <- max(timings$n)
 ```
 
-```{r}
+```{r echo=FALSE}
 break_even <- 
   wrswoR.benchmark::break_even %>%
   tbl_df %>%
