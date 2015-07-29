@@ -340,13 +340,10 @@ Instead of directly specifying \code{size}, it is given as a fraction of \code{n
 The following values for \code{prob} were tested:
 
 - *Uniform*
-- *Linear ascending*: Sequence from \code{1} to \code{n}
-- *Linear descending*: Sequence from \code{n} to \code{1}
-- *Linear shuffled*: Values from \code{1} to \code{n} in random order
-- *Geometric ascending*: Probability of item \code{i} is a multiple of item \code{i-1}
-- *Geometric descending*: Probability of item \code{i} is a fraction of item \code{i-1}
-
-\fxwarning{More discussion? Rewrite...}
+- *Linear*: Sequence from \code{1} to \code{n}, *ascending*, *descending* and *shuffled*
+- *Geometric*: Starting at \code{1}, the weight is multiplied with a constant for each step
+  (*ascending* and *descending*); the constant is chosen so that minimal and maximal weight
+  and the sum of weights is still representable as a floating-point number.
 
 ```{r echo=FALSE}
 ggplot_base <- list(
