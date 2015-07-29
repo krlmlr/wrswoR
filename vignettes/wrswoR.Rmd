@@ -558,6 +558,8 @@ timings %>%
 
 # Conclusions and future work
 
+- Pre-sort weights using radix sort
+
 # References {.unnumbered}
 
 \justifying
