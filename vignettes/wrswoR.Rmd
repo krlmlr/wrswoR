@@ -346,6 +346,7 @@ The following weight distributions (used for \code{prob}) were tested:
 - *Geometric*: Starting at \code{1}, the weight is multiplied with a constant for each step
   (*ascending* and *descending*); the constant is chosen so that minimal and maximal weight
   and the sum of weights is still representable as a floating-point number.
+  \fxwarning{Extreme case}
 
 ```{r echo=FALSE}
 ggplot_base <- list(
@@ -404,10 +405,28 @@ ggplot_time_per_item_base <-
 
 ## Run time
 
-All measurement graphs use the logarithmic scale for the run time.
+\Cref{fig:run-time-log} presents an overview of the runtime measurements
+for different input sizes, output size ratios, weight distributions and algorithms.
+The \proglang{R} implementation is clearly outperformed by all other implementations
+for $n = `r max(timings$n)`$, in many cases even for much smaller inputs.
+In the log-log scale used here, the slope of the curves translates to computational complexity;
+the steeper slope for the \proglang{R} implementation corresponds to its quadratic complexity
+compared to the (in most cases) slightly superlinear complexity of the other algorithms.
 
-- The *rej* implementation behaves poorly for all *geometric* distributions
-due to its extreme skewness.
+As expected, the *expj* algorithm appears to run fastest, especially for $r \ll 1$.
+In the case $r = 0.01$ for the *geometric ascending* distribution,
+the new implementations win only by a margin;
+in particular, the *expj* algorithm depends on the ordering of the weights
+which is unfavorable here.
+
+The *rej* algorithm exhibits initial costs on the sub-millisecond scale
+even for small input sizes, probably due to the fact that it is implemented
+purely in \proglang{R}.
+In addition, it is by far the slowest
+(but still faster than the stock implementation)
+for *geometric* distributions, because in each step only a tiny fraction of items
+have a non-negligible weight, and hence most sampled items are rejected as duplicates
+(line \ref{alg:sample-rej:sample} of \cref{alg:sample-rej}).
 
 
 
