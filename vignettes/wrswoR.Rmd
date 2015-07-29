@@ -346,10 +346,7 @@ The following values for \code{prob} were tested:
 - *Geometric ascending*: Probability of item \code{i} is a multiple of item \code{i-1}
 - *Geometric descending*: Probability of item \code{i} is a fraction of item \code{i-1}
 
-The *rej* implementation behaves poorly for all *geometric* distributions
-due to its extreme skewness.
-
-
+\fxwarning{More discussion? Rewrite...}
 
 ```{r echo=FALSE}
 ggplot_base <- list(
@@ -426,6 +423,11 @@ For $n = `r max(timings$n)`$, the mean run time of the \proglang{R} implementati
 is about two orders of magnitude larger than the mean run time for the other
 implementations presented here.
 All measurement graphs use the logarithmic scale for the run time.
+
+- The *rej* implementation behaves poorly for all *geometric* distributions
+due to its extreme skewness.
+
+
 
 - Distribution type matters only for expj and $r \ll 1$, and somewhat for crank and rank
     - expj: pre-sorted data
