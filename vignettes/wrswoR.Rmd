@@ -39,6 +39,7 @@ vignette: >
 ```{r echo=FALSE, message=FALSE}
 library(wrswoR)
 import::from(tidyr, spread, gather, gather_)
+import::from(plyr, ldply)
 import::from(dplyr, filter, mutate, select, group_by, summarize, ungroup, tbl_df)
 import::from(cluster, daisy, .library = .libPaths())
 import::from(magrittr, "%>%")
