@@ -467,7 +467,8 @@ timings %>%
   ggplot_time_base +
   geom_line() +
   scale_x_log10() +
-  facet_grid(prob~r)
+  facet_grid(prob~r) +
+  theme(legend.position="bottom")
 ```
 
 ```{r run-time-crank-expj, echo=FALSE, fig.cap="Comparison of \emph{crank} and \emph{expj} run times"}
