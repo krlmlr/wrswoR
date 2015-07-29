@@ -450,7 +450,7 @@ The remainder of the paper will focus on evaluating the *crank* and *expj* imple
 \fxwarning{Show probability distributions}
 
 
-```{r run-time-log, echo=FALSE, fig.height=7, fig.cap="More shit"}
+```{r run-time-crank-expj, echo=FALSE, fig.height=7, fig.cap="More shit"}
 timings %>%
   group_by(n, expr, prob, r) %>%
   summarize(median = median(time)) %>%
@@ -462,6 +462,25 @@ timings %>%
   scale_x_log10() +
   facet_grid(prob~r)
 ```
+
+```{r run-time-log-2, echo=FALSE, fig.cap="Comparison of *crank* and *expj* run times"}
+timings %>%
+  filter(expr %in% c("crank", "expj")) %>%
+  group_by(n, expr, prob, r) %>%
+  summarize(median = median(time)) %>%
+  ungroup %>%
+  spread(expr, median) %>%
+  mutate(crank_vs_expj = crank / expj) %>%
+  ggplot(aes(x=prob, y=crank_vs_expj, color=n)) +
+  scale_x_discrete(name = "Weights distribution") +
+  scale_y_log10(name = "Ratio of median run times\n(crank vs. expj)", breaks = 2 ** (-1:3)) +
+  ggplot_base +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
+  geom_point() +
+  scale_color_continuous(trans="log", breaks = as.integer(10 ** (2:5))) +
+  facet_wrap(~r)
+```
+
 
 ```{r run-time-log-2, echo=FALSE, fig.height=7, fig.cap="More shit 2"}
 timings %>%
