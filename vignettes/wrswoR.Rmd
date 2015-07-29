@@ -404,23 +404,6 @@ ggplot_time_per_item_base <-
 
 ## Run time
 
-```{r run-time-mag, echo=FALSE}
-timings %>%
-  filter(r == 1) %>%
-  filter(n == max(n)) %>%
-  group_by(n, prob, expr) %>%
-  summarize(mean_time = mean(time)) %>%
-  ungroup %>%
-  spread(expr, mean_time) %>%
-  gather_("other_algo", "time", ALGOS %>% setdiff("R")) %>%
-  with(R / time) %>%
-  magrittr::is_greater_than(5) %>%
-  stopifnot
-```
-
-For $n = `r max(timings$n)`$, the mean run time of the \proglang{R} implementation
-is about two orders of magnitude larger than the mean run time for the other
-implementations presented here.
 All measurement graphs use the logarithmic scale for the run time.
 
 - The *rej* implementation behaves poorly for all *geometric* distributions
