@@ -352,19 +352,67 @@ due to its extreme skewness.
 
 
 ```{r echo=FALSE}
-ggplot_perf_base <- list(
-  theme_bw(11),
-  ylab("Run time (s)"),
-  scale_color_discrete(name = "Algorithm")
+ggplot_base <- list(
+  theme_bw(11)
 )
 
 ALGOS <- c("R", "rej", "rank", "crank", "expj")
+
+REMOVE_PROB <- c("linear_double", "linear_half")
 
 timings <- 
   wrswoR.benchmark::timings %>%
   tbl_df %>%
   filter(expr %in% ALGOS) %>%
-  mutate(expr = factor(expr, levels = ALGOS))
+  filter(!(prob %in% REMOVE_PROB)) %>%
+  mutate(expr = factor(expr, levels = ALGOS)) %>%
+  mutate(prob = factor(
+    prob, levels = c("uniform", "linear", "rev_linear", "shuffled_linear", "exp", "rexp"),
+    labels = c("Uniform", "Linear asc.", "Linear desc.", "Linear shuffled", "Geometric asc.", "Geometric desc.")))
+
+BASE <- 1.007
+N <- max(timings$n)
+```
+
+
+```{r echo=FALSE}
+probs <- wrswoR.benchmark::prob(1.007)
+
+prob_data <- ldply(
+  probs,
+  function(f) {
+    y <- f(N)
+    xi <- round(seq.int(1, N, length.out = 271*3))
+    data.frame(x=xi, y=prop.table(y[xi]))
+  }
+)
+```
+
+```{r prob-dist, echo=FALSE, fig.height=3, fig.cap="More shit"}
+prob_data %>%
+  filter(.id != "shuffled_linear") %>%
+  ggplot(aes(x, y, linetype=.id)) +
+  ggplot_base +
+  geom_line() +
+  scale_y_continuous(limits = c(0, 0.005))
+```
+
+
+```{r echo=FALSE}
+ggplot_perf_base <-
+  ggplot_base %>%
+  c(list(
+    theme_bw(11),
+    scale_color_discrete(name = "Algorithm")
+  ))
+
+ggplot_time_base <-
+  ggplot_base %>%
+  c(list(ylab("Run time (s)")))
+
+ggplot_time_per_item_base <-
+  ggplot_base %>%
+  c(list(ylab("Run time per element (s)")))
 ```
 
 
@@ -380,19 +428,26 @@ timings %>%
   spread(expr, mean_time) %>%
   gather_("other_algo", "time", ALGOS %>% setdiff("R")) %>%
   with(R / time) %>%
-  magrittr::is_greater_than(100) %>%
+  magrittr::is_greater_than(5) %>%
   stopifnot
 ```
 
-For $n = 10000$, the mean run time of the \proglang{R} implementation
+For $n = `r max(timings$n)`$, the mean run time of the \proglang{R} implementation
 is about two orders of magnitude larger than the mean run time for the other
 implementations presented here.
 All measurement graphs use the logarithmic scale for the run time.
 
+- Distribution type matters only for expj and $r \ll 1$, and somewhat for crank and rank
+    - expj: pre-sorted data
+- rej doesn't work for highly skewed distributions
+- analyze difference between rank and crank
+- focus on crank and expj
+- 
+
 \fxwarning{Show probability distributions}
 
 
-```{r run-time-log, echo=FALSE, fig.height=7, fig.cap="More hot shit"}
+```{r run-time-log, echo=FALSE, fig.height=7, fig.cap="More shit"}
 timings %>%
   group_by(n, expr, prob, r) %>%
   summarize(median = median(time)) %>%
@@ -402,9 +457,21 @@ timings %>%
   ggplot_perf_base +
   geom_line() +
   scale_x_log10() +
-  facet_grid(prob~r)
+  facet_grid(prob~r, labeller = label_both)
 ```
 
+```{r run-time-log-2, echo=FALSE, fig.height=7, fig.cap="More shit 2"}
+timings %>%
+  group_by(n, expr, prob, r) %>%
+  summarize(median = median(time)) %>%
+  ungroup %>%
+  ggplot(aes(x=n, y=median * 1e-9, linetype=prob)) +
+  scale_y_log10() +
+  ggplot_perf_base +
+  geom_line() +
+  scale_x_log10() +
+  facet_grid(expr~r, labeller = label_both)
+```
 
 ```{r run-time-10-log, echo=FALSE}
 timings %>%
