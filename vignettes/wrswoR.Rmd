@@ -491,7 +491,12 @@ timings %>%
   facet_wrap(~r)
 ```
 
-For the break-even analysis, *expj* is compared to the stock implementation.
+For the break-even analysis, *expj* is compared to the stock implementation in
+\cref{fig:run-time-break-even}.
+At $n=1000$, the *expj* algorithm starts to outperform the stock implementation
+for all tested values of $r$.
+Again, the worst slowdown of the *expj* algorithm seems to be around 2,
+for absolute run times of around 10 microseconds for $n = 100$.
 
 ```{r run-time-break-even, echo=FALSE, fig.cap="Comparison of \\proglang{R} and \\emph{expj} run times for \\emph{linear ascending} weights"}
 break_even %>%
