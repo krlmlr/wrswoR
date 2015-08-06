@@ -339,7 +339,8 @@ in the \pkg{wrswoR.benchmark} package.
 
 The run time tests used different values for the function arguments
 \code{n}, \code{size} and \code{prob}.
-Instead of directly specifying \code{size}, it is given as a fraction of \code{n}.
+Instead of directly specifying \code{size}, it is given as a fraction of \code{n},
+denoted by $r$.
 The following weight distributions (used for \code{prob}) were tested:
 
 - *Uniform*
@@ -517,6 +518,15 @@ break_even %>%
 
 
 ## Correctness
+
+Verifying the correctness of the implementation seems to be challenging.
+For given parameters \code{n}, \code{size}, and \code{prob},
+the probability that item $i$ is at position $j$ in the output
+(with $1 \leq i \leq n$ and $1 \leq j \leq s$) should be identical for all implementations.
+Of course, each item should also occur at most once in the output.
+
+
+
 
 # Conclusions and future work
 
