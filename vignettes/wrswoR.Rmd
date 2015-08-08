@@ -519,12 +519,45 @@ break_even %>%
 
 ## Correctness
 
-Verifying the correctness of the implementation seems to be challenging.
-For given parameters \code{n}, \code{size}, and \code{prob},
+Verifying the correctness of the implementation seems to be challenging
+due to the stochasticity of the algorithms.
+Of course, all output items should be between \code{1} and \code{n},
+and each item should occur at most once in the output;
+this is verified easily.
+In addition, for given parameters \code{n}, \code{size}, and \code{prob},
 the probability that item $i$ is at position $j$ in the output
-(with $1 \leq i \leq n$ and $1 \leq j \leq s$) should be identical for all implementations.
-Of course, each item should also occur at most once in the output.
+(with $1 \leq i \leq n$ and $1 \leq j \leq s$) should be identical for all implementations.\fxwarning{Introduce $s$ and $w_i$}
 
+For fixed $i$ and $j$ and for fixed parameters \code{n}, \code{size}, and \code{prob},
+each call to the sampling routine is a Bernoulli trial
+with fixed success probability $p$.
+Repeated sampling leads to an i.i.d.\ sequence of Bernoulli trials.
+In general,
+computing the exact value of $p$ for large $j$
+seems to require considerable computational resources.
+Therefore, the value of $p$ is assumed unknown,
+and only the equality of the proportions is tested for the different algorithms
+using the \code{prop.test} function.
+The validation is performed as follows:
+
+- The parameters \code{n}, \code{size}, and \code{prob} are fixed.
+- For all algorithms, $N$ random samples without replacement are drawn and recorded.
+- For all $i$ and $j$, the number of samples where item $i$ is in position $j$ is computed.
+- The counts are tested for equality of proportions, yielding a p-value for each tuple $(i, j)$.
+- This entire procedure is repeated $M$ times, this results in $M$ p-values for each
+tuple $(i, j)$.
+
+
+If the algorithms behave identically, the null hypotheses
+(that the proportions are equal for each $(i, j)$) can be rejected
+only by pure chance,
+and the resulting p-values are distributed
+approximately uniformly over $[0, 1]$.
+If, on the other hand, one of the algorithms is implemented incorrectly,
+the null hypothesis will be rejected for many $(i, j)$,
+and a large share of the p-values will be very close to 0.
+The distribution of the p-values is tested with a simple $\chi^2$ test
+after binning.\fxwarning{Rejects if too many observations.}
 
 
 
