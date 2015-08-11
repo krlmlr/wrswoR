@@ -47,6 +47,10 @@ library(ggplot2)
 set.seed(20150710L)
 knitr::opts_chunk$set(cache=TRUE)
 knitcitations::cite_options("pandoc")
+
+knit_print.function <- function(x, options) {
+  dput(x)
+}
 ```
 
 # Introduction
