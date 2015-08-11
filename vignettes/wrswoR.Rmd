@@ -345,15 +345,16 @@ in the \pkg{wrswoR.benchmark} package.
 ## Input parameters
 
 The run time tests used different values for the function arguments
-\code{n}, \code{size} and \code{prob}.
-Instead of directly specifying \code{size}, it is given as a fraction of \code{n},
-denoted by $r$.
-The following weight distributions (used for \code{prob}) were tested:
+$n$, $s$ and $prob$.
+Instead of directly specifying $s$, it is given as a fraction of $n$,
+denoted by $r = \frac{s}{n}$.
+The following weight distributions (used for $p_i$) were tested:
 
 - *Uniform*
-- *Linear*: Sequence from \code{1} to \code{n}, *ascending*, *descending* and *shuffled*
-- *Geometric*: Starting at \code{1}, the weight is multiplied with a constant for each step
-  (*ascending* and *descending*); the constant is chosen so that minimal and maximal weight
+- *Linear*: Sequence from $1$ to $n$ ($\{p_i\} = \{1,\ldots n\}$, *ascending*, *descending* and *shuffled*)
+- *Geometric*: Starting at $1$, the weight is multiplied with a constant $\alpha$ for each step
+  ($p_{i+1} = \alpha p_i$, *ascending* and *descending*);
+  the constant is chosen so that both minimal and maximal weights
   and the sum of weights is still representable as a floating-point number.
   \fxwarning{Extreme case}
 
