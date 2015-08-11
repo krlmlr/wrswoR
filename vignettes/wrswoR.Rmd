@@ -310,9 +310,12 @@ is used to generate the glue between \proglang{R} and \proglang{C++}.
 The \proglang{R} implementations are very similar to the pseudocode:
 As an example, the *rank* implementation is shown below.
 
-```{r}
+```{r, echo=FALSE}
 sample_int_rank
 ```
+
+The function arguments correspond to those of \cref{alg:sample,alg:sample-rej,alg:sample-rank}:
+\code{size} is the $s$ argument, and \code{prob} is the $p_i$ argument.
 
 The *crank* implementation has been somewhat optimized for cache efficiency.
 Due to its relative complexity, the *expj* implementation is kept very close
@@ -530,7 +533,7 @@ and each item should occur at most once in the output;
 this is verified easily.
 In addition, for given parameters \code{n}, \code{size}, and \code{prob},
 the probability that item $i$ is at position $j$ in the output
-(with $1 \leq i \leq n$ and $1 \leq j \leq s$) should be identical for all implementations.\fxwarning{Introduce $s$ and $w_i$}
+(with $1 \leq i \leq n$ and $1 \leq j \leq s$) should be identical for all implementations.
 
 For fixed $i$ and $j$ and for fixed parameters \code{n}, \code{size}, and \code{prob},
 each call to the sampling routine is a Bernoulli trial
