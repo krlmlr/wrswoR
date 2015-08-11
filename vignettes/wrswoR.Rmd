@@ -553,12 +553,18 @@ If the algorithms behave identically, the null hypotheses
 only by pure chance,
 and the resulting p-values are distributed
 approximately uniformly over $[0, 1]$.
-If, on the other hand, one of the algorithms is implemented incorrectly,
+On the other hand, if one of the algorithms is implemented incorrectly,
 the null hypothesis will be rejected for many $(i, j)$,
-and a large share of the p-values will be very close to 0.
-The distribution of the p-values is tested with a simple $\chi^2$ test
-after binning.\fxwarning{Rejects if too many observations.}
+and a substantial share of the p-values will be very close to 0.
+The distribution of the p-values is tested by fitting a linear model.
+For each p-value, its rank (rescaled to $[0, 1]$) is computed.
+The rank and the squared rank is used as independent variables
+for the linear model.
+A significant deviation from the identity line will result in a
+substantial and significant value for the squared rank parameter.
 
+- Show results for various distributions (uniform, linear, exponential, without reversing or shuffling)
+- Simulate implementation error (same algorithm, different distributions)
 
 
 # Conclusions and future work
