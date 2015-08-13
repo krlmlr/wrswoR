@@ -1,10 +1,29 @@
 #' @export
-aggregated_prop_test_probs <- function(n, size, probs, N, M, sample_int_func) {
-  trials <- rep(N, length(probs))
+uniformity_model <- function(p_values) {
+  p_values_sorted <- sort(p_values)
+  length_diff <- length(p_values) - length(p_values_sorted)
+  if (length_diff > 0L) {
+    warning("Removed ", length_diff, " NA values.", call. = FALSE)
+  }
+  rank <- (seq_along(p_values_sorted) - 1) / (length(p_values_sorted) - 1L)
+
+  lm(p_values_sorted ~ rank + I(rank ^ 2))
+}
+
+#' @export
+aggregated_prop_test <- function(n, size, probs, N, M, sample_int_funcs) {
+  if (!is.list(probs)) {
+    probs <- list(probs)
+  }
+  if (!is.list(sample_int_funcs)) {
+    sample_int_funcs <- list(sample_int_funcs)
+  }
+
+  trials <- rep(N, length(sample_int_funcs) * length(probs))
   ret <- raply(
     M,
     {
-      as <- aggregated_sample_probs(n, size, probs, N, sample_int_func)
+      as <- aggregated_sample(n, size, probs, N, sample_int_funcs)
       apply(as, 2:3, function(x) prop.test(x, n = trials)$p.value)
     }
   )
@@ -14,52 +33,46 @@ aggregated_prop_test_probs <- function(n, size, probs, N, M, sample_int_func) {
 
 #' @importFrom plyr laply
 #' @export
-aggregated_sample_probs <- function(n, size, probs, N, sample_int_func) {
-  ret <- laply(
-    probs,
-    aggregated_sample_one,
-    n = n,
-    size = size,
-    N = N,
-    sample_int_func = sample_int_func,
-    .drop = FALSE
-  )
-  nm <- names(probs)
-  if (is.null(nm))
-    nm <- seq_along(probs)
-  dimnames(ret) <- c(list(prob = nm), dimnames(ret)[2:3])
-  ret
-}
+aggregated_sample <- function(n, size, probs, N, sample_int_funcs) {
+  if (!is.list(probs)) {
+    probs <- list(probs)
+  }
+  if (!is.list(sample_int_funcs)) {
+    sample_int_funcs <- list(sample_int_funcs)
+  }
 
-#' @export
-aggregated_prop_test <- function(n, size, prob, N, M, sample_int_funcs) {
-  trials <- rep(N, length(sample_int_funcs))
-  ret <- raply(
-    M,
-    {
-      as <- aggregated_sample(n, size, prob, N, sample_int_funcs)
-      apply(as, 2:3, function(x) prop.test(x, n = trials)$p.value)
+  if (length(probs) > 1L) {
+    if (length(sample_int_funcs) > 1L) {
+      stop("Cannot have both probs and sample_int_funcs longer than 1", call. = FALSE)
     }
-  )
-  dimnames(ret) <- c(list(m = seq_len(M)), dimnames(ret)[2:3])
-  ret
-}
+    nm <- names(probs)
+    if (is.null(nm)) {
+      nm <- seq_along(probs)
+    }
+  } else {
+    if (length(sample_int_funcs) <= 1L) {
+      stop("Exactly one of probs or sample_int_funcs must be longer than 1")
+    }
 
-#' @importFrom plyr laply
-#' @export
-aggregated_sample <- function(n, size, prob, N, sample_int_funcs) {
+    nm <- names(sample_int_funcs)
+    if (is.null(nm)) {
+      nm <- seq_along(sample_int_funcs)
+    }
+  }
+
   ret <- laply(
     sample_int_funcs,
-    aggregated_sample_one,
-    n = n,
-    size = size,
-    prob = prob,
-    N = N,
-    .drop = FALSE
+    function (sample_int_func) {
+      laply(
+        probs,
+        aggregated_sample_one,
+        n = n,
+        size = size,
+        sample_int_func = sample_int_func,
+        N = N
+      )
+    }
   )
-  nm <- names(sample_int_funcs)
-  if (is.null(nm))
-    nm <- seq_along(sample_int_funcs)
   dimnames(ret) <- c(list(func = nm), dimnames(ret)[2:3])
   ret
 }
