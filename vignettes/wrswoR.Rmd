@@ -561,15 +561,11 @@ In this setting, for fixed $(i, j)$, the p-value is itself a random variable
 that is distributed uniformly over $[0, 1]$ under the null hypothesis
 of equal proportions (i.e., if all implementations are correct).
 On the other hand, if one of the algorithms is implemented incorrectly,
-the null hypothesis will be rejected more often than expected,
+the rejection rate for the null hypothesis will be large,
 and a substantial share of the p-values will be very close to 0.
-
-The distribution of the p-values is tested by fitting a linear model.
-For each p-value, its rank (rescaled to $[0, 1]$) is computed.
-The rank and the squared rank are used as independent variables
-for the linear model.
-A significant deviation from the identity line in favor of more p-values close to zero
-will result in a relatively large, positive, and significant value for the squared rank parameter.
+This can be tested by comparing a quantile of the p-values
+with a threshold: For instance, if the 5%-quantile is lower than 0.01,
+it is very likely that one of the implementations is faulty.
 To reduce simulation effort,
 p-values resulting from different $(i,j)$
 or even from different $n$, $s$, and $p_i$ parameters can be pooled
