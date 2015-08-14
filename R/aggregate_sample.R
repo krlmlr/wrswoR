@@ -25,7 +25,8 @@ aggregated_prop_test <- function(n, size, probs, N, M, sample_int_funcs) {
     {
       as <- aggregated_sample(n, size, probs, N, sample_int_funcs)
       apply(as, 3:4, function(x) prop.test(as.vector(x), n = trials)$p.value)
-    }
+    },
+    .drop = FALSE
   )
   dimnames(ret) <- c(list(m = seq_len(M)), dimnames(ret)[-1L])
   ret
