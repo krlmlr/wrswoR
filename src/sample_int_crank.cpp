@@ -2,6 +2,8 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
+#include <queue>
+
 void check_args(int n, int size, const NumericVector& prob) {
   if (n < size) {
     Rcpp::stop("cannot take a sample larger than the population");
@@ -88,7 +90,7 @@ SEXP sample_int_ccrank(int n, int size, NumericVector prob) {
 }
 
 template <class T>
-T _minus_rexp_divide_by(T t) { return -Rf_rexp(1.0) / t; }
+T _rexp_divide_by(T t) { return Rf_rexp(1.0) / t; }
 
 template <class T>
 T find_min_item(T begin, T end) {
@@ -117,26 +119,31 @@ IntegerVector sample_int_expj(int n, int size, NumericVector prob) {
     return IntegerVector();
 
   // Step 1: The first m items of V are inserted into R
-  IntegerVector vx = seq(1, size);
-
   // Step 2: For each item v_i ∈ R: Calculate a key k_i = u_i^(1/w),
   // where u_i = random(0, 1)
-  // (Modification: Calculate and store log k_i = -e_i / w where e_i = exp(1))
-  NumericVector R = NumericVector(prob.begin(), prob.begin() + size,
-                                  &_minus_rexp_divide_by<double>);
+  // (Modification: Calculate and store -log k_i = e_i / w where e_i = exp(1),
+  //  reservoir is a priority queue that pops the *maximum* elements)
+  std::priority_queue<std::pair<double, int> > R;
 
-  // Step 3: The threshold T_w is the minimum key of R
-  // (Modification: This is now the logarithm)
-  NumericVector::iterator T_w = find_min_item(R.begin(), R.end());
+  for (NumericVector::iterator iprob = prob.begin();
+       iprob != prob.begin() + size; ++iprob) {
+    double k_i = _rexp_divide_by<double>(*iprob);
+    R.push(std::make_pair(k_i, iprob - prob.begin() + 1));
+  }
 
   // Step 4: Repeat Steps 5–10 until the population is exhausted
   {
+    // Step 3: The threshold T_w is the minimum key of R
+    // (Modification: This is now the logarithm)
+    // Step 10: The new threshold T w is the new minimum key of R
+    const std::pair<double, int>& T_w = R.top();
+
     // Incrementing iprob is part of Step 7
     for (NumericVector::iterator iprob = prob.begin() + size; iprob != prob.end(); ++iprob) {
 
       // Step 5: Let r = random(0, 1) and X_w = log(r) / log(T_w)
       // (Modification: Use e = -exp(1) instead of log(r))
-      double X_w = -Rf_rexp(1.0) / *T_w;
+      double X_w = Rf_rexp(1.0) / T_w.first;
 
       // Step 6: From the current item v_c skip items until item v_i, such that:
       double w = 0.0;
@@ -153,29 +160,35 @@ IntegerVector sample_int_expj(int n, int size, NumericVector prob) {
         break;
 
       // Step 9: Let t_w = T_w^{w_i}, r_2 = random(t_w, 1) and v_i’s key: k_i = (r_2)^{1/w_i}
-      // (Mod: Let t_w = log(T_w) * {w_i}, e_2 = log(random(e^{t_w}, 1)) and v_i’s key: k_i = e_2 / w_i)
-      double t_w = *T_w * *iprob;
+      // (Mod: Let t_w = log(T_w) * {w_i}, e_2 = log(random(e^{t_w}, 1)) and v_i’s key: k_i = -e_2 / w_i)
+      double t_w = -T_w.first * *iprob;
       double e_2 = std::log(Rf_runif(std::exp(t_w), 1.0));
-      double k_i = e_2 / *iprob;
+      double k_i = -e_2 / *iprob;
 
       // Step 8: The item in R with the minimum key is replaced by item v_i
-      vx[(size_t)(T_w - R.begin())] = iprob - prob.begin() + 1;
-      *T_w = k_i;
-
-      // Step 10: The new threshold T w is the new minimum key of R
-      T_w = find_min_item(R.begin(), R.end());
+      R.pop();
+      R.push(std::make_pair(k_i, iprob - prob.begin() + 1));
     }
   }
 
-  // Create an array of indices in vx
-  std::vector<double> vvx = std::vector<double>(size);
-  std::generate(vvx.begin(), vvx.end(), UniqueNumber(0));
+  IntegerVector ret(size);
 
-  // Sort it according to the key values in the reservoir
-  std::sort(vvx.begin(), vvx.end(), Comp(R));
+  for (IntegerVector::iterator iret = ret.end(); iret != ret.begin(); ) {
+    --iret;
 
-  // Map to indices in the input array
-  return IntegerVector(vvx.begin(), vvx.end(), Indirection(vx));
+    if (R.empty()) {
+      stop("Reservoir empty before all elements have been filled");
+    }
+
+    *iret = R.top().second;
+    R.pop();
+  }
+
+  if (!R.empty()) {
+    stop("Reservoir not empty after all elements have been filled");
+  }
+
+  return ret;
 }
 
 template <class T>
