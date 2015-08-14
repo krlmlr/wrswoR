@@ -127,7 +127,6 @@ dependencies-hook:
 
 install dependencies: dependencies-hook
 	Rscript -e "sessionInfo()"
-	Rscript -e "devtools::install_github('hadley/testthat')"
 	Rscript -e "options(repos = c(CRAN = 'http://cran.rstudio.com')); devtools::install_deps(dependencies = TRUE)"
 
 test:
