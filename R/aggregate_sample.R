@@ -10,6 +10,18 @@ uniformity_model <- function(p_values) {
   lm(p_values_sorted ~ rank + I(rank ^ 2))
 }
 
+prop_test_p_value <- function(trials) {
+  force(trials)
+  function(x) {
+    x <- as.vector(x)
+    if (all(x == x[[1L]])) {
+      1
+    } else {
+      prop.test(x, n = trials)$p.value
+    }
+  }
+}
+
 #' @export
 aggregated_prop_test <- function(n, size, probs, N, M, sample_int_funcs) {
   if (!is.list(probs)) {
@@ -24,7 +36,7 @@ aggregated_prop_test <- function(n, size, probs, N, M, sample_int_funcs) {
     M,
     {
       as <- aggregated_sample(n, size, probs, N, sample_int_funcs)
-      apply(as, 3:4, function(x) prop.test(as.vector(x), n = trials)$p.value)
+      apply(as, 3:4, prop_test_p_value(trials))
     },
     .drop = FALSE
   )
