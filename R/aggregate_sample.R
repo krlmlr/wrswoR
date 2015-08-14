@@ -24,10 +24,10 @@ aggregated_prop_test <- function(n, size, probs, N, M, sample_int_funcs) {
     M,
     {
       as <- aggregated_sample(n, size, probs, N, sample_int_funcs)
-      apply(as, 2:3, function(x) prop.test(x, n = trials)$p.value)
+      apply(as, 3:4, function(x) prop.test(as.vector(x), n = trials)$p.value)
     }
   )
-  dimnames(ret) <- c(list(m = seq_len(M)), dimnames(ret)[2:3])
+  dimnames(ret) <- c(list(m = seq_len(M)), dimnames(ret)[-1L])
   ret
 }
 
@@ -41,23 +41,13 @@ aggregated_sample <- function(n, size, probs, N, sample_int_funcs) {
     sample_int_funcs <- list(sample_int_funcs)
   }
 
-  if (length(probs) > 1L) {
-    if (length(sample_int_funcs) > 1L) {
-      stop("Cannot have both probs and sample_int_funcs longer than 1", call. = FALSE)
-    }
-    nm <- names(probs)
-    if (is.null(nm)) {
-      nm <- seq_along(probs)
-    }
-  } else {
-    if (length(sample_int_funcs) <= 1L) {
-      stop("Exactly one of probs or sample_int_funcs must be longer than 1")
-    }
-
-    nm <- names(sample_int_funcs)
-    if (is.null(nm)) {
-      nm <- seq_along(sample_int_funcs)
-    }
+  nm_probs <- names(probs)
+  if (is.null(nm_probs)) {
+    nm_probs <- seq_along(probs)
+  }
+  nm_funcs <- names(sample_int_funcs)
+  if (is.null(nm_funcs)) {
+    nm_funcs <- seq_along(sample_int_funcs)
   }
 
   ret <- laply(
@@ -69,11 +59,13 @@ aggregated_sample <- function(n, size, probs, N, sample_int_funcs) {
         n = n,
         size = size,
         sample_int_func = sample_int_func,
-        N = N
+        N = N,
+        .drop = FALSE
       )
-    }
+    },
+    .drop = FALSE
   )
-  dimnames(ret) <- c(list(func = nm), dimnames(ret)[2:3])
+  dimnames(ret) <- c(list(func = nm_funcs, prob = nm_probs), dimnames(ret)[-1L:-2L])
   ret
 }
 
