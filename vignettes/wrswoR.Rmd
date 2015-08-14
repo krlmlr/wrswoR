@@ -40,7 +40,8 @@ vignette: >
 library(wrswoR)
 import::from(tidyr, spread, gather, gather_)
 import::from(plyr, ldply)
-import::from(dplyr, filter, mutate, select, group_by, summarize, ungroup, tbl_df)
+import::from(dplyr, filter, mutate, select, group_by, summarize, ungroup, tbl_df,
+             rename, arrange)
 import::from(cluster, daisy, .library = .libPaths())
 import::from(magrittr, "%>%")
 library(ggplot2)
@@ -571,7 +572,68 @@ p-values resulting from different $(i,j)$
 or even from different $n$, $s$, and $p_i$ parameters can be pooled
 before testing uniformity.
 
-- Show results for various distributions (uniform, linear, exponential, without reversing or shuffling)
+The above procedure does not constitute a proof of correctness.
+Nevertheless, it offers a means to automatically test the implementations for
+nontrivial errors.
+A similar procedure (using a visual representation with violin plots)
+caught an implementation error in the *expj* algorithm
+that occurred only in the case $1 < s < n$.
+
+```{r echo=FALSE}
+n <- 8
+s <- 5
+alpha <- 1.07
+N <- 1000
+M <- 3
+```
+
+```{r echo=FALSE}
+  probs <- wrswoR.benchmark::prob(alpha)
+  p_values_true <- aggregated_prop_test(
+    n,
+    s,
+    probs$rexp(8),
+    N,
+    M,
+    kimisc::nlist(sample_int_R, sample_int_rej, sample_int_rank, sample_int_crank, sample_int_expj))
+```
+
+\Cref{fig:correctness-true} shows a plot of the p-values against their rank
+when drawing $M = `r M`$ times $N = `r N`$ samples for $n = `r n`$,
+$s = `r s`$, and a geometric weight distribution with $\alpha = `r alpha`$.
+Different values of $i$ and $j$ are denoted with different colors and point shapes.
+The theoretical distribution is shown as a dotted line,
+and aligns very well with the observed p-values.
+For this particular run of the experiment,
+the 5%-quantile is at `r round(quantile(p_values_true, 0.05), 3)`,
+far above the 0.01 threshold suggested before.
+
+```{r correctness-true, echo=FALSE, fig.cap="Sorted p-values when comparing the five algorithms"}
+  p_values_true %>%
+    ftable %>%
+    as.data.frame %>%
+    rename(`p-value` = Freq) %>%
+    arrange(`p-value`) %>%
+    mutate(Rank = (seq_along(`p-value`) - 1) / (length(`p-value`) - 1)) %>% 
+    ggplot(aes(x = Rank, y = `p-value`, color = i, shape = j)) +
+    ggplot_base +
+    geom_point() +
+    geom_abline(slope = 1, intercept = 0, linetype = 3) +
+    theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+```
+
+
+  ```{r echo=FALSE}
+  p_values_false <- aggregated_prop_test(
+    10,
+    5,
+    kimisc::nlist(probs$rexp(10), probs$uniform(10)),
+    1000,
+    20,
+    sample_int_R)
+```
+
+- Perform tests with larger ranges: Accumulate 5%-quantiles of p-values distribution
 - Simulate implementation error (same algorithm, different distributions)
 
 
