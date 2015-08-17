@@ -618,8 +618,7 @@ far above the 0.01 threshold suggested before.
     ggplot(aes(y = `Cumulative density`, x = `p-value`, color = i, shape = j)) +
     ggplot_base +
     geom_point() +
-    geom_abline(slope = 1, intercept = 0, linetype = 3) +
-    theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
+    geom_abline(slope = 1, intercept = 0, linetype = 3)
 ```
 
 For an exhaustive test for all
