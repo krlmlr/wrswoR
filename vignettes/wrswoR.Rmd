@@ -608,15 +608,6 @@ For this particular run of the experiment,
 the 5%-quantile is at `r round(quantile(p_values_true, 0.05), 3)`,
 far above the 0.01 threshold suggested before.
 
-For an exhaustive test for all
-$n \in \{`r min(as.numeric(wrswoR.benchmark::p_values_df$n))`, \ldots,
-`r max(as.numeric(wrswoR.benchmark::p_values_df$n))`\}$,
-all $s \in \{1, \ldots, n\}$
-and all probability distributions discussed above (with $\alpha = 2$),
-the 5%-quantiles of the p-values were between 
-
-
-
 ```{r correctness-true, echo=FALSE, fig.cap="Sorted p-values when comparing the five algorithms"}
   p_values_true %>%
     ftable %>%
@@ -631,15 +622,25 @@ the 5%-quantiles of the p-values were between
     theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
 ```
 
+For an exhaustive test for all
+$n \in \{`r min(as.numeric(wrswoR.benchmark::p_values_df$n))`, \ldots,
+`r max(as.numeric(wrswoR.benchmark::p_values_df$n))`\}$,
+all $s \in \{1, \ldots, n\}$
+and all probability distributions discussed above (with $\alpha = 2$),
+the 5%-quantiles of the p-values were between 
 
-  ```{r echo=FALSE}
-  p_values_false <- aggregated_prop_test(
-    10,
-    5,
-    kimisc::nlist(probs$rexp(10), probs$uniform(10)),
-    1000,
-    20,
-    sample_int_R)
+
+
+
+
+```{r echo=FALSE}
+p_values_false <- aggregated_prop_test(
+  10,
+  5,
+  kimisc::nlist(probs$rexp(10), probs$uniform(10)),
+  1000,
+  20,
+  sample_int_R)
 ```
 
 - Perform tests with larger ranges: Accumulate 5%-quantiles of p-values distribution
