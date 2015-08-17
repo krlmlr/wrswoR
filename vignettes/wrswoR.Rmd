@@ -564,9 +564,9 @@ of equal proportions (i.e., if all implementations are correct).
 On the other hand, if one of the algorithms is implemented incorrectly,
 the rejection rate for the null hypothesis will be large,
 and a substantial share of the p-values will be very close to 0.
-This can be tested by comparing a quantile of the p-values
-with a threshold: For instance, if the 5%-quantile is lower than 0.01,
-it is very likely that one of the implementations is faulty.
+This can be tested with a Kolmogorov–Smirnov test against the uniform distribution
+and inspecting or recomputing those experiments with the lowest p-values
+for the K-S test.
 To reduce simulation effort,
 p-values resulting from different $(i,j)$
 or even from different $n$, $s$, and $p_i$ parameters can be pooled
@@ -605,8 +605,8 @@ Different values of $i$ and $j$ are denoted with different colors and point shap
 The theoretical distribution is shown as a dotted line,
 and aligns very well with the observed p-values.
 For this particular run of the experiment,
-the 5%-quantile is at `r round(quantile(p_values_true, 0.05), 3)`,
-far above the 0.01 threshold suggested before.
+the K-S test cannot reject the null hypothesis of uniformity
+($p = `r round(ks.test(p_values_true, punif)$p.value, 3)`$).
 
 ```{r correctness-true, echo=FALSE, fig.cap="Sorted p-values when comparing the five algorithms"}
   p_values_true %>%
