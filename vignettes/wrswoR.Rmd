@@ -609,16 +609,22 @@ the K-S test cannot reject the null hypothesis of uniformity
 ($p = `r round(ks.test(p_values_true, punif)$p.value, 3)`$).
 
 ```{r correctness-true, echo=FALSE, fig.cap="CDF of the p-values when comparing the five algorithms"}
-  p_values_true %>%
-    ftable %>%
-    as.data.frame %>%
-    rename(`p-value` = Freq) %>%
-    arrange(`p-value`) %>%
-    mutate(`Cumulative density` = (seq_along(`p-value`) - 1) / (length(`p-value`) - 1)) %>% 
-    ggplot(aes(y = `Cumulative density`, x = `p-value`, color = i, shape = j)) +
-    ggplot_base +
-    geom_point() +
-    geom_abline(slope = 1, intercept = 0, linetype = 3)
+p_values_true %>%
+  ftable %>%
+  as.data.frame %>%
+  rename(`p-value` = Freq) %>%
+  arrange(`p-value`) %>%
+  mutate(`Cumulative density` = (seq_along(`p-value`) - 1) / (length(`p-value`) - 1)) %>% 
+  ggplot(aes(y = `Cumulative density`, x = `p-value`, color = i, shape = j)) +
+  ggplot_base +
+  geom_point() +
+  geom_abline(slope = 1, intercept = 0, linetype = 3) +
+  coord_fixed()
+```
+
+```{r echo=FALSE}
+p_values_df <- wrswoR.benchmark::p_values_df %>%
+  filter(!(prob %in% c("linear_double", "linear_half")))
 ```
 
 For an exhaustive test for all
