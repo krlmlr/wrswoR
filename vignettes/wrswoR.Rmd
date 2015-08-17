@@ -598,7 +598,7 @@ M <- 3
     kimisc::nlist(sample_int_R, sample_int_rej, sample_int_rank, sample_int_crank, sample_int_expj))
 ```
 
-\Cref{fig:correctness-true} shows a plot of the p-values against their rank
+\Cref{fig:correctness-true} shows the empirical CDF of the p-values
 when drawing $M = `r M`$ times $N = `r N`$ samples for $n = `r n`$,
 $s = `r s`$, and a geometric weight distribution with $\alpha = `r alpha`$.
 Different values of $i$ and $j$ are denoted with different colors and point shapes.
@@ -623,12 +623,12 @@ the 5%-quantiles of the p-values were between
     as.data.frame %>%
     rename(`p-value` = Freq) %>%
     arrange(`p-value`) %>%
-    mutate(Rank = (seq_along(`p-value`) - 1) / (length(`p-value`) - 1)) %>% 
-    ggplot(aes(x = Rank, y = `p-value`, color = i, shape = j)) +
+    mutate(`Cumulative density` = (seq_along(`p-value`) - 1) / (length(`p-value`) - 1)) %>% 
+    ggplot(aes(y = `Cumulative density`, x = `p-value`, color = i, shape = j)) +
     ggplot_base +
     geom_point() +
     geom_abline(slope = 1, intercept = 0, linetype = 3) +
-    theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+    theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
 ```
 
 
