@@ -588,14 +588,14 @@ M <- 3
 ```
 
 ```{r echo=FALSE}
-  probs <- wrswoR.benchmark::prob(alpha)
-  p_values_true <- aggregated_prop_test(
-    n,
-    s,
-    probs$rexp(8),
-    N,
-    M,
-    kimisc::nlist(sample_int_R, sample_int_rej, sample_int_rank, sample_int_crank, sample_int_expj))
+probs <- wrswoR.benchmark::prob(alpha)
+p_values_true <- aggregated_prop_test(
+  n,
+  s,
+  probs$rexp(8),
+  N,
+  M,
+  kimisc::nlist(sample_int_R, sample_int_rej, sample_int_rank, sample_int_crank, sample_int_expj))
 ```
 
 \Cref{fig:correctness-true} shows the empirical CDF of the p-values
