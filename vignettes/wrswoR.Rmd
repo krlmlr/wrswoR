@@ -627,11 +627,12 @@ p_values_df <- wrswoR.benchmark::p_values_df %>%
   filter(!(prob %in% c("linear_double", "linear_half")))
 ```
 
-For an exhaustive test for all
+An exhaustive test for all
 $n \in \{`r min(as.numeric(wrswoR.benchmark::p_values_df$n))`, \ldots,
 `r max(as.numeric(wrswoR.benchmark::p_values_df$n))`\}$,
 all $s \in \{1, \ldots, n\}$
-and all probability distributions discussed above (with $\alpha = 2$),
+and all probability distributions discussed above (with $\alpha = 1.07$),
+the p-values
 the 5%-quantiles of the p-values were between 
 
 
