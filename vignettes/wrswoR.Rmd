@@ -608,7 +608,7 @@ For this particular run of the experiment,
 the K-S test cannot reject the null hypothesis of uniformity
 ($p = `r round(ks.test(p_values_true, punif)$p.value, 3)`$).
 
-```{r correctness-true, echo=FALSE, fig.cap="Sorted p-values when comparing the five algorithms"}
+```{r correctness-true, echo=FALSE, fig.cap="CDF of the p-values when comparing the five algorithms"}
   p_values_true %>%
     ftable %>%
     as.data.frame %>%
