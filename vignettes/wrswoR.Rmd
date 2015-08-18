@@ -580,8 +580,8 @@ caught an implementation error in the *expj* algorithm
 that occurred only in the case $1 < s < n$.
 
 ```{r echo=FALSE}
-n <- 8
-s <- 5
+n <- 7
+s <- 4
 alpha <- 1.07
 N <- 1000
 M <- 3
@@ -592,7 +592,7 @@ probs <- wrswoR.benchmark::prob(alpha)
 p_values_true <- aggregated_prop_test(
   n,
   s,
-  probs$rexp(8),
+  probs$rexp(n),
   N,
   M,
   kimisc::nlist(sample_int_R, sample_int_rej, sample_int_rank, sample_int_crank, sample_int_expj))
