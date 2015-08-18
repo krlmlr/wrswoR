@@ -598,6 +598,16 @@ p_values_true <- aggregated_prop_test(
   kimisc::nlist(sample_int_R, sample_int_rej, sample_int_rank, sample_int_crank, sample_int_expj))
 ```
 
+```{r echo=FALSE}
+p_values_false <- aggregated_prop_test(
+  n,
+  s,
+  kimisc::nlist(probs$rexp(n), probs$uniform(n)),
+  N,
+  M,
+  sample_int_R)
+```
+
 \Cref{fig:correctness-true} shows the empirical CDF of the p-values
 when drawing $M = `r M`$ times $N = `r N`$ samples for $n = `r n`$,
 $s = `r s`$, and a geometric weight distribution with $\alpha = `r alpha`$.
@@ -607,9 +617,34 @@ and aligns very well with the observed p-values.
 For this particular run of the experiment,
 the K-S test cannot reject the null hypothesis of uniformity
 ($p = `r round(ks.test(p_values_true, punif)$p.value, 3)`$).
+As an example for a positive test, 
+\cref{fig:correctness-false} shows results for the same experiment,
+now comparing different weight distributions (uniform and geometric)
+using only the stock implementation.
+Despite the relatively small size of the experiment
+and the relative similarity of the weight distributions,
+the distribution of the p-values deviates substantially from the
+theoretical distribution.
+Here, the K-S test computes a much lower p-value
+($p = `r round(ks.test(p_values_false, punif)$p.value, 3)`$).
 
 ```{r correctness-true, echo=FALSE, fig.cap="CDF of the p-values when comparing the five algorithms"}
 p_values_true %>%
+  ftable %>%
+  as.data.frame %>%
+  rename(`p-value` = Freq) %>%
+  arrange(`p-value`) %>%
+  mutate(`Cumulative density` = (seq_along(`p-value`) - 1) / (length(`p-value`) - 1)) %>% 
+  ggplot(aes(y = `Cumulative density`, x = `p-value`, color = i, shape = j)) +
+  ggplot_base +
+  geom_point() +
+  geom_abline(slope = 1, intercept = 0, linetype = 3) +
+  coord_fixed()
+```
+
+
+```{r correctness-false, echo=FALSE, fig.cap="CDF of the p-values when comparing different weight distributions"}
+p_values_false %>%
   ftable %>%
   as.data.frame %>%
   rename(`p-value` = Freq) %>%
@@ -639,18 +674,8 @@ the 5%-quantiles of the p-values were between
 
 
 
-```{r echo=FALSE}
-p_values_false <- aggregated_prop_test(
-  10,
-  5,
-  kimisc::nlist(probs$rexp(10), probs$uniform(10)),
-  1000,
-  20,
-  sample_int_R)
-```
+- Perform tests with larger ranges: Accumulate KS-test p-values of p-values distribution
 
-- Perform tests with larger ranges: Accumulate 5%-quantiles of p-values distribution
-- Simulate implementation error (same algorithm, different distributions)
 
 
 # Conclusions and future work
