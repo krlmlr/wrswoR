@@ -564,9 +564,7 @@ of equal proportions (i.e., if all implementations are correct).
 On the other hand, if one of the algorithms is implemented incorrectly,
 the rejection rate for the null hypothesis will be large,
 and a substantial share of the p-values will be very close to 0.
-This can be tested with a Kolmogorov–Smirnov test against the uniform distribution
-and inspecting or recomputing those experiments with the lowest p-values
-for the K-S test.
+The p-values can be combined using Fisher's method.
 To reduce simulation effort,
 p-values resulting from different $(i,j)$
 or even from different $n$, $s$, and $p_i$ parameters can be pooled
