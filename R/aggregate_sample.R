@@ -1,15 +1,3 @@
-#' @export
-uniformity_model <- function(p_values) {
-  p_values_sorted <- sort(p_values)
-  length_diff <- length(p_values) - length(p_values_sorted)
-  if (length_diff > 0L) {
-    warning("Removed ", length_diff, " NA values.", call. = FALSE)
-  }
-  rank <- (seq_along(p_values_sorted) - 1) / (length(p_values_sorted) - 1L)
-
-  lm(p_values_sorted ~ rank + I(rank ^ 2))
-}
-
 prop_test_p_value <- function(trials) {
   force(trials)
   function(x) {
