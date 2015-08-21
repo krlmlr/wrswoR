@@ -546,7 +546,7 @@ computing the exact value of $\pi_{i,j}$ for large $j$
 seems to require considerable computational resources.
 Therefore, the value of $\pi_{i,j}$ is assumed unknown,
 and only the equality of the proportions is tested for the different algorithms
-using the \code{prop.test} function.
+using Fisher's exact test.
 The validation is performed as follows:
 
 - The parameters $n$, $s$, and $p_i$ are fixed.
