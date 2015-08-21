@@ -5,7 +5,7 @@ prop_test_p_value <- function(trials) {
     if (all(x == x[[1L]])) {
       1
     } else {
-      fisher.test(matrix(c(x, trials - x), ncol = 2), hybrid = TRUE, workspace = 1e6)$p.value
+      fisher.test(matrix(c(x, trials - x), ncol = 2), hybrid = TRUE, workspace = 1e7)$p.value
     }
   }
 }
