@@ -614,8 +614,8 @@ Different values of $i$ and $j$ are denoted with different colors and point shap
 The theoretical distribution is shown as a dotted line,
 and aligns very well with the observed p-values.
 For this particular run of the experiment,
-the K-S test cannot reject the null hypothesis of uniformity
-($p = `r round(ks.test(p_values_true, punif)$p.value, 3)`$).
+Fisher's combined probability test cannot reject the null hypothesis of uniformity
+($p = `r round(metap::sumlog(p_values_true)$p, 3)`$).
 As an example for a positive test, 
 \cref{fig:correctness-false} shows results for the same experiment,
 now comparing different weight distributions (uniform and geometric)
@@ -624,8 +624,8 @@ Despite the relatively small size of the experiment
 and the relative similarity of the weight distributions,
 the distribution of the p-values deviates substantially from the
 theoretical distribution.
-Here, the K-S test computes a much lower p-value
-($p = `r round(ks.test(p_values_false, punif)$p.value, 3)`$).
+Here, Fisher's method detects significant evidence against the null hypothesis
+($p = `r round(metap::sumlog(p_values_false)$p, 4)`$).
 
 ```{r correctness-true, echo=FALSE, fig.cap="CDF of the p-values when comparing the five algorithms"}
 p_values_true %>%
