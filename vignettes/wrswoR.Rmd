@@ -564,7 +564,8 @@ of equal proportions (i.e., if all implementations are correct).
 On the other hand, if one of the algorithms is implemented incorrectly,
 the rejection rate for the null hypothesis will be large,
 and a substantial share of the p-values will be very close to 0.
-The p-values can be combined using Fisher's method.
+The p-values can be combined using Fisher's method
+with the help of the \pkg{metap} package `r knitcitations::citep(citation("metap"))`.
 To reduce simulation effort,
 p-values resulting from different $(i,j)$
 or even from different $n$, $s$, and $p_i$ parameters can be pooled
