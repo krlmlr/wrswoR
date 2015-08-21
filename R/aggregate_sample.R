@@ -2,11 +2,14 @@ prop_test_p_value <- function(trials) {
   force(trials)
   function(x) {
     x <- as.vector(x)
-    if (all(x == x[[1L]])) {
-      1
-    } else {
-      fisher.test(matrix(c(x, trials - x), ncol = 2), hybrid = TRUE, workspace = 1e7)$p.value
-    }
+    y <- x[-1L]
+    xx <- x[[1L]]
+    sapply(
+      y,
+      function(yy) {
+        fisher.test(matrix(c(xx, yy, trials - xx, trials - yy), ncol = 2))$p.value
+      }
+    )
   }
 }
 
@@ -19,12 +22,11 @@ aggregated_prop_test <- function(n, size, probs, N, M, sample_int_funcs) {
     sample_int_funcs <- list(sample_int_funcs)
   }
 
-  trials <- rep(N, length(sample_int_funcs) * length(probs))
   ret <- raply(
     M,
     {
       as <- aggregated_sample(n, size, probs, N, sample_int_funcs)
-      apply(as, 3:4, prop_test_p_value(trials))
+      apply(as, 3:4, prop_test_p_value(N))
     },
     .drop = FALSE
   )
