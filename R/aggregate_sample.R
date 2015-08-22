@@ -22,15 +22,21 @@ aggregated_prop_test <- function(n, size, probs, N, M, sample_int_funcs) {
     sample_int_funcs <- list(sample_int_funcs)
   }
 
+  nm <- NULL
+
   ret <- raply(
     M,
     {
       as <- aggregated_sample(n, size, probs, N, sample_int_funcs)
+      if (is.null(nm)) {
+        nm <<- sapply(dimnames(as)[1L:2L], `[`, -1L)
+        nm <<- nm[vapply(nm, length, integer(1L)) > 0L]
+      }
       apply(as, 3:4, prop_test_p_value(N))
     },
     .drop = FALSE
   )
-  dimnames(ret) <- c(list(m = seq_len(M)), dimnames(ret)[-1L])
+  dimnames(ret) <- c(list(m = seq_len(M)), nm, dimnames(ret)[-1L:-2L])
   ret
 }
 
