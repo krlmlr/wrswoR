@@ -32,7 +32,11 @@ aggregated_prop_test <- function(n, size, probs, N, M, sample_int_funcs) {
         nm <<- sapply(dimnames(as)[1L:2L], `[`, -1L)
         nm <<- nm[vapply(nm, length, integer(1L)) > 0L]
       }
-      apply(as, 3:4, prop_test_p_value(N))
+
+      # need aaply here for .drop = FALSE
+      ret <- plyr::aaply(as, 3:4, prop_test_p_value(N), .drop = FALSE)
+      ret <- aperm(ret, c(3, 1, 2))
+      ret
     },
     .drop = FALSE
   )
