@@ -96,7 +96,7 @@ aggregated_sample_one <- function(n, size, prob, N, sample_int_func) {
     },
     .drop = FALSE)
   ret <- t(ret)
-  stopifnot(ret[nrow(ret),] == n)
+  stopifnot(ret[nrow(ret),] == N)
   ret <- ret[-nrow(ret),]
   ret
 }
