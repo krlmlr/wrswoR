@@ -7,6 +7,7 @@ prop_test_p_value <- function(trials) {
     sapply(
       y,
       function(yy) {
+        #prop.test(c(xx, yy), c(trials, trials))$p.value
         fisher.test(matrix(c(xx, yy, trials - xx, trials - yy), ncol = 2))$p.value
       }
     )
