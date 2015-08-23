@@ -29,6 +29,7 @@ aggregated_prop_test <- function(n, size, probs, N, M, sample_int_funcs) {
     M,
     {
       as <- aggregated_sample(n, size, probs, N, sample_int_funcs)
+      stopifnot(length(dim(as)) == 4L)
       if (is.null(nm)) {
         nm <<- sapply(dimnames(as)[1L:2L], `[`, -1L)
         nm <<- nm[vapply(nm, length, integer(1L)) > 0L]
