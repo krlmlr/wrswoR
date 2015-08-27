@@ -1,17 +1,5 @@
-prop_test_p_value <- function(trials) {
-  force(trials)
-  function(x) {
-    x <- as.vector(x)
-    y <- x[-1L]
-    xx <- x[[1L]]
-    sapply(
-      y,
-      function(yy) {
-        #prop.test(c(xx, yy), c(trials, trials))$p.value
-        fisher.test(matrix(c(xx, yy, trials - xx, trials - yy), ncol = 2))$p.value
-      }
-    )
-  }
+chisq_test_p_value <- function(m) {
+  chisq.test(m)$p.value
 }
 
 #' @export
@@ -35,14 +23,13 @@ aggregated_prop_test <- function(n, size, probs, N, M, sample_int_funcs) {
         nm <<- nm[vapply(nm, length, integer(1L)) > 0L]
       }
 
-      # need aaply here for .drop = FALSE
-      ret <- plyr::aaply(as, 3:4, prop_test_p_value(N), .drop = FALSE)
-      ret <- aperm(ret, c(3, 1, 2))
+      # need aaply here for collapsing when calling chisq_test_p_value
+      ret <- plyr::aaply(as, 4, chisq_test_p_value)
       ret
     },
     .drop = FALSE
   )
-  dimnames(ret) <- c(list(m = seq_len(M)), nm, dimnames(ret)[-1L:-2L])
+  dimnames(ret) <- list(m = seq_len(M), j = dimnames(ret)[[2]])
   ret
 }
 
@@ -88,7 +75,7 @@ aggregated_sample_one <- function(n, size, prob, N, sample_int_func) {
   rs <- repeated_sample(n, size, prob, N, sample_int_func)
   sln <- seq_len(n)
   ret <- apply(rs, 2, function(x) table(factor(x, levels = sln)))
-  dimnames(ret) <- c(list(i = seq_len(n)), dimnames(ret)[2])
+  names(dimnames(ret)) <- c("i", "j")
   ret
 }
 
