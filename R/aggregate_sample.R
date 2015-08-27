@@ -88,15 +88,7 @@ aggregated_sample_one <- function(n, size, prob, N, sample_int_func) {
   rs <- repeated_sample(n, size, prob, N, sample_int_func)
   sln <- seq_len(n)
   ret <- apply(rs, 2, function(x) table(factor(x, levels = sln)))
-  ret <- plyr::aaply(
-    ret,
-    2,
-    cumsum,
-    .drop = FALSE)
-  ret <- t(ret)
   dimnames(ret) <- c(list(i = seq_len(n)), dimnames(ret)[2])
-  stopifnot(ret[nrow(ret),] == N)
-  ret <- ret[-nrow(ret),, drop = FALSE]
   ret
 }
 
