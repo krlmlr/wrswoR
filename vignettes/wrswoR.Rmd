@@ -38,6 +38,11 @@ vignette: >
 
 ```{r echo=FALSE, message=FALSE}
 library(wrswoR)
+requireNamespace("tidyr")
+requireNamespace("plyr")
+requireNamespace("dplyr")
+requireNamespace("cluster")
+requireNamespace("magrittr")
 import::from(tidyr, spread, gather, gather_)
 import::from(plyr, ldply)
 import::from(dplyr, filter, mutate, select, group_by, summarize, ungroup, tbl_df,
