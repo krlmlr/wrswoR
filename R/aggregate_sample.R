@@ -1,5 +1,6 @@
 chisq_test_p_value <- function(m) {
-  chisq.test(m)$p.value
+  p_value <- Deducer::likelihood.test(m)$p.value
+  p_value
 }
 
 #' @export
