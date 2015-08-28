@@ -1,5 +1,6 @@
 chisq_test_p_value <- function(m) {
-  p_value <- Deducer::likelihood.test(m)$p.value
+  csm <- colSums(m)
+  p_value <- chisq.test(m[, csm != 0])$p.value
   p_value
 }
 
