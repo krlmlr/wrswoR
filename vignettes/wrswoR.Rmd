@@ -555,11 +555,9 @@ The validation is performed as follows:
   (denoted by $f_{i,j}$) is computed.
 - The counts (one per algorithm, $f_{i,j}$ successes out of $N$ trials)
   are tested for equality of proportions, yielding a p-value for each tuple $(i, j)$.
-- This entire procedure is repeated $M$ times,
-  this results in $M$ p-values for each tuple $(i, j)$.
 
 In this setting, for fixed $(i, j)$, the p-value is itself a random variable
-that is distributed uniformly over $[0, 1]$ under the null hypothesis
+that is distributed uniformly over $(0, 1]$ under the null hypothesis
 of equal proportions (i.e., if all implementations are correct).
 On the other hand, if one of the algorithms is implemented incorrectly,
 the rejection rate for the null hypothesis will be large,
