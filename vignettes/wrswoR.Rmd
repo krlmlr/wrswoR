@@ -38,17 +38,12 @@ vignette: >
 
 ```{r echo=FALSE, message=FALSE}
 library(wrswoR)
-requireNamespace("tidyr")
-requireNamespace("plyr")
-requireNamespace("dplyr")
-requireNamespace("cluster")
-requireNamespace("magrittr")
-import::from(tidyr, spread, gather, gather_)
-import::from(plyr, ldply)
+import::from(tidyr, spread, gather, gather_, .library = .libPaths())
+import::from(plyr, ldply, .library = .libPaths())
 import::from(dplyr, filter, mutate, select, group_by, summarize, ungroup, tbl_df,
-             rename, arrange)
+             rename, arrange, mutate_each, funs, .library = .libPaths())
 import::from(cluster, daisy, .library = .libPaths())
-import::from(magrittr, "%>%")
+import::from(magrittr, "%>%", .library = .libPaths())
 library(ggplot2)
 set.seed(20150710L)
 knitr::opts_chunk$set(cache=TRUE)
