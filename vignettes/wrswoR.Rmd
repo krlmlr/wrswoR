@@ -576,44 +576,26 @@ A similar procedure (using a visual representation with violin plots)
 caught an implementation error in the *expj* algorithm
 that occurred only in the case $1 < s < n$.
 
-```{r echo=FALSE}
+```{r def-plot-p-values, echo=FALSE}
 n <- 7
 s <- 4
-alpha <- 1.07
-N <- 1000
-M <- 3
-```
+alpha <- 1.08
+N <- 2 ** 23
 
-```{r echo=FALSE}
-probs <- wrswoR.benchmark::prob(alpha)
-p_values_true <- aggregated_prop_test(
-  n,
-  s,
-  probs$rexp(n),
-  N,
-  M,
-  kimisc::nlist(sample_int_R, sample_int_rej, sample_int_rank, sample_int_crank, sample_int_expj))
-```
+p_values_true <- wrswoR.benchmark::p_values_7 %>% filter(N == global(N), s == global(s), skew == 1)
 
-```{r echo=FALSE}
-p_values_false <- aggregated_prop_test(
-  n,
-  s,
-  kimisc::nlist(probs$rexp(n), probs$uniform(n)),
-  N,
-  M,
-  sample_int_R)
+p_values_false <- wrswoR.benchmark::p_values_7 %>% filter(N == global(N), s == global(s), skew == 1.005)
 ```
 
 \Cref{fig:correctness-true} shows the empirical CDF of the p-values
-when drawing $M = `r M`$ times $N = `r N`$ samples for $n = `r n`$,
+when drawing $N = `r paste0("2^{", log2(N), "}")`$ samples for $n = `r n`$,
 $s = `r s`$, and a geometric weight distribution with $\alpha = `r alpha`$.
 Different values of $i$ and $j$ are denoted with different colors and point shapes.
 The theoretical distribution is shown as a dotted line,
 and aligns very well with the observed p-values.
 For this particular run of the experiment,
 Fisher's combined probability test cannot reject the null hypothesis of uniformity
-($p = `r round(metap::sumlog(p_values_true)$p, 3)`$).
+($p = `r round(metap::sumlog(p_values_true$p_value)$p, 3)`$).
 As an example for a positive test, 
 \cref{fig:correctness-false} shows results for the same experiment,
 now comparing different weight distributions (uniform and geometric)
@@ -623,16 +605,15 @@ and the relative similarity of the weight distributions,
 the distribution of the p-values deviates substantially from the
 theoretical distribution.
 Here, Fisher's method detects significant evidence against the null hypothesis
-($p = `r round(metap::sumlog(p_values_false)$p, 4)`$).
+($p = `r round(metap::sumlog(p_values_false$p_value)$p, 4)`$).
 
-```{r correctness-true, echo=FALSE, fig.cap="CDF of the p-values when comparing the five algorithms"}
+```{r correctness-true, echo=FALSE, dependson="def-plot-p-values", fig.cap="CDF of the p-values when comparing the five algorithms"}
 p_values_true %>%
-  ftable %>%
-  as.data.frame %>%
-  rename(`p-value` = Freq) %>%
+  rename(`p-value` = p_value) %>%
   arrange(`p-value`) %>%
   mutate(`Cumulative density` = (seq_along(`p-value`) - 1) / (length(`p-value`) - 1)) %>% 
-  ggplot(aes(y = `Cumulative density`, x = `p-value`, color = i, shape = j)) +
+  mutate_each(funs(factor), i, j) %>% 
+  ggplot(aes(y = `Cumulative density`, x = `p-value`, color = i)) +
   ggplot_base +
   geom_point() +
   geom_abline(slope = 1, intercept = 0, linetype = 3) +
@@ -640,13 +621,12 @@ p_values_true %>%
 ```
 
 
-```{r correctness-false, echo=FALSE, fig.cap="CDF of the p-values when comparing different weight distributions"}
+```{r correctness-false, echo=FALSE, dependson="def-plot-p-values", fig.cap="CDF of the p-values when comparing different weight distributions"}
 p_values_false %>%
-  ftable %>%
-  as.data.frame %>%
-  rename(`p-value` = Freq) %>%
+  rename(`p-value` = p_value) %>%
   arrange(`p-value`) %>%
   mutate(`Cumulative density` = (seq_along(`p-value`) - 1) / (length(`p-value`) - 1)) %>% 
+  mutate_each(funs(factor), i, j) %>% 
   ggplot(aes(y = `Cumulative density`, x = `p-value`, color = i, shape = j)) +
   ggplot_base +
   geom_point() +
@@ -654,18 +634,18 @@ p_values_false %>%
   coord_fixed()
 ```
 
-```{r echo=FALSE}
-p_values_df <- wrswoR.benchmark::p_values_df %>%
-  filter(!(prob %in% c("linear_double", "linear_half")))
+```{r}
+#p_values_df <- wrswoR.benchmark::p_values_df( %>%
+#  filter(!(prob_distr %in% c("linear_double", "linear_half")))
 
-p_values_df_false <- wrswoR.benchmark::p_values_df_false
+#p_values_df_false <- wrswoR.benchmark::p_values_df_false
 ```
 
-An exhaustive test for all
-$n \in \{`r min(as.numeric(wrswoR.benchmark::p_values_df$n))`, \ldots,
-`r max(as.numeric(wrswoR.benchmark::p_values_df$n))`\}$,
-all $s \in \{1, \ldots, n\}$
-and all probability distributions discussed above (with $\alpha = 1.07$),
+An exhaustive test for all algorithms and all $(i, j)$ was also carried out.
+For all $n \in \{`r 2`, \ldots,
+`r 80`\}$,
+a fraction of  $s \in \{1, \ldots, n\}$
+and all probability distributions discussed above (with $\alpha = 1.08$),
 the p-values
 the 5%-quantiles of the p-values were between 
 
