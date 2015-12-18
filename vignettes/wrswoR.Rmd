@@ -396,19 +396,6 @@ break_even <-
 
 
 ```{r echo=FALSE}
-probs <- wrswoR.benchmark::prob(1.007)
-
-prob_data <- ldply(
-  probs,
-  function(f) {
-    y <- f(N)
-    xi <- round(seq.int(1, N, length.out = 271*3))
-    data.frame(x=xi, y=prop.table(y[xi]))
-  }
-)
-```
-
-```{r echo=FALSE}
 ggplot_perf_base <-
   ggplot_base %>%
   c(list(
