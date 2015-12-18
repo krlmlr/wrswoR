@@ -657,8 +657,6 @@ the 5%-quantiles of the p-values were between
 
 
 
-- Perform tests with larger ranges: Accumulate KS-test p-values of p-values distribution
-
 The p-values can be combined using Fisher's method
 with the help of the \pkg{metap} package `r knitcitations::citep(citation("metap"))`.
 To reduce simulation effort,
