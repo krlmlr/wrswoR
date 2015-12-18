@@ -581,31 +581,33 @@ relative differences increasing between 0% and 1%.
 ```{r def-plot-p-values, echo=FALSE}
 n <- 7
 s <- 4
+skew <- 1.0025
 alpha <- 1.08
 N <- 2 ** 23
 
-p_values_true <- wrswoR.benchmark::p_values_7 %>% filter(N == global(N), s == global(s), skew == 1)
+p_values_true <- wrswoR.benchmark::p_values_7 %>% filter(N == global(N), s == global(s), skew == 1, func == "expj")
 
-p_values_false <- wrswoR.benchmark::p_values_7 %>% filter(N == global(N), s == global(s), skew == 1.005)
+p_values_false <- wrswoR.benchmark::p_values_7 %>% filter(N == global(N), s == global(s), skew == global(skew))
 ```
 
-\Cref{fig:correctness-true} shows the empirical CDF of the p-values
-when drawing $N = `r paste0("2^{", log2(N), "}")`$ samples for $n = `r n`$,
-$s = `r s`$, and a geometric weight distribution with $\alpha = `r alpha`$.
+\Cref{fig:correctness-true} shows a Schweder plot @Schweder (essentially
+a transposed empirical CDF) of the p-values resulting from an experiment that
+draws $N = `r paste0("2^{", log2(N), "}")`$ samples for $n = `r n`$,
+$s = `r s`$, and a geometric weight distribution with $\alpha = `r alpha`$,
+using all five algorithms.
 Different values of $i$ and $j$ are denoted with different colors and point shapes.
 The theoretical distribution is shown as a dotted line,
 and aligns very well with the observed p-values.
 For this particular run of the experiment,
 Fisher's combined probability test cannot reject the null hypothesis of uniformity
 ($p = `r round(metap::sumlog(p_values_true$p_value)$p, 3)`$).
-As an example for a positive test, 
+As an example for a positive test,
 \cref{fig:correctness-false} shows results for the same experiment,
-now comparing different weight distributions (uniform and geometric)
-using only the stock implementation.
-Despite the relatively small size of the experiment
-and the relative similarity of the weight distributions,
+now substituting the stock implementation with a faulty one with
+$\text{skew} = `r (skew - 1) * 100`\%$.
+Despite the relative similarity of the weight distributions,
 the distribution of the p-values deviates substantially from the
-theoretical distribution.
+uniform distribution.
 Here, Fisher's method detects significant evidence against the null hypothesis
 ($p = `r round(metap::sumlog(p_values_false$p_value)$p, 4)`$).
 
@@ -613,27 +615,27 @@ Here, Fisher's method detects significant evidence against the null hypothesis
 p_values_true %>%
   rename(`p-value` = p_value) %>%
   arrange(`p-value`) %>%
-  mutate(`Cumulative density` = (seq_along(`p-value`) - 1) / (length(`p-value`) - 1)) %>% 
+  mutate(`Rank` = seq_along(`p-value`)) %>% 
   mutate_each(funs(factor), i, j) %>% 
-  ggplot(aes(y = `Cumulative density`, x = `p-value`, color = i)) +
+  ggplot(aes(x = `Rank`, y = `p-value`, color = i, shape = j)) +
   ggplot_base +
   geom_point() +
-  geom_abline(slope = 1, intercept = 0, linetype = 3) +
-  coord_fixed()
+  geom_abline(slope = 1 / nrow(p_values_true), intercept = 0, linetype = 3) +
+  coord_fixed(ratio = nrow(p_values_true))
 ```
 
 
-```{r correctness-false, echo=FALSE, dependson="def-plot-p-values", fig.cap="CDF of the p-values when comparing different weight distributions"}
+```{r correctness-false, echo=FALSE, dependson="def-plot-p-values", fig.cap="CDF of the p-values when comparing five algorithms, where one of which uses different weights"}
 p_values_false %>%
   rename(`p-value` = p_value) %>%
   arrange(`p-value`) %>%
-  mutate(`Cumulative density` = (seq_along(`p-value`) - 1) / (length(`p-value`) - 1)) %>% 
+  mutate(`Rank` = seq_along(`p-value`)) %>% 
   mutate_each(funs(factor), i, j) %>% 
-  ggplot(aes(y = `Cumulative density`, x = `p-value`, color = i, shape = j)) +
+  ggplot(aes(x = `Rank`, y = `p-value`, color = i, shape = j)) +
   ggplot_base +
   geom_point() +
-  geom_abline(slope = 1, intercept = 0, linetype = 3) +
-  coord_fixed()
+  geom_abline(slope = 1 / nrow(p_values_false), intercept = 0, linetype = 3) +
+  coord_fixed(ratio = nrow(p_values_false))
 ```
 
 ```{r}
