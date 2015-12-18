@@ -27,6 +27,7 @@ preamble: >
   \usepackage[draft]{fixme}
   \usepackage[capitalize]{cleveref}
   \usepackage{ragged2e}
+  \usepackage{mathtools}
 output: rticles::jss_article
 bibliography: [ my.bib, knitcitations.bib ]
 vignette: >
