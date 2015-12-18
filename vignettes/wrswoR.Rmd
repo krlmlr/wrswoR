@@ -638,13 +638,6 @@ p_values_false %>%
   coord_fixed(ratio = nrow(p_values_false))
 ```
 
-```{r}
-#p_values_df <- wrswoR.benchmark::p_values_df( %>%
-#  filter(!(prob_distr %in% c("linear_double", "linear_half")))
-
-#p_values_df_false <- wrswoR.benchmark::p_values_df_false
-```
-
 An exhaustive test for all algorithms and all $(i, j)$ was also carried out.
 For all $n \in \{`r 2`, \ldots,
 `r 80`\}$,
