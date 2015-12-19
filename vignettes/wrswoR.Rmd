@@ -159,7 +159,7 @@ unless $s \gg n$.
 In the *without replacement* case, each selected item is removed from the
 collection of candidate items.
 Again, the uniform case is much simpler.
-An unordered array of size $n$, initialized with the natural sequence,
+An array of size $n$, initialized with the natural sequence,
 can be used for storing the candidate items.
 The selection of the item corresponds to choosing an index at random in this
 unordered array.
