@@ -151,7 +151,7 @@ is also the lower bound for arbitrary probability distributions.
 It is easy to see that the entire probability vector must be read at least once.
 Hence, for nonuniform probabilities,
 the run time is at least $O(n + s)$, and the input size $n$ will dominate
-unless $s \gg O(n)$.
+unless $s \gg n$.
 
 
 ## Without replacement
