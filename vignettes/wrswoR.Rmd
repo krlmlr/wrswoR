@@ -680,7 +680,7 @@ further disaggregated by $n$.
 - A few dark spots with correct implementation, but not more than expected (each meta-analysis is an analysis in itself)
 
 
-```{r comprehensive, echo=FALSE, dependson=character(), fig.cap="Combining p-values for a comprehensive test"}
+```{r comprehensive, echo=FALSE, fig.cap="Combining p-values for a comprehensive test"}
 wrswoR.benchmark::p_values_agg_agg %>%
   ggplot(aes(x=factor(N), y=interaction(func, skew), fill=p_value)) +
   ggplot_base +
@@ -688,7 +688,7 @@ wrswoR.benchmark::p_values_agg_agg %>%
   scale_fill_continuous(limits = c(1e-4, 1), trans = "log10")
 ```
 
-```{r comprehensive-true, echo=FALSE, dependson=character(), fig.cap="CDF of the p-values when comparing five algorithms, where one of which uses different weights"}
+```{r comprehensive-true, echo=FALSE, fig.cap="CDF of the p-values when comparing five algorithms, where one of which uses different weights"}
 wrswoR.benchmark::p_values_agg %>%
   filter(skew == 1 & func != "R") %>%
   ggplot(aes(x=factor(N), y=n, fill=p_value)) +
@@ -699,7 +699,7 @@ wrswoR.benchmark::p_values_agg %>%
   facet_wrap(~func)
 ```
 
-```{r comprehensive-false, echo=FALSE, dependson=character(), fig.cap="CDF of the p-values when comparing five algorithms, where one of which uses different weights"}
+```{r comprehensive-false, echo=FALSE, fig.cap="CDF of the p-values when comparing five algorithms, where one of which uses different weights"}
 wrswoR.benchmark::p_values_agg %>%
   filter(func == "R") %>%
   ggplot(aes(x=factor(N), y=n, fill=p_value)) +
