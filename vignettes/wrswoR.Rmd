@@ -14,7 +14,15 @@ title:
   # For running headers, if needed
   short:     "Accelerating weighted random sampling without replacement"
 abstract: >
-  The abstract of the article.
+  Random sampling from discrete populations is a central part of Monte-Carlo
+  simulations. (What other applications?)
+  This article briefly introduces weighted and unweighted sampling with and
+  without replacement.
+  The case of weighted sampling without replacement appears to be most difficult
+  to implement, which might be one reason why the \proglang{R} implementation
+  performs slowly for large input.
+  Four alternative implementations for the case of weighted
+  sampling without replacement are presented and validated.
 keywords:
   # at least one keyword must be supplied
   formatted: [keywords, not capitalized, "\\proglang{R}"]
