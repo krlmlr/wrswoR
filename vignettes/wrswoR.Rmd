@@ -251,7 +251,7 @@ of the algorithm.)
 For a uniform distribution, it can be shown that, with
 $\text{expected.items}(n, s) \geq n (H_n - H_{n-s}) = n \sum_{i=n-s+1}^n \frac{1}{i}$,
 the result has $s$ unique items in expectation.
-\fxnote{Expected amortized run time? Look it up in a reference}
+\fxwarning{Expected amortized run time? Look it up in a reference}
 With $\text{expected.items}(n, s) \equiv 1$,
 \cref{alg:sample,alg:sample-rej} are in fact identical.
 A formal proof for the more interesting case $\text{expected.items}(n, s) > 1$
@@ -269,10 +269,10 @@ and perform a partial sort to find the indexes of the $s$ smallest items.
 that operates on the logarithmic scale and uses multiplication
 instead of exponentiation
 for increased numeric stability.
-\fxnote{Describe transformation}
+\fxwarning{Describe transformation}
 In line \ref{alg:sample-rank:sample}, $\text{Exp}(1)$ refers to i.i.d.\ samples
 from the exponential distribution with rate 1.
-\fxnote{Logarithm of the uniform}
+\fxwarning{Logarithm of the uniform}
 
 \begin{algorithm}
   \caption{$\text{sample.rank}(n, s, p_i)$}
@@ -296,7 +296,7 @@ or even in $O(n)$ for floating-point numbers
 [@terdiman_radix_2000].
 However, generating random variates is computationally expensive,
 and for $s \ll n$ this may dominate.
-\fxnote{Parallelize}.
+\fxwarning{Parallelize}.
 To overcome this issue in this case,
 @efraimidis_weighted_2006
 describe *reservoir sampling with exponential jumps* -- 
@@ -681,6 +681,7 @@ further disaggregated by $n$.
 - Correct implementations are all blue, faulty implementations turn grey sooner or later.
 - For small skew cannot conclusively disprove correctness for all $n$, need more data.
 - A few dark spots with correct implementation, but not more than expected (each meta-analysis is an analysis in itself)
+- Show which tiles in the heatmap correspond to the plots
 
 
 ```{r comprehensive, echo=FALSE, fig.cap="Combining p-values for a comprehensive test"}
