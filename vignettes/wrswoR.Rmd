@@ -178,7 +178,10 @@ that can be initialized in $O(n)$ time and supports
 simultaneous lookup and update in $O(\log n)$ time.
 
 \proglang{R} offers efficient implementations for all cases except
-non-uniform sampling without replacement.
+non-uniform sampling without replacement,
+the latter requires $O(n \cdot s)$ run time,
+which is equivalent to $O(n^2)$ if $s = O(n)$.
+
 
 
 \fxwarning{introduce next section}
