@@ -84,6 +84,7 @@ The paper concludes with suggestions for incorporating the findings into base
 
 # Sampling from discrete populations
 
+\fxwarning{Different from Tillé's sampling}
 We use \cref{alg:sample} as a definition of sampling from discrete populations
 with or without replacement from arbitrary (including uniform) probability distributions.
 From this definition, the following can be observed:
