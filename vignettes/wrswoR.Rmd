@@ -535,8 +535,9 @@ computing the exact value of $\pi_{i,j}$ for large $j$
 seems to require considerable computational resources.
 Therefore, the value of $\pi_{i,j}$ is assumed unknown,
 and only the equality of the proportions is tested for the different algorithms
-using Fisher's exact test.
-The validation is performed as follows:
+using a two-sided test for equal proportions (essentially a Chi-square test,
+implemented by the `prop.test()` function).
+The correctness check is performed as follows:
 
 - The parameters $n$, $s$, and $p_i$ are fixed.
 - For all algorithms, $N$ random samples without replacement are drawn and recorded.
@@ -566,18 +567,8 @@ $$p_i^\prime \coloneqq p_i \cdot \left(1 + \text{skew} \cdot \frac{i - 1}{n - 1}
 where a skew of zero means no change, and a skew of 1% corresponds to
 relative differences increasing between 0% and 1%.
 
-
-- Results of comparing all five implementations at once are inconclusive
-- Implement pairwise comparison
-    - Comparing R vs. R worked -- branch feature/pairwise in wrswoR.correctness
-    - Need to compare R with all other methods
-        - Need more space, installed Git LFS on gitlab.ivt
-        - Converted repos to LFS using BFG
-        - Pushed sample and correctness repos using LFS to gitlab.ivt
-        - Already implemented git rsync to sync Git repos to server machines
-    - Run experiments
-        - Fisher's exact test is better (produces lower p-values, has greater power power), but way too slow
-          (needs density of hypergeometric for support of size in the order of the cell's count)
+- Fisher's exact test is better (produces lower p-values, has greater power power), but way too slow
+  (needs density of hypergeometric for support of size in the order of the cell's count)
 
 ```{r def-plot-p-values, echo=FALSE}
 n <- 7
