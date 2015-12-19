@@ -583,9 +583,9 @@ n <- 7
 s <- 4
 skew <- 1.0025
 alpha <- 1.08
-N <- 2 ** 23
+N <- 2 ** 24
 
-p_values_true <- wrswoR.benchmark::p_values_7 %>% filter(N == global(N), s == global(s), skew == 1, func == "expj")
+p_values_true <- wrswoR.benchmark::p_values_7 %>% filter(N == global(N), s == global(s), skew == 1, func == "crank")
 
 p_values_false <- wrswoR.benchmark::p_values_7 %>% filter(N == global(N), s == global(s), skew == global(skew))
 ```
@@ -598,8 +598,12 @@ using all five algorithms.
 Different values of $i$ and $j$ are denoted with different colors and point shapes.
 The theoretical distribution is shown as a dotted line,
 and aligns very well with the observed p-values.
+Fisher's combined probability test is a meta-analysis method that combines
+multiple p-values (from different but related studies) into one;
+it is implemented
+in the \pkg{metap} package `r knitcitations::citep(citation("metap"))`.
 For this particular run of the experiment,
-Fisher's combined probability test cannot reject the null hypothesis of uniformity
+Fisher's method cannot reject the null hypothesis of uniformity
 ($p = `r round(metap::sumlog(p_values_true$p_value)$p, 3)`$).
 As an example for a positive test,
 \cref{fig:correctness-false} shows results for the same experiment,
@@ -638,25 +642,72 @@ p_values_false %>%
   coord_fixed(ratio = nrow(p_values_false))
 ```
 
-An exhaustive test for all algorithms and all $(i, j)$ was also carried out.
-For all $n \in \{`r 2`, \ldots,
-`r 80`\}$,
-a fraction of  $s \in \{1, \ldots, n\}$
-and all probability distributions discussed above (with $\alpha = 1.08$),
-the p-values
-the 5%-quantiles of the p-values were between 
+A fairly comprehensive test for
+all $n \in \{
+`r wrswoR.benchmark::p_values_agg$n %>% range %>% paste(collapse = ", \\dots")`
+\}$,
+a subset of $s \in \{1, \ldots, n\}$
+and all $(i, j)$ was also carried out.
+For each combination, the cell frequencies $f_{i,j}$ were collected for all new
+algorithms, and the stock implementation with and without altered probabilities
+(using $\text{skew}$ values between
+$`r 100 * (min(wrswoR.benchmark::p_values_agg$skew[wrswoR.benchmark::p_values_agg$skew > 1]) - 1)` \%$
+and
+$`r 100 * (max(wrswoR.benchmark::p_values_agg$skew) - 1)` \%$),
+for $N$ ranging from $2^`r log2(min(wrswoR.benchmark::p_values_agg$N))`$ to
+$2^`r log2(max(wrswoR.benchmark::p_values_agg$N))`$ (only powers of $2$).
+Each cell frequency was compared to that of the stock implementation.
+This resulted in around \num{5e8} p-values, which were again
+combined using Fisher's method.
+
+\Cref{fig:comprehensive} shows the results of the meta-analysis
+separately for each $N$ and for each (supposedly correct or faulty)
+implementation.
+Comparing the stock implementation to itself resulted in a p-value of almost 1
+for all $N$, the same holds for all new algorithms.
+On the other hand, all skews tested led to strong rejection of the correctness
+hypothesis (p-value effectively 0) sooner or later; as expected,
+the smaller the skew, the larger the $N$ where rejection occurs.
+This comparison is less sensitive to implementation errors that occur only for
+specific arguments
+(e.g., if an implementation behaves as expected except if $n$ is a power of 2).
+\Cref{fig:comprehensive-true,fig:comprehensive-false} demonstrate p-values
+further disaggregated by $n$.
+
+- Correct implementations are all blue, faulty implementations turn grey sooner or later.
+- For small skew cannot conclusively disprove correctness for all $n$, need more data.
+- A few dark spots with correct implementation, but not more than expected (each meta-analysis is an analysis in itself)
 
 
+```{r comprehensive, echo=FALSE, dependson=character(), fig.cap="Combining p-values for a comprehensive test"}
+wrswoR.benchmark::p_values_agg_agg %>%
+  ggplot(aes(x=factor(N), y=interaction(func, skew), fill=p_value)) +
+  ggplot_base +
+  geom_tile() +
+  scale_fill_continuous(limits = c(1e-4, 1), trans = "log10")
+```
 
+```{r comprehensive-true, echo=FALSE, dependson=character(), fig.cap="CDF of the p-values when comparing five algorithms, where one of which uses different weights"}
+wrswoR.benchmark::p_values_agg %>%
+  filter(skew == 1 & func != "R") %>%
+  ggplot(aes(x=factor(N), y=n, fill=p_value)) +
+  ggplot_base +
+  geom_tile() +
+  scale_y_continuous(expand = c(0, 0)) +
+  scale_fill_continuous(limits = c(1e-4, 1), trans = "log10") +
+  facet_wrap(~func)
+```
 
-
-The p-values can be combined using Fisher's method
-with the help of the \pkg{metap} package `r knitcitations::citep(citation("metap"))`.
-To reduce simulation effort,
-p-values resulting from different $(i,j)$
-or even from different $n$, $s$, and $p_i$ parameters can be pooled
-before testing uniformity.
-
+```{r comprehensive-false, echo=FALSE, dependson=character(), fig.cap="CDF of the p-values when comparing five algorithms, where one of which uses different weights"}
+wrswoR.benchmark::p_values_agg %>%
+  filter(func == "R") %>%
+  ggplot(aes(x=factor(N), y=n, fill=p_value)) +
+  ggplot_base +
+  geom_tile() +
+  scale_y_continuous(expand = c(0, 0)) +
+  scale_fill_continuous(limits = c(1e-4, 1), trans = "log10") +
+  facet_wrap(~skew, ncol = 4)
+```
 
 
 
@@ -667,6 +718,12 @@ before testing uniformity.
 - Faster heap (g-heap?)
 - Generic C library
 - Allow termination of loop in R
+- Test more failure modes
+
+This would have been much more difficult without the \pkg{BatchJobs} and
+\pkg{BatchExperiment} packages
+`r knitcitations::citep(c(citation("BatchJobs"), citation("BatchExperiments")))`.
+
 
 # References {.unnumbered}
 
