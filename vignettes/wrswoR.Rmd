@@ -25,8 +25,8 @@ abstract: >
   sampling without replacement are presented and validated.
 keywords:
   # at least one keyword must be supplied
-  formatted: [keywords, not capitalized, "\\proglang{R}"]
-  plain:     [keywords, not capitalized, R]
+  formatted: [Weighted sampling, performance, meta-analysis, "\\proglang{R}"]
+  plain:     [Weighted sampling, performance, meta-analysis, R]
 preamble: >
   \usepackage{amsmath}
   \usepackage[USenglish]{babel}
@@ -77,7 +77,7 @@ with non-uniform probability distribution.
 
 First, different techniques for sampling from discrete populations are reviewed.
 Several implementations for sampling without replacement are discussed,
-this includes evaluation of correctness and runtime performance.
+this includes evaluation of runtime performance and correctness.
 The paper concludes with suggestions for incorporating the findings into base
 \proglang{R}.
 
@@ -107,44 +107,53 @@ From this definition, the following can be observed:
     \IF{not replace}\label{alg:sample:if}
       \STATE $n \leftarrow n - 1$
       \STATE remove item $k$ from $p_i$\label{alg:sample:remove}
-    \ENDIF
+    \ENDIF\label{alg:sample:if-end}
     \RETURN $k \oplus \text{sample}(n, s - 1, \text{replace}, p_i)$
   \end{algorithmic}
 \end{algorithm}
 
 - Sampling with replacement appears to be a simpler problem than sampling without
-  replacement, as the block starting at line \ref{alg:sample:if} is not required.
+  replacement, as the lines \ref{alg:sample:if} and
+  \ref{alg:sample:if-end} in \cref{alg:sample} are not required.
 - If all probabilities $p_i$ are equal, the selection probability $\mathrm{P}(i=k)$
   of the sampled items in line \ref{alg:sample:norm} always equals $\frac{1}{n}$
   and does not have to be computed explicitly.
 
 In this framework, sampling without replacement with non-uniform probabilities
-is the hardest problem.
-This intuition carries over to the more specialized algorithms that implement
+seems to be the hardest problem.
+This also holds for the more specialized algorithms that implement
 each case.
 
 
-## With replacement
+## Sampling with replacement
 
 The *with replacement* case corresponds to repeated selection of $k$ from *the same*
 discrete probability distribution.
-The uniform case can be implemented easily by scaling and discretizing the
-output of a random number generator.
-More work is needed in the non-uniform case.
+The uniform case can be implemented easily by transforming the
+output of a random number generator
+that returns uniformly distributed floating-point numbers in $[0, 1)$.
+(Implementing such a random number generator is nontrivial in itself
+but outside the scope of this paper.)
+
+More work is needed in the non-uniform case:
+Here, Walker's alias method [@Walker__1977], which is also used in \proglang{R},
+is an option.
 Assuming w.l.o.g.\ $\sum_j p_j = n$,
 it is possible to construct (in $O(n)$ time) a subdivision
 $(l_i, r_i, s_i)$ with $i, l_i, r_i \in \{1,\ldots,n\}$
-and $0 < s_i \leq 1$ so that $$p_i = \sum_{j:l_j=i}{s_j} + \sum_{j:r_j=i}{(1-s_j)}$$
-[@Walker__1977].
-Choosing an item requires sampling from $\{1,\ldots,n\}$ (to choose $i$) 
-and then sampling from $\left[0, 1\right)$ (to choose $l_i$ or $r_i$).
+and $0 < s_i \leq 1$ so that
+$$p_i = \sum_{j:l_j=i}{s_j} + \sum_{j:r_j=i}{(1-s_j)}.$$
+Sampling an item requires sampling from $\{1,\ldots,n\}$ (to choose $i$) 
+and then sampling from $\left[0, 1\right)$ (to choose $l_i$ or $r_i$):
+If the random number is less than $s_i$, item $l_i$ is chosen,
+otherwise item $r_i$.
 (Figuratively, the probability mass given by $p_i$
 is distributed over $n$ "boxes" so that the space in each box $i$
 is assigned to at most two items
 $l_i$ and $r_i$.
 The share occupied by item $l_i$ in box $i$ is given by $s_i$.
-Some items can be distributed over several boxes.
-Choosing an item means selecting a box and choosing between the two items in this box.)
+Some items may be distributed over several boxes.
+Sampling an item means selecting a box and choosing between the two items in this box.)
 
 The preprocessing time of $O(n)$ required for Walker's alias method
 is also the lower bound for arbitrary probability distributions.
@@ -152,9 +161,15 @@ It is easy to see that the entire probability vector must be read at least once.
 Hence, for nonuniform probabilities,
 the run time is at least $O(n + s)$, and the input size $n$ will dominate
 unless $s \gg n$.
+More recently, @Marsaglia_J.Stat.Softw._2004 have suggested a table-based method
+that seems to perform much faster in practice but expresses the probabilities
+as rationals with a fixed base and is therefore not usable directly
+for distributions with a large range.
+@Shmerling_StatisticsProbabilityLetters_2013 presents a comprehesive review
+and suggests a general method suitable even for quasi-infinite ranges.
 
 
-## Without replacement
+## Sampling without replacement
 
 In the *without replacement* case, each selected item is removed from the
 collection of candidate items.
