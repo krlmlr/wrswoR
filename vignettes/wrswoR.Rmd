@@ -606,8 +606,8 @@ p_values_true <- wrswoR.benchmark::p_values_7 %>% filter(N == global(N), s == gl
 p_values_false <- wrswoR.benchmark::p_values_7 %>% filter(N == global(N), s == global(s), skew == global(skew))
 ```
 
-\Cref{fig:correctness-true} shows a Schweder plot @Schweder (essentially
-a transposed empirical CDF) of the p-values resulting from an experiment that
+\Cref{fig:correctness-true} shows a Schweder plot [@Schweder_Biometrika_1982]
+of the p-values resulting from an experiment that
 draws $N = `r paste0("2^{", log2(N), "}")`$ samples for $n = `r n`$,
 $s = `r s`$, and a geometric weight distribution with $\alpha = `r alpha`$,
 using all five algorithms.
@@ -637,11 +637,11 @@ p_values_true %>%
   arrange(`p-value`) %>%
   mutate(`Rank` = seq_along(`p-value`)) %>% 
   mutate_each(funs(factor), i, j) %>% 
-  ggplot(aes(x = `Rank`, y = `p-value`, color = i, shape = j)) +
+  ggplot(aes(y = `Rank`, x = `p-value`, color = i, shape = j)) +
   ggplot_base +
   geom_point() +
-  geom_abline(slope = 1 / nrow(p_values_true), intercept = 0, linetype = 3) +
-  coord_fixed(ratio = nrow(p_values_true))
+  geom_abline(slope = nrow(p_values_true), intercept = 0, linetype = 3) +
+  coord_fixed(ratio = 1 / nrow(p_values_true))
 ```
 
 
@@ -651,11 +651,11 @@ p_values_false %>%
   arrange(`p-value`) %>%
   mutate(`Rank` = seq_along(`p-value`)) %>% 
   mutate_each(funs(factor), i, j) %>% 
-  ggplot(aes(x = `Rank`, y = `p-value`, color = i, shape = j)) +
+  ggplot(aes(y = `Rank`, x = `p-value`, color = i, shape = j)) +
   ggplot_base +
   geom_point() +
-  geom_abline(slope = 1 / nrow(p_values_false), intercept = 0, linetype = 3) +
-  coord_fixed(ratio = nrow(p_values_false))
+  geom_abline(slope = nrow(p_values_false), intercept = 0, linetype = 3) +
+  coord_fixed(ratio = 1 / nrow(p_values_false))
 ```
 
 A fairly comprehensive test for
