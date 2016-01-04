@@ -178,8 +178,10 @@ Again, the uniform case is much simpler.
 An array of size $n$, initialized with the natural sequence,
 can be used for storing the candidate items.
 The selection of the item corresponds to choosing an index at random in this
-unordered array.
-Removal of an item with known index can be done in $O(1)$ time.
+array.
+Removal of an item with known index can be done in $O(1)$ time
+by simply replacing it with the last item in the array
+and truncating the array by one.
 \fxwarning{Reservoir for $s \ll n$}
 For the non-uniform case,
 lines \ref{alg:sample:norm} and \ref{alg:sample:remove}
