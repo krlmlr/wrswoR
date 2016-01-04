@@ -84,6 +84,7 @@ The paper concludes with suggestions for incorporating the findings into base
 
 # Sampling from discrete populations
 
+\fxwarning{Longer introduction}
 \fxwarning{Different from Tillé's sampling}
 We use \cref{alg:sample} as a definition of sampling from discrete populations
 with or without replacement from arbitrary (including uniform) probability distributions.
@@ -193,45 +194,39 @@ as each item potentially spreads over several "boxes",
 which can make updates costly.
 @Wong__1980 propose a data structure similar to a heap
 that can be initialized in $O(n)$ time and supports
-simultaneous lookup and update in $O(\log n)$ time.
-
-\proglang{R} offers efficient implementations for all cases except
-non-uniform sampling without replacement,
-the latter requires $O(n \cdot s)$ run time,
-which is equivalent to $O(n^2)$ if $s = O(n)$.
-
-
-
-\fxwarning{introduce next section}
+simultaneous lookup and update in $O(\log n)$ time,
+we refer to the original paper for details.
 
 # Explanation of the code
 
+\proglang{R} offers reasonably efficient implementations for all cases except
+non-uniform sampling without replacement,
+the latter requires $O(n \cdot s)$ run time,
+which is equivalent to $O(n^2)$ if $s = O(n)$.
 This paper explores alternative approaches:
-rejection sampling and reservoir sampling.
-Only the former can be described formally within the framework of \cref{alg:sample},
+rejection sampling, one-pass sampling and reservoir sampling.
+Only the first can be described formally within the framework of \cref{alg:sample},
 however an actual implementation would use sampling *with* replacement as a subroutine.
-The latter is based on arithmetic transformation of a probability distribution.
+The last two are based on arithmetic transformation of a probability distribution.
 
 
 ## Rejection sampling
 
-Sampling without replacement can be emulated by sampling with replacement.
 In the framework of \cref{alg:sample},
-this corresponds to flagging sampled items as "invalid" (instead of removing them)
+rejection sampling corresponds to flagging sampled items as "invalid"
+(instead of removing them) in line \ref{alg:sample:remove},
 and repeating the sampling in line \ref{alg:sample:norm}
 until hitting a valid item.
-Here, rejection sampling is used to sample a valid item from a (larger)
-set of potentially invalid items.
 Note that the distribution of the result is not modified if invalid items
 are purged occasionally.
 
-This approach can be implemented by repeatedly calling a subroutine that
-returns a sample with replacement, as shown in \cref{alg:sample-rej}.
-\fxwarning{Reference?}
+Therefore, sampling without replacement can be emulated by
+repeated sampling with replacement, as shown in \cref{alg:sample-rej}.
+\fxwarning{Reference? Check Yates (1960)}
 The general idea is to sample slightly more items than necessary (with replacement),
 and then to throw away the duplicate items.
 If the resulting sequence of items is shorter than requested,
-the result for a much smaller problem is appended to it.
+the result for a much smaller problem is appended.
 In \cref{alg:sample-rej},
 duplicate items in the result of a sampling with replacement
 (line \ref{alg:sample-rej:sample})
@@ -261,19 +256,17 @@ purging the invalid items.
   \end{algorithmic}
 \end{algorithm}
 
-Here, the function expected.items is supposed to evaluate to a reasonable estimate
-of the number of items that need to be drawn with replacement,
+Here, the function expected.items() estimates
+the number of items that need to be drawn with replacement,
 so that the result can be expected to contain at least $s$ unique items.
-(The correctness of the estimate only affects the run time, not the correctness
+(An incorrect estimate only affects the run time, not the correctness
 of the algorithm.)
 For a uniform distribution, it can be shown that, with
 $\text{expected.items}(n, s) \geq n (H_n - H_{n-s}) = n \sum_{i=n-s+1}^n \frac{1}{i}$,
 the result has $s$ unique items in expectation.
 \fxwarning{Expected amortized run time? Look it up in a reference}
-With $\text{expected.items}(n, s) \equiv 1$,
-\cref{alg:sample,alg:sample-rej} are in fact identical.
-A formal proof for the more interesting case $\text{expected.items}(n, s) > 1$
-is beyond the scope of this paper.
+(With $\text{expected.items}(n, s) = 1$ everywhere,
+\cref{alg:sample,alg:sample-rej} are in fact identical.)
 
 
 ## Reservoir sampling
@@ -312,9 +305,8 @@ Computational complexity is dominated by the partial sort
 (which can be implemented in $O(n + s \log n)$,
 or even in $O(n)$ for floating-point numbers
 [@terdiman_radix_2000].
-However, generating random variates is computationally expensive,
-and for $s \ll n$ this may dominate.
-\fxwarning{Parallelize}.
+However, the cost of generating $n$ random variates may outweigh
+the cost for sorting even for moderately large values of $s$.
 To overcome this issue in this case,
 @efraimidis_weighted_2006
 describe *reservoir sampling with exponential jumps* -- 
@@ -322,7 +314,9 @@ an extension where each generated random number decides how many items are skipp
 until the current "least likely" item is removed from the reservoir.
 Only $O(s \log \frac{n}{s})$ random numbers (in expectation) are needed with this extension,
 the simple version always requires $n$ random numbers.
-\fxwarning{Show algorithm}
+In particular, this extension requires fewer updates of the reservoir
+(and therefore fewer random numbers)
+if the weights are arranged in descending order.
 We refer to the original paper for more details, including formal proofs of correctness.
 
 
