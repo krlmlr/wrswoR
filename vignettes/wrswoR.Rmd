@@ -747,7 +747,7 @@ wrswoR.benchmark::p_values_agg %>%
 - Pre-sort weights using radix sort
     - For expj
     - Sorting by exponent may already be enough
-- Faster heap (g-heap?)
+- Faster heap (g-heap?) \fxwarning{Where is that used? Not mentioned before}
 - Generic C library
 - Allow termination of loop in R
 - Test more failure modes
