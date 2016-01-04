@@ -307,14 +307,14 @@ or even in $O(n)$ for floating-point numbers
 [@terdiman_radix_2000].
 However, the cost of generating $n$ random variates may outweigh
 the cost for sorting even for moderately large values of $s$.
-To overcome this issue in this case,
+To overcome this issue,
 @efraimidis_weighted_2006
 describe *reservoir sampling with exponential jumps* -- 
 an extension where each generated random number decides how many items are skipped
 until the current "least likely" item is removed from the reservoir.
 Only $O(s \log \frac{n}{s})$ random numbers (in expectation) are needed with this extension,
 the simple version always requires $n$ random numbers.
-In particular, this extension requires fewer updates of the reservoir
+The exponential jumps method requires fewer updates of the reservoir
 (and therefore fewer random numbers)
 if the weights are arranged in descending order.
 We refer to the original paper for more details, including formal proofs of correctness.
@@ -380,7 +380,7 @@ The following weight distributions (used for $p_i$) were tested:
 - *Uniform*
 - *Linear*: Sequence from $1$ to $n$ ($\{p_i\} = \{1,\ldots n\}$, *ascending*, *descending* and *shuffled*)
 - *Geometric*: Starting at $1$, the weight is multiplied with a constant $\alpha$ for each step
-  ($p_{i+1} = \alpha p_i$, *ascending* and *descending*);
+  ($p_{i+1} = \alpha p_i$, *ascending*, *descending*, and *shuffled*);
   the constant is chosen so that both minimal and maximal weights
   and the sum of weights is still representable as a floating-point number.
   \fxwarning{Extreme case}
@@ -452,7 +452,7 @@ with 10 MB cache.
 \Cref{fig:run-time-log} presents an overview of the median run time
 for different input sizes, output size ratios, weight distributions and algorithms.
 The \proglang{R} implementation is clearly outperformed by all other implementations
-for $n = `r max(timings$n)`$, in many cases even for much smaller inputs.
+for $n = \num{`r max(timings$n)`}$, in many cases even for much smaller inputs.
 In the log-log scale used here, the slope of the curves translates to computational complexity;
 the steeper slope for the \proglang{R} implementation corresponds to its quadratic complexity
 compared to the (in most cases) slightly superlinear complexity of the other algorithms.
@@ -481,7 +481,7 @@ The *rej* and *rank* algorithms exhibit initial costs on the sub-millisecond sca
 even for small input sizes, probably due to the fact that both are implemented
 purely in \proglang{R}.
 In addition, the *rej* algorithm is by far the slowest
-(but still faster than the stock implementation)
+(but still asymptotically faster than the stock implementation)
 for *geometric* distributions, because in each step only a tiny fraction of items
 have a non-negligible weight, and hence most sampled items are rejected as duplicates
 (line \ref{alg:sample-rej:sample} of \cref{alg:sample-rej}).
@@ -520,6 +520,7 @@ At $n=1000$, the *expj* algorithm starts to outperform the stock implementation
 for all tested values of $r$.
 Again, the worst slowdown of the *expj* algorithm seems to be around 2,
 for absolute run times of around 10 microseconds for $n = 100$.
+\fxwarning{The case $r=0.01$ is unclear.}
 
 ```{r run-time-break-even, echo=FALSE, fig.cap="Comparison of \\proglang{R} and \\emph{expj} run times for \\emph{linear ascending} weights"}
 break_even %>%
@@ -541,14 +542,19 @@ break_even %>%
 
 ## Correctness
 
-Verifying the correctness of the implementation seems to be challenging
+A correct implementation should obey the following criteria:
+
+1. All output items are between $1$ and $n$.
+2. Each item occurs at most once in the output.\fxwarning{Really check this in \pkg{wrswoR.sample}.}
+3. For given parameters $n$, $s$ and $p_i$,
+  the probability that item $i$ is at position $j$ in the output
+  (with $1 \leq i \leq n$ and $1 \leq j \leq s$)
+  is identical to the stock implementation.
+
+Verifying these criteria seems to be challenging
 due to the stochasticity of the algorithms.
-Of course, all output items should be between $1$ and $n$,
-and each item should occur at most once in the output;
-this is verified easily.
-In addition, for given parameters $n$, $s$ and $p_i$,
-the probability that item $i$ is at position $j$ in the output
-(with $1 \leq i \leq n$ and $1 \leq j \leq s$) should be identical for all implementations.
+The first two can be simply checked by observing the output.
+Below, a description of the procedure for checking the third criterion is given.
 
 For fixed $i$ and $j$ and for fixed parameters $n$, $s$, and $p_i$,
 each call to the sampling routine is a Bernoulli trial
@@ -559,20 +565,21 @@ computing the exact value of $\pi_{i,j}$ for large $j$
 seems to require considerable computational resources.
 Therefore, the value of $\pi_{i,j}$ is assumed unknown,
 and only the equality of the proportions is tested for the different algorithms
-using a two-sided test for equal proportions (essentially a Chi-square test,
+using a two-sided test for equal proportions (essentially a $\chi^2$ test,
 implemented by the `prop.test()` function).
 The correctness check is performed as follows:
 
-- The parameters $n$, $s$, and $p_i$ are fixed.
-- For all algorithms, $N$ random samples without replacement are drawn and recorded.
+- The parameters $n$, $s$, and $p_i$, and the algorithm under test, are fixed.
+- For both the tested algorithm and for the stock implementation,
+  $N$ random samples without replacement are drawn and recorded.
 - For all $i$ and $j$, the number of samples where item $i$ is in position $j$
   (denoted by $f_{i,j}$) is computed.
-- The counts (one per algorithm, $f_{i,j}$ successes out of $N$ trials)
-  are tested for equality of proportions, yielding a p-value for each tuple $(i, j)$.
+- The counts are tested for equality of proportions,
+  yielding a p-value for each tuple $(i, j)$.
 
 In this setting, for fixed $(i, j)$, the p-value is itself a random variable
 that is distributed uniformly over $(0, 1]$ under the null hypothesis
-of equal proportions (i.e., if all implementations are correct).
+of equal proportions (i.e., if the tested implementation is correct).
 On the other hand, if one of the algorithms is implemented incorrectly,
 the rejection rate for the null hypothesis will be large,
 and a substantial share of the p-values will be very close to 0.
@@ -591,8 +598,13 @@ $$p_i^\prime \coloneqq p_i \cdot \left(1 + \text{skew} \cdot \frac{i - 1}{n - 1}
 where a skew of zero means no change, and a skew of 1% corresponds to
 relative differences increasing between 0% and 1%.
 
-- Fisher's exact test is better (produces lower p-values, has greater power power), but way too slow
-  (needs density of hypergeometric for support of size in the order of the cell's count)
+The test for equal proportions can be substituted by Fisher's exact test,
+which tends to produce lower p-values and therefore is usually more powerful
+than the test for equal proportions.
+However, Fisher's exact test has $O(N)$ complexity,
+because it evaluates the density of the hypergeometric distribution
+on a support of the order of $N$.
+Using this test would have been prohibitive in the setting described here.
 
 ```{r def-plot-p-values, echo=FALSE}
 n <- 7
@@ -611,7 +623,7 @@ of the p-values resulting from an experiment that
 draws $N = `r paste0("2^{", log2(N), "}")`$ samples for $n = `r n`$,
 $s = `r s`$, and a geometric weight distribution with $\alpha = `r alpha`$,
 using all five algorithms.
-Different values of $i$ and $j$ are denoted with different colors and point shapes.
+Different values of $i$ and $j$ are denoted with different colors and shapes.
 The theoretical distribution is shown as a dotted line,
 and aligns very well with the observed p-values.
 Fisher's combined probability test is a meta-analysis method that combines
@@ -620,16 +632,17 @@ it is implemented
 in the \pkg{metap} package `r knitcitations::citep(citation("metap"))`.
 For this particular run of the experiment,
 Fisher's method cannot reject the null hypothesis of uniformity
-($p = `r round(metap::sumlog(p_values_true$p_value)$p, 3)`$).
+($p = `r signif(metap::sumlog(p_values_true$p_value)$p, 3)`$).
 As an example for a positive test,
 \cref{fig:correctness-false} shows results for the same experiment,
 now substituting the stock implementation with a faulty one with
 $\text{skew} = `r (skew - 1) * 100`\%$.
 Despite the relative similarity of the weight distributions,
 the distribution of the p-values deviates substantially from the
-uniform distribution.
+uniform distribution,
+with more than expected p-values close to zero.
 Here, Fisher's method detects significant evidence against the null hypothesis
-($p = `r round(metap::sumlog(p_values_false$p_value)$p, 4)`$).
+($p = `r signif(metap::sumlog(p_values_false$p_value)$p, 3)`$).
 
 ```{r correctness-true, echo=FALSE, dependson="def-plot-p-values", fig.cap="CDF of the p-values when comparing the five algorithms"}
 p_values_true %>%
@@ -731,11 +744,13 @@ wrswoR.benchmark::p_values_agg %>%
 # Conclusions and future work
 
 - Pre-sort weights using radix sort
+    - For expj
     - Sorting by exponent may already be enough
 - Faster heap (g-heap?)
 - Generic C library
 - Allow termination of loop in R
 - Test more failure modes
+- Parallel version
 
 This would have been much more difficult without the \pkg{BatchJobs} and
 \pkg{BatchExperiment} packages
