@@ -611,7 +611,7 @@ n <- 7
 s <- 4
 skew <- 1.0025
 alpha <- 1.08
-N <- 2 ** 24
+N <- 2 ** 22
 
 p_values_true <- wrswoR.benchmark::p_values_7 %>% filter(N == global(N), s == global(s), skew == 1, func == "crank")
 
@@ -641,7 +641,8 @@ Despite the relative similarity of the weight distributions,
 the distribution of the p-values deviates substantially from the
 uniform distribution,
 with more than expected p-values close to zero.
-Here, Fisher's method detects significant evidence against the null hypothesis
+Here, Fisher's method detects significant, although not overwhelming,
+evidence against the null hypothesis
 ($p = `r signif(metap::sumlog(p_values_false$p_value)$p, 3)`$).
 
 ```{r correctness-true, echo=FALSE, dependson="def-plot-p-values", fig.cap="CDF of the p-values when comparing the five algorithms"}
