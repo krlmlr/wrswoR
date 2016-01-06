@@ -85,7 +85,7 @@ The paper concludes with suggestions for incorporating the findings into base
 # Sampling from discrete populations
 
 \fxwarning{Longer introduction}
-\fxwarning{Different from Tillé's sampling}
+\fxwarning{Put in context of Tillé's book (start with chapter 3)}
 We use \cref{alg:sample} as a definition of sampling from discrete populations
 with or without replacement from arbitrary (including uniform) probability distributions.
 From this definition, the following can be observed:
@@ -222,7 +222,7 @@ are purged occasionally.
 
 Therefore, sampling without replacement can be emulated by
 repeated sampling with replacement, as shown in \cref{alg:sample-rej}.
-\fxwarning{Reference? Check Yates (1960)}
+\fxwarning{Reference? Yates (1960) p. 347 contains this, as well as Tillé 3.8}
 The general idea is to sample slightly more items than necessary (with replacement),
 and then to throw away the duplicate items.
 If the resulting sequence of items is shorter than requested,
