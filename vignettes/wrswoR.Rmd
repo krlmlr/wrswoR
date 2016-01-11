@@ -3,8 +3,8 @@ author:
   - name: Kirill Müller
     affiliation: IVT, ETH Zurich
     address: >
-      Stefano-Franscini-Platz 9
-      8093 Zürich
+      Stefano-Franscini-Platz 9,
+      CH-8093 Zürich
     email: kirill.mueller@ivt.baug.ethz.ch
     url: http://www.ivt.ethz.ch
 title:
