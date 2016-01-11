@@ -608,21 +608,21 @@ on a support of the order of $N$.
 Using this test would have been prohibitive in the setting described here.
 
 ```{r def-plot-p-values, echo=FALSE}
-n <- 7
-s <- 4
-skew <- 1.0025
-alpha <- 1.08
-N <- 2 ** 22
+n. <- 7
+s. <- 4
+skew. <- 1.0025
+alpha. <- 1.08
+N. <- 2 ** 22
 
-p_values_true <- wrswoR.benchmark::p_values_7 %>% filter(N == global(N), s == global(s), skew == 1, func == "crank")
+p_values_true <- wrswoR.benchmark::p_values_7 %>% filter(N == N., s == s., skew == 1, func == "crank")
 
-p_values_false <- wrswoR.benchmark::p_values_7 %>% filter(N == global(N), s == global(s), skew == global(skew))
+p_values_false <- wrswoR.benchmark::p_values_7 %>% filter(N == N., s == s., skew == skew.)
 ```
 
 \Cref{fig:correctness-true} shows a Schweder plot [@Schweder_Biometrika_1982]
 of the p-values resulting from an experiment that
-draws $N = `r paste0("2^{", log2(N), "}")`$ samples for $n = `r n`$,
-$s = `r s`$, and a geometric weight distribution with $\alpha = `r alpha`$,
+draws $N = `r paste0("2^{", log2(N.), "}")`$ samples for $n = `r n.`$,
+$s = `r s.`$, and a geometric weight distribution with $\alpha = `r alpha.`$,
 using all five algorithms.
 Different values of $i$ and $j$ are denoted with different colors and shapes.
 The theoretical distribution is shown as a dotted line,
@@ -637,7 +637,7 @@ Fisher's method cannot reject the null hypothesis of uniformity
 As an example for a positive test,
 \cref{fig:correctness-false} shows results for the same experiment,
 now substituting the stock implementation with a faulty one with
-$\text{skew} = `r (skew - 1) * 100`\%$.
+$\text{skew} = `r (skew. - 1) * 100`\%$.
 Despite the relative similarity of the weight distributions,
 the distribution of the p-values deviates substantially from the
 uniform distribution,
