@@ -25,3 +25,4 @@ Suggests:
 LazyData: true
 VignetteBuilder: knitr
 RoxygenNote: 5.0.1.9000
+Remotes: krlmlr/wrswoR.benchmark@develop
