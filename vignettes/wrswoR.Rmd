@@ -753,9 +753,25 @@ wrswoR.benchmark::p_values_agg %>%
 - Test more failure modes
 - Parallel version
 
-This would have been much more difficult without the \pkg{BatchJobs} and
-\pkg{BatchExperiment} packages
-`r knitcitations::citep(c(citation("BatchJobs"), citation("BatchExperiments")))`.
+
+# Acknowledgments
+
+This work would have been much more difficult without the \pkg{BatchJobs}
+and \pkg{BatchExperiment} packages
+`r knitcitations::citep(citation("BatchExperiments"))`.
+The \pkg{dplyr} package
+`r knitcitations::citep(citation("dplyr"))`
+helped processing the data;
+the plots were created using \pkg{ggplot2}
+`r knitcitations::citep(citation("ggplot2"))`
+and \pkg{tikzDevice}
+`r knitcitations::citep(citation("tikzDevice"))`.
+This document was created using \pkg{knitr}
+`r knitcitations::citep(citation("knitr"))`
+and \pkg{rmarkdown}
+`r knitcitations::citep(citation("rmarkdown"))`.
+
+
 
 
 # References {.unnumbered}
