@@ -66,13 +66,14 @@ knit_print.function <- function(x, options) {
 
 # Introduction
 
-\fxwarning{(Everywhere) Refer to weights and not probabilities}
-
 Random sampling is one of the basic primitives in statistical computing.
 \fxwarning{Used where?}
 
+For consistency, the term *weight* is used throughout this paper for denoting
+the relative probability that an item is sampled.
+
 This paper focuses on a specific variant: sampling without replacement from a finite population
-with non-uniform probability distribution.
+with non-uniform weight distribution.
 \fxwarning{Application?}
 
 First, different techniques for sampling from discrete populations are reviewed.
@@ -87,7 +88,7 @@ The paper concludes with suggestions for incorporating the findings into base
 \fxwarning{Longer introduction}
 \fxwarning{Put in context of Tillé's book (start with chapter 3)}
 We use \cref{alg:sample} as a definition of sampling from discrete populations
-with or without replacement from arbitrary (including uniform) probability distributions.
+with or without replacement from arbitrary (including uniform) weight distributions.
 From this definition, the following can be observed:
 
 \begin{algorithm}
@@ -97,7 +98,7 @@ From this definition, the following can be observed:
     \REQUIRE $n$: Size of the population
     \REQUIRE $s$: Number of items to sample
     \REQUIRE $\text{replace}$: \TRUE{} to request sampling with replacement
-    \REQUIRE $p_i$: Relative probability of each item for $i \in \{1,\ldots,n\}$
+    \REQUIRE $p_i$: Weight of each item for $i \in \{1,\ldots,n\}$
     \ENSURE Returns a vector $k_j \in \{1,\ldots,n\} $ with
       $j \in \{1,\ldots,s\}$ that contains the indexes of the items sampled
     \IF{$s = 0$}
@@ -116,11 +117,11 @@ From this definition, the following can be observed:
 - Sampling with replacement appears to be a simpler problem than sampling without
   replacement, as the lines \ref{alg:sample:if} and
   \ref{alg:sample:if-end} in \cref{alg:sample} are not required.
-- If all probabilities $p_i$ are equal, the selection probability $\mathrm{P}(i=k)$
+- If all weights $p_i$ are equal, the selection probability $\mathrm{P}(i=k)$
   of the sampled items in line \ref{alg:sample:norm} always equals $\frac{1}{n}$
   and does not have to be computed explicitly.
 
-In this framework, sampling without replacement with non-uniform probabilities
+In this framework, sampling without replacement with non-uniform weights
 seems to be the hardest problem.
 This also holds for the more specialized algorithms that implement
 each case.
@@ -129,7 +130,7 @@ each case.
 ## Sampling with replacement
 
 The *with replacement* case corresponds to repeated selection of $k$ from *the same*
-discrete probability distribution.
+discrete weight distribution.
 The uniform case can be implemented easily by transforming the
 output of a random number generator
 that returns uniformly distributed floating-point numbers in $[0, 1)$.
@@ -158,13 +159,13 @@ Sampling an item means selecting a box and choosing between the two items in thi
 
 The preprocessing time of $O(n)$ required for Walker's alias method
 (in a modification suggested by @Vose_IEEETrans.Softw.Eng._1991)
-is also the lower bound for arbitrary probability distributions.
-It is easy to see that the entire probability vector must be read at least once.
-Hence, for nonuniform probabilities,
+is also the lower bound for arbitrary weight distributions.
+It is easy to see that the entire weight vector must be read at least once.
+Hence, for non-uniform weights,
 the run time is at least $O(n + s)$, and the input size $n$ will dominate
 unless $s \gg n$.
 More recently, @Marsaglia_J.Stat.Softw._2004 have suggested a table-based method
-that seems to perform much faster in practice but expresses the probabilities
+that seems to perform much faster in practice but expresses the weights
 as rationals with a fixed base and is therefore not usable directly
 for distributions with a large range.
 @Shmerling_StatisticsProbabilityLetters_2013 presents a comprehesive review
@@ -207,7 +208,7 @@ This paper explores alternative approaches:
 rejection sampling, one-pass sampling and reservoir sampling.
 Only the first can be described formally within the framework of \cref{alg:sample},
 however an actual implementation would use sampling *with* replacement as a subroutine.
-The last two are based on arithmetic transformation of a probability distribution.
+The last two are based on arithmetic transformation of a weight distribution.
 
 
 ## Rejection sampling
@@ -242,7 +243,7 @@ purging the invalid items.
   \begin{algorithmic}[1]
     \REQUIRE $n$: Size of the population
     \REQUIRE $s$: Number of items to sample
-    \REQUIRE $p_i$: Relative probability of each item for $i \in \{1,\ldots,n\}$
+    \REQUIRE $p_i$: Weight of each item for $i \in \{1,\ldots,n\}$
     \ENSURE Returns a vector $k_j \in \{1,\ldots,n\} $ with
       $j \in \{1,\ldots,s\}$ that contains the indexes of the items sampled
     \STATE $k_i \leftarrow \text{unique}(\text{sample}(n, \text{expected.items}(n, s), \TRUE, p_i))$
@@ -274,7 +275,7 @@ the result has $s$ unique items in expectation.
 A particularly interesting algorithm has been devised only recently by
 @efraimidis_weighted_2006.
 In the simplest version, it is sufficient to draw $n$ random numbers,
-combine them arithmetically with the probability distribution $p_i$,
+combine them arithmetically with the weight distribution $p_i$,
 and perform a partial sort to find the indexes of the $s$ smallest items.
 \Cref{alg:sample-rank} is a modified version of Algorithm A in the original paper
 that operates on the logarithmic scale and uses multiplication
@@ -291,7 +292,7 @@ from the exponential distribution with rate 1.
   \begin{algorithmic}[1]
     \REQUIRE $n$: Size of the population
     \REQUIRE $s$: Number of items to sample
-    \REQUIRE $p_i$: Relative probability of each item for $i \in \{1,\ldots,n\}$
+    \REQUIRE $p_i$: Weight of each item for $i \in \{1,\ldots,n\}$
     \ENSURE Returns a vector $k_j \in \{1,\ldots,n\}$ with
       $j \in \{1,\ldots,s\}$ that contains the indexes of the items sampled
     \STATE $r_i \leftarrow \text{Exp}(1) / p_i$ for all $i \in \{1,\ldots,n\}$
@@ -591,7 +592,7 @@ caught an implementation error in the *expj* algorithm
 that occurred only in the case $1 < s < n$.
 
 To assert the sensitivity of the testing procedure,
-a faulty implementation was simulated by passing altered probabilities to R's
+a faulty implementation was simulated by passing altered weights to R's
 implementation.
 The modification consists of updating
 $$p_i^\prime \coloneqq p_i \cdot \left(1 + \text{skew} \cdot \frac{i - 1}{n - 1}\right),$$
@@ -679,7 +680,7 @@ all $n \in \{
 a subset of $s \in \{1, \ldots, n\}$
 and all $(i, j)$ was also carried out.
 For each combination, the cell frequencies $f_{i,j}$ were collected for all new
-algorithms, and the stock implementation with and without altered probabilities
+algorithms, and the stock implementation with and without altered weights
 (using $\text{skew}$ values between
 $`r 100 * (min(wrswoR.benchmark::p_values_agg$skew[wrswoR.benchmark::p_values_agg$skew > 1]) - 1)` \%$
 and
