@@ -694,7 +694,8 @@ combined using Fisher's method.
 \Cref{fig:comprehensive} shows the results of the meta-analysis
 separately for each $N$ and for each (supposedly correct or faulty)
 implementation.
-Comparing the stock implementation to itself resulted in a p-value of almost 1
+Comparing the stock implementation to itself (using different random seeds)
+resulted in a p-value of almost 1
 for all $N$, the same holds for all new algorithms.
 On the other hand, all skews tested led to strong rejection of the correctness
 hypothesis (p-value effectively 0) sooner or later; as expected,
