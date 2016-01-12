@@ -775,8 +775,10 @@ wrswoR.benchmark::p_values_agg %>%
 This work would have been much more difficult without the \pkg{BatchJobs}
 and \pkg{BatchExperiment} packages
 `r knitcitations::citep(citation("BatchExperiments"))`.
-The \pkg{dplyr} package
+The \pkg{dplyr} packages
 `r knitcitations::citep(citation("dplyr"))`
+and
+`r knitcitations::citep(citation("tidyr"))`
 helped processing the data;
 the plots were created using \pkg{ggplot2}
 `r knitcitations::citep(citation("ggplot2"))`
