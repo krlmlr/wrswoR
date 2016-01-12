@@ -21,7 +21,13 @@ Suggests:
     knitr,
     rmarkdown,
     metap,
-    tidyr
+    tidyr,
+    Rcpp,
+    microbenchmark,
+    BatchExperiments,
+    dplyr,
+    ggplot2,
+    tikzDevice
 LazyData: true
 VignetteBuilder: knitr
 RoxygenNote: 5.0.1.9000
