@@ -412,7 +412,7 @@ timings <-
   mutate(expr = factor(expr, levels = ALGOS)) %>%
   mutate(prob = factor(
     prob, levels = c("uniform", "linear", "exp"),
-    labels = c("Uniform", "Linear", "Geometric"))) %>% 
+    labels = c("uniform", "linear", "geometric"))) %>% 
   mutate(mix = factor(
     mix, levels = c("asc", "desc", "shuffle"),
     labels = c("$\\nearrow$", "$\\searrow$", "$\\leadsto$"))) %>%
@@ -431,7 +431,7 @@ break_even <-
   mutate(expr = factor(expr, levels = ALGOS)) %>%
   mutate(prob = factor(
     prob, levels = c("uniform", "linear", "exp"),
-    labels = c("Uniform", "Linear", "Geometric"))) %>% 
+    labels = c("uniform", "linear", "geometric"))) %>% 
   mutate(mix = factor(
     mix, levels = c("asc", "desc", "shuffle"),
     labels = c("$\\nearrow$", "$\\searrow$", "$\\leadsto$"))) %>%
