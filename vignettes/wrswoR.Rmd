@@ -454,6 +454,18 @@ ggplot_time_base <-
 ggplot_time_per_item_base <-
   ggplot_base %>%
   c(list(ylab("Run time per element (s)")))
+
+pow10 <- function(x) {
+  ifelse(x == 1, 1, paste0("$10^{", log10(x), "}$"))
+}
+
+format_expr <- function(x) {
+  ifelse(x == "R", "\\proglang{R}", paste0("\\emph{", x, "}"))
+}
+
+relabel_expr <- function(x) {
+  factor(x, labels = format_expr(levels(x)))
+}
 ```
 
 
@@ -475,16 +487,18 @@ In the log-log scale used here, the slope of the curves translates to computatio
 the steeper slope for the \proglang{R} implementation corresponds to its quadratic complexity
 compared to the (in most cases) slightly superlinear complexity of the other algorithms.
 
-```{r run-time-log, echo=FALSE, fig.height=7, fig.cap="Median run times", dependson=c("timing-base", "ggplot-base")}
+```{r run-time-log, echo=FALSE, fig.height=8, fig.cap="Median run times", dependson=c("timing-base", "ggplot-base")}
 timings %>%
   group_by(n, expr, prob_mix, r) %>%
   summarize(median = median(time)) %>%
   ungroup %>%
+  mutate(r = paste0("$r = ", r, "$")) %>%
+  mutate(expr = relabel_expr(expr)) %>%
   ggplot(aes(x=n, y=median * 1e-9, color=expr)) +
-  scale_y_log10() +
   ggplot_time_base +
   geom_line() +
-  scale_x_log10() +
+  scale_x_log10(name = "$n$", breaks = 10 ** c(2,4,6), labels = pow10) +
+  scale_y_log10(labels = pow10) +
   facet_grid(prob_mix~r) +
   theme(legend.position="bottom")
 ```
