@@ -386,7 +386,7 @@ The following weight distributions (used for $p_i$) were tested:
   and the sum of weights is still representable as a floating-point number.
   \fxwarning{Extreme case}
 
-```{r echo=FALSE}
+```{r timing-base, echo=FALSE}
 ggplot_base <- list(
   theme_bw(11)
 )
@@ -395,6 +395,13 @@ ALGOS <- c("R", "rej", "rank", "crank", "expj")
 
 REMOVE_PROB <- c("linear_double", "linear_half")
 
+combine_prob_mix <- function(prob, mix) {
+  prob <- as.character(prob)
+  mix <- as.character(mix)
+  
+  ifelse(prob == "Uniform", prob, paste(prob, mix))
+}
+
 timings <- 
   wrswoR.benchmark::timings %>%
   tbl_df %>%
@@ -402,14 +409,18 @@ timings <-
   filter(!(prob %in% REMOVE_PROB)) %>%
   mutate(expr = factor(expr, levels = ALGOS)) %>%
   mutate(prob = factor(
-    prob, levels = c("uniform", "linear", "rev_linear", "shuffled_linear", "exp", "rexp"),
-    labels = c("Uniform", "Linear asc.", "Linear desc.", "Linear shuffled", "Geometric asc.", "Geometric desc.")))
+    prob, levels = c("uniform", "linear", "exp"),
+    labels = c("Uniform", "Linear", "Geometric"))) %>% 
+  mutate(mix = factor(
+    mix, levels = c("asc", "desc", "shuffle"),
+    labels = c("(asc.)", "(desc.)", "(shuffled)"))) %>%
+  mutate(prob_mix = kimisc::ofactor(combine_prob_mix(prob, mix)))
 
 BASE <- 1.007
 N <- max(timings$n)
 ```
 
-```{r echo=FALSE}
+```{r break-even-base, echo=FALSE, dependson = "timing-base"}
 break_even <- 
   wrswoR.benchmark::break_even %>%
   tbl_df %>%
@@ -417,12 +428,16 @@ break_even <-
   filter(!(prob %in% REMOVE_PROB)) %>%
   mutate(expr = factor(expr, levels = ALGOS)) %>%
   mutate(prob = factor(
-    prob, levels = c("uniform", "linear", "rev_linear", "shuffled_linear", "exp", "rexp"),
-    labels = c("Uniform", "Linear asc.", "Linear desc.", "Linear shuffled", "Geometric asc.", "Geometric desc.")))
+    prob, levels = c("uniform", "linear", "exp"),
+    labels = c("Uniform", "Linear", "Geometric"))) %>% 
+  mutate(mix = factor(
+    mix, levels = c("asc", "desc", "shuffle"),
+    labels = c("(asc.)", "(desc.)", "(shuffled)"))) %>%
+  mutate(prob_mix = kimisc::ofactor(combine_prob_mix(prob, mix)))
 ```
 
 
-```{r echo=FALSE}
+```{r ggplot-base, echo=FALSE}
 ggplot_perf_base <-
   ggplot_base %>%
   c(list(
@@ -446,9 +461,9 @@ The run time was measured using the \pkg{microbenchmark} package
 `r knitcitations::citep(citation("microbenchmark"))`
 in block order with a warmup of 10 iterations
 using the default 100 iterations.
-The tests ran on a single core of an Intel(R) Xeon(R) CPU E5-2643 clocked at 3.30 GHz
-with 10 MB cache.
-\fxwarning{Which version of the package?}
+The tests ran on a single core of an Intel Xeon CPU X5680 clocked at 3.33 GHz
+with 12 MB cache,
+using version 0.4 of the \pkg{wrswoR} package.
 
 \Cref{fig:run-time-log} presents an overview of the median run time
 for different input sizes, output size ratios, weight distributions and algorithms.
@@ -458,9 +473,9 @@ In the log-log scale used here, the slope of the curves translates to computatio
 the steeper slope for the \proglang{R} implementation corresponds to its quadratic complexity
 compared to the (in most cases) slightly superlinear complexity of the other algorithms.
 
-```{r run-time-log, echo=FALSE, fig.height=7, fig.cap="Median run times"}
+```{r run-time-log, echo=FALSE, fig.height=7, fig.cap="Median run times", dependson=c("timing-base", "ggplot-base")}
 timings %>%
-  group_by(n, expr, prob, r) %>%
+  group_by(n, expr, prob_mix, r) %>%
   summarize(median = median(time)) %>%
   ungroup %>%
   ggplot(aes(x=n, y=median * 1e-9, color=expr)) +
@@ -468,7 +483,7 @@ timings %>%
   ggplot_time_base +
   geom_line() +
   scale_x_log10() +
-  facet_grid(prob~r) +
+  facet_grid(prob_mix~r) +
   theme(legend.position="bottom")
 ```
 
@@ -497,15 +512,15 @@ For the pathological *geometric* cases, the run time differences between
 The advantage of the *expj* algorithm for $r = 1$ and large $n$ is surprising.
 \fxwarning{Explain once expj algorithm has been described}
 
-```{r run-time-crank-expj, echo=FALSE, fig.cap="Comparison of \\emph{crank} and \\emph{expj} run times"}
+```{r run-time-crank-expj, echo=FALSE, fig.cap="Comparison of \\emph{crank} and \\emph{expj} run times", dependson=c("timing-base", "ggplot-base")}
 timings %>%
   filter(expr %in% c("crank", "expj")) %>%
-  group_by(n, expr, prob, r) %>%
+  group_by(n, expr, prob_mix, r) %>%
   summarize(median = median(time)) %>%
   ungroup %>%
   spread(expr, median) %>%
   mutate(crank_vs_expj = crank / expj) %>%
-  ggplot(aes(x=prob, y=crank_vs_expj, color=n)) +
+  ggplot(aes(x=prob_mix, y=crank_vs_expj, color=n)) +
   scale_x_discrete(name = "Weights distribution") +
   scale_y_log10(name = "Ratio of median run times\n(crank vs. expj)", breaks = 2 ** (-1:3)) +
   ggplot_base +
@@ -523,20 +538,41 @@ Again, the worst slowdown of the *expj* algorithm seems to be around 2,
 for absolute run times of around 10 microseconds for $n = 100$.
 \fxwarning{The case $r=0.01$ is unclear.}
 
-```{r run-time-break-even, echo=FALSE, fig.cap="Comparison of \\proglang{R} and \\emph{expj} run times for \\emph{linear ascending} weights"}
+```{r run-time-break-even, echo=FALSE, fig.cap="Comparison of \\proglang{R} and \\emph{expj} run times for \\emph{linear ascending} weights", dependson=c("break-even-base", "ggplot-base")}
 break_even %>%
   filter(expr %in% c("R", "expj")) %>%
-  filter(prob == "Linear asc.") %>%
+  filter(prob_mix == "Linear (asc.)") %>%
+  filter(r %in% c(0.01, 0.1, 1)) %>%
   group_by(n, expr, prob, r) %>%
   summarize(median = median(time)) %>%
   ungroup %>%
   spread(expr, median) %>%
   mutate(R_vs_expj = R / expj) %>%
-  ggplot(aes(x=n, y=R_vs_expj, linetype=factor(r))) +
+  ggplot(aes(x=n, y=R_vs_expj, color=r, group=r)) +
   ggplot_base +
   geom_line() +
   scale_x_log10() +
-  scale_y_log10(breaks = 2 ** (-1:5))
+  scale_y_log10(name = "Ratio of median run times (R vs. expj)", breaks = 2 ** (-1:5)) +
+  scale_color_continuous(trans="log", breaks = 10 ** (-2:0))
+```
+
+
+```{r point-break-even, echo=FALSE, fig.cap="Break-even point of \\proglang{R} and \\emph{expj} run times", dependson=c("break-even-base", "ggplot-base")}
+break_even %>%
+  filter(expr %in% c("R", "expj")) %>%
+  group_by(n, expr, prob, mix, r) %>%
+  summarize(median = median(time)) %>%
+  ungroup %>%
+  spread(expr, median) %>%
+  mutate(rate = R / expj) %>%
+  group_by(prob, mix, r) %>%
+  summarize(smallest_n_where_expj_is_better = n[tail(which(rate < 1), 1L) + 1L]) %>%
+  ungroup %>% 
+  ggplot(aes(x=r, y=smallest_n_where_expj_is_better, color=prob, linetype=mix)) +
+  ggplot_base +
+  geom_line() +
+  scale_x_log10() +
+  scale_y_log10(breaks = c(50, 100, 200, 400))
 ```
 
 
