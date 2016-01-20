@@ -47,7 +47,7 @@ vignette: >
 ---
 
 
-```{r echo=FALSE, message=FALSE}
+```{r init, echo=FALSE, message=FALSE}
 library(wrswoR)
 import::from(tidyr, spread, gather, gather_, .library = .libPaths())
 import::from(plyr, ldply, .library = .libPaths())
