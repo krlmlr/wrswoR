@@ -37,6 +37,7 @@ preamble: >
   \usepackage{ragged2e}
   \usepackage{mathtools}
   \usepackage{siunitx}
+  \usepackage{latexsym}
 output: rticles::jss_article
 bibliography: [ my.bib, knitcitations.bib ]
 vignette: >
@@ -379,7 +380,8 @@ denoted by $r = \frac{s}{n}$.
 The following weight distributions (used for $p_i$) were tested:
 
 - *Uniform*
-- *Linear*: Sequence from $1$ to $n$ ($\{p_i\} = \{1,\ldots n\}$, *ascending*, *descending* and *shuffled*)
+- *Linear*: Sequence from $1$ to $n$ ($\{p_i\} = \{1,\ldots n\}$),
+  *ascending* ($\nearrow$), *descending* ($\searrow$) and *shuffled* ($\leadsto$)
 - *Geometric*: Starting at $1$, the weight is multiplied with a constant $\alpha$ for each step
   ($p_{i+1} = \alpha p_i$, *ascending*, *descending*, and *shuffled*);
   the constant is chosen so that both minimal and maximal weights
