@@ -415,7 +415,7 @@ timings <-
     labels = c("Uniform", "Linear", "Geometric"))) %>% 
   mutate(mix = factor(
     mix, levels = c("asc", "desc", "shuffle"),
-    labels = c("(asc.)", "(desc.)", "(shuffled)"))) %>%
+    labels = c("$\\nearrow$", "$\\searrow$", "$\\leadsto$"))) %>%
   mutate(prob_mix = kimisc::ofactor(combine_prob_mix(prob, mix)))
 
 BASE <- 1.007
@@ -434,7 +434,7 @@ break_even <-
     labels = c("Uniform", "Linear", "Geometric"))) %>% 
   mutate(mix = factor(
     mix, levels = c("asc", "desc", "shuffle"),
-    labels = c("(asc.)", "(desc.)", "(shuffled)"))) %>%
+    labels = c("$\\nearrow$", "$\\searrow$", "$\\leadsto$"))) %>%
   mutate(prob_mix = kimisc::ofactor(combine_prob_mix(prob, mix)))
 ```
 
