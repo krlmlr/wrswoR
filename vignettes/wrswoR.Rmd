@@ -716,7 +716,7 @@ Here, Fisher's method detects significant, although not overwhelming,
 evidence against the null hypothesis
 ($p = `r signif(metap::sumlog(p_values_false$p_value)$p, 3)`$).
 
-```{r correctness-true, echo=FALSE, dependson="def-plot-p-values", fig.cap="CDF of the p-values when comparing the \\emph{crank} and \\proglang{R} algorithms"}
+```{r correctness-true, echo=FALSE, dependson="def-plot-p-values", fig.cap="Schweder plot for p-values resulting from comparing the \\emph{crank} and \\proglang{R} algorithms"}
 p_values_true %>%
   rename(`p-value` = p_value) %>%
   arrange(`p-value`) %>%
@@ -732,7 +732,7 @@ p_values_true %>%
 ```
 
 
-```{r correctness-false, echo=FALSE, dependson="def-plot-p-values", fig.cap="CDF of the p-values when comparing the \\proglang{R} implementation with a skewed version of itself"}
+```{r correctness-false, echo=FALSE, dependson="def-plot-p-values", fig.cap="Schweder plot for p-values resulting from comparing the \\proglang{R} implementation with a skewed version of itself"}
 p_values_false %>%
   rename(`p-value` = p_value) %>%
   arrange(`p-value`) %>%
