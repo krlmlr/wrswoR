@@ -59,7 +59,10 @@ import::from(cluster, daisy, .library = .libPaths())
 import::from(magrittr, "%>%", .library = .libPaths())
 library(ggplot2)
 set.seed(20150710L)
+library(tikzDevice)
+options(tikzDocumentDeclaration = "\\documentclass{jss}\\usepackage{siunitx}\\usepackage{latexsym}")
 knitr::opts_chunk$set(cache=TRUE)
+knitr::opts_chunk$set(dev="tikz")
 knitcitations::cite_options("pandoc")
 
 knit_print.function <- function(x, options) {
