@@ -800,7 +800,7 @@ cut_p <- function(x) {
 comprehensive_base <- function(by) list(
   geom_raster(),
   scale_x_log10(name = "$N$", expand = c(0, 0), breaks = 2 ** seq.int(24, 8, by = -by), labels = pow2),
-  scale_fill_brewer(name = "p-value", palette = "YlOrRd"),
+  scale_fill_brewer(name = "p-value", palette = "YlOrRd", drop = FALSE),
   NULL
 )
 ```
