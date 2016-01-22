@@ -455,12 +455,21 @@ ggplot_time_per_item_base <-
   ggplot_base %>%
   c(list(ylab("Run time per element (s)")))
 
-pow10 <- function(x) {
-  ifelse(x == 1, 1, paste0("$10^{", log10(x), "}$"))
+math <- function(x) paste0("$", x, "$")
+
+pow10 <- function(x, in_math = FALSE) {
+  x <- ifelse(x %in% 0:1, x, paste0("10^{", log10(x), "}"))
+  if (!in_math)
+    x <- math(x)
+  x
 }
 
 pow2 <- function(x) {
-  ifelse(x == 1, 1, paste0("$2^{", log2(x), "}$"))
+  ifelse(x %in% 0:1, x, paste0("$2^{", log2(x), "}$"))
+}
+
+percent <- function(x) {
+  paste0("\\SI{", round(x * 100, 5), "}{\\percent}")
 }
 
 format_expr <- function(x) {
@@ -780,8 +789,8 @@ p_value_breakpoints <- c(0, 1e-100, 1e-4, 1e-2, 1e-1, 9e-1, 1)
 cut_p <- function(x) {
   stopifnot(x >= 0)
   stopifnot(x <= 1)
-  x <- cut(x, p_value_breakpoints)
-  x[is.na(x)] <- cut(p_value_breakpoints[[2L]], p_value_breakpoints)
+  x_orig <- x
+  x <- kimisc::cut_format(x, p_value_breakpoints, include.lowest = TRUE, format_fun = function(x) ifelse(x >= 0.01, x, pow10(x, in_math = TRUE)), paren = c("$\\left(", "$\\left[", "\\right)$", "\\right]$"))
   x <- factor(as.character(x), levels = rev(levels(x)))
   x
 }
