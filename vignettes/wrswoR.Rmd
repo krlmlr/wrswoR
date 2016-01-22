@@ -756,11 +756,11 @@ and all $(i, j)$ was also carried out.
 For each combination, the cell frequencies $f_{i,j}$ were collected for all new
 algorithms, and the stock implementation with and without altered weights
 (using $\text{skew}$ values between
-$`r 100 * (min(wrswoR.benchmark::p_values_agg$skew[wrswoR.benchmark::p_values_agg$skew > 1]) - 1)` \%$
+`r percent(min(wrswoR.benchmark::p_values_agg$skew[wrswoR.benchmark::p_values_agg$skew > 1]) - 1)`
 and
-$`r 100 * (max(wrswoR.benchmark::p_values_agg$skew) - 1)` \%$),
-for $N$ ranging from $2^{`r log2(min(wrswoR.benchmark::p_values_agg$N))`}$ to
-$2^{`r log2(max(wrswoR.benchmark::p_values_agg$N))`}$ (only powers of $2$).
+`r percent(max(wrswoR.benchmark::p_values_agg$skew) - 1)`),
+for $N$ ranging from `r pow2(min(wrswoR.benchmark::p_values_agg$N))` to
+`r pow2(max(wrswoR.benchmark::p_values_agg$N))` (only powers of $2$).
 Each cell frequency was compared to that of the stock implementation.
 This resulted in around \num{5e8} p-values, which were again
 combined using Fisher's method.
