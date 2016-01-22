@@ -588,7 +588,9 @@ break_even %>%
   ggplot_base +
   geom_line() +
   scale_x_log10(name = "$r$") +
-  scale_y_log10(name = "$n$", breaks = c(50, 100, 200, 400))
+  scale_y_log10(name = "$n$", breaks = c(50, 100, 200, 400)) +
+  scale_linetype(name = "Order") +
+  scale_color_discrete(name = "Distribution")
 ```
 
 
@@ -783,7 +785,7 @@ wrswoR.benchmark::p_values_agg_agg %>%
   ggplot(aes(x=factor(N), y=interaction(func, skew), fill=cut_p(p_value))) +
   ggplot_base +
   geom_tile() +
-  scale_fill_brewer(palette = "YlOrRd")
+  scale_fill_brewer(name = "p-value", palette = "YlOrRd")
 ```
 
 ```{r comprehensive-true, echo=FALSE, fig.cap="CDF of the p-values when comparing five algorithms, where one of which uses different weights"}
@@ -793,7 +795,7 @@ wrswoR.benchmark::p_values_agg %>%
   ggplot_base +
   geom_tile() +
   scale_y_continuous(expand = c(0, 0)) +
-  scale_fill_brewer(palette = "YlOrRd") +
+  scale_fill_brewer(name = "p-value", palette = "YlOrRd") +
   facet_wrap(~func)
 ```
 
@@ -804,7 +806,7 @@ wrswoR.benchmark::p_values_agg %>%
   ggplot_base +
   geom_tile() +
   scale_y_continuous(expand = c(0, 0)) +
-  scale_fill_brewer(palette = "YlOrRd") +
+  scale_fill_brewer(name = "p-value", palette = "YlOrRd") +
   facet_wrap(~skew, ncol = 4)
 ```
 
