@@ -38,7 +38,9 @@ preamble: >
   \usepackage{mathtools}
   \usepackage{siunitx}
   \usepackage{latexsym}
-output: rticles::jss_article
+output:
+  rticles::jss_article:
+    fig_crop: false
 bibliography: [ my.bib, knitcitations.bib ]
 vignette: >
   %\VignetteIndexEntry{Accelerating weighted random sampling without replacement}

@@ -21,6 +21,7 @@ Suggests:
     roxygen2,
     knitr,
     rmarkdown,
+    rticles (>= 0.1),
     metap,
     tidyr,
     Rcpp,
