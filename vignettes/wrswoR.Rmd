@@ -724,8 +724,8 @@ p_values_true %>%
   mutate_each(funs(factor), i, j) %>% 
   ggplot(aes(y = `Rank`, x = `p-value`, color = i, shape = j)) +
   ggplot_base +
-  geom_point() +
   geom_abline(slope = nrow(p_values_true), intercept = 0, linetype = 3) +
+  geom_point() +
   coord_fixed(ratio = 1 / nrow(p_values_true)) +
   scale_color_discrete(name = "$i$") +
   scale_shape_discrete(name = "$j$")
@@ -740,8 +740,8 @@ p_values_false %>%
   mutate_each(funs(factor), i, j) %>% 
   ggplot(aes(y = `Rank`, x = `p-value`, color = i, shape = j)) +
   ggplot_base +
-  geom_point() +
   geom_abline(slope = nrow(p_values_false), intercept = 0, linetype = 3) +
+  geom_point() +
   coord_fixed(ratio = 1 / nrow(p_values_false)) +
   scale_color_discrete(name = "$i$") +
   scale_shape_discrete(name = "$j$")
