@@ -809,31 +809,38 @@ comprehensive_base <- function(by) list(
 ```{r comprehensive, echo=FALSE, fig.cap="Combining p-values for a comprehensive test", dependson = "comprehensive-base"}
 wrswoR.benchmark::p_values_agg_agg %>%
   ungroup %>%
-  mutate(facet = kimisc::ofactor(ifelse(skew == 1, "skew = 0", "\\proglang{R}"))) %>%
-  ggplot(aes(x=N, y=ifelse(skew == 1, func, round(skew - 1, 6)), fill=cut_p(p_value))) +
+  mutate(facet = kimisc::ofactor(ifelse(skew == 1, "skew 0", "\\proglang{R}"))) %>%
+  ggplot(aes(x=N, y=kimisc::ofactor(
+    ifelse(skew == 1, format_expr(func),
+           percent(skew - 1))),
+    fill=cut_p(p_value))) +
   ggplot_base +
   comprehensive_base(2) +
-  scale_y_discrete(expand = c(0, 0)) +
+  scale_y_discrete(name = "skew/implementation", expand = c(0, 0)) +
   facet_wrap(~facet, ncol = 1, scales = "free_y")
 ```
 
-```{r comprehensive-true, echo=FALSE, fig.cap="CDF of the p-values when comparing five algorithms, where one of which uses different weights", dependson = "comprehensive-base"}
+```{r comprehensive-true, echo=FALSE, fig.cap="Combined p-values for different values of $n$ and $N$, resulting from comparing the new algorithms with the stock implementation", dependson = "comprehensive-base"}
 wrswoR.benchmark::p_values_agg %>%
+  ungroup %>% 
   filter(skew == 1 & func != "R") %>%
-  ggplot(aes(x=N, y=n, fill=cut_p(p_value))) +
-  ggplot_base +
-  comprehensive_base(3) +
-  scale_y_continuous(expand = c(0, 0)) +
-  facet_wrap(~func)
-```
-
-```{r comprehensive-false, echo=FALSE, fig.cap="CDF of the p-values when comparing five algorithms, where one of which uses different weights", dependson = "comprehensive-base"}
-wrswoR.benchmark::p_values_agg %>%
-  filter(func == "R") %>%
+  mutate(func = format_expr(func)) %>%
   ggplot(aes(x=N, y=n, fill=cut_p(p_value))) +
   ggplot_base +
   comprehensive_base(4) +
-  scale_y_continuous(expand = c(0, 0)) +
+  scale_y_continuous(name = "$n$", expand = c(0, 0)) +
+  facet_wrap(~func, nrow = 1)
+```
+
+```{r comprehensive-false, echo=FALSE, fig.cap="Combined p-values for different values of $n$ and $N$, resulting from comparing the stock implementation with a skewed version of itself", dependson = "comprehensive-base"}
+wrswoR.benchmark::p_values_agg %>%
+  ungroup %>%
+  filter(func == "R") %>%
+  mutate(skew = kimisc::ofactor(paste0("skew ", percent(skew - 1)))) %>%
+  ggplot(aes(x=N, y=n, fill=cut_p(p_value))) +
+  ggplot_base +
+  comprehensive_base(4) +
+  scale_y_continuous(name = "$n$", expand = c(0, 0)) +
   facet_wrap(~skew, ncol = 4)
 ```
 
