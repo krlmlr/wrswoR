@@ -459,6 +459,10 @@ pow10 <- function(x) {
   ifelse(x == 1, 1, paste0("$10^{", log10(x), "}$"))
 }
 
+pow2 <- function(x) {
+  ifelse(x == 1, 1, paste0("$2^{", log2(x), "}$"))
+}
+
 format_expr <- function(x) {
   ifelse(x == "R", "\\proglang{R}", paste0("\\emph{", x, "}"))
 }
@@ -701,7 +705,7 @@ Here, Fisher's method detects significant, although not overwhelming,
 evidence against the null hypothesis
 ($p = `r signif(metap::sumlog(p_values_false$p_value)$p, 3)`$).
 
-```{r correctness-true, echo=FALSE, dependson="def-plot-p-values", fig.cap="CDF of the p-values when comparing the five algorithms"}
+```{r correctness-true, echo=FALSE, dependson="def-plot-p-values", fig.cap="CDF of the p-values when comparing the \\emph{crank} and \\proglang{R} algorithms"}
 p_values_true %>%
   rename(`p-value` = p_value) %>%
   arrange(`p-value`) %>%
@@ -711,11 +715,13 @@ p_values_true %>%
   ggplot_base +
   geom_point() +
   geom_abline(slope = nrow(p_values_true), intercept = 0, linetype = 3) +
-  coord_fixed(ratio = 1 / nrow(p_values_true))
+  coord_fixed(ratio = 1 / nrow(p_values_true)) +
+  scale_color_discrete(name = "$i$") +
+  scale_shape_discrete(name = "$j$")
 ```
 
 
-```{r correctness-false, echo=FALSE, dependson="def-plot-p-values", fig.cap="CDF of the p-values when comparing five algorithms, where one of which uses different weights"}
+```{r correctness-false, echo=FALSE, dependson="def-plot-p-values", fig.cap="CDF of the p-values when comparing the \\proglang{R} implementation with a skewed version of itself"}
 p_values_false %>%
   rename(`p-value` = p_value) %>%
   arrange(`p-value`) %>%
@@ -725,7 +731,9 @@ p_values_false %>%
   ggplot_base +
   geom_point() +
   geom_abline(slope = nrow(p_values_false), intercept = 0, linetype = 3) +
-  coord_fixed(ratio = 1 / nrow(p_values_false))
+  coord_fixed(ratio = 1 / nrow(p_values_false)) +
+  scale_color_discrete(name = "$i$") +
+  scale_shape_discrete(name = "$j$")
 ```
 
 A fairly comprehensive test for
@@ -779,35 +787,41 @@ cut_p <- function(x) {
 }
 ```
 
-
-
-```{r comprehensive, echo=FALSE, fig.cap="Combining p-values for a comprehensive test"}
-wrswoR.benchmark::p_values_agg_agg %>%
-  ggplot(aes(x=factor(N), y=interaction(func, skew), fill=cut_p(p_value))) +
-  ggplot_base +
-  geom_tile() +
-  scale_fill_brewer(name = "p-value", palette = "YlOrRd")
+```{r comprehensive-base, echo = FALSE, dependson="ggplot-base"}
+comprehensive_base <- function(by) list(
+  geom_raster(),
+  scale_x_log10(name = "$N$", expand = c(0, 0), breaks = 2 ** seq.int(24, 8, by = -by), labels = pow2),
+  scale_fill_brewer(name = "p-value", palette = "YlOrRd"),
+  NULL
+)
 ```
 
-```{r comprehensive-true, echo=FALSE, fig.cap="CDF of the p-values when comparing five algorithms, where one of which uses different weights"}
+
+```{r comprehensive, echo=FALSE, fig.cap="Combining p-values for a comprehensive test", dependson = "comprehensive-base"}
+wrswoR.benchmark::p_values_agg_agg %>%
+  ggplot(aes(x=N, y=interaction(func, skew), fill=cut_p(p_value))) +
+  ggplot_base +
+  comprehensive_base(2) +
+  scale_y_discrete(expand = c(0, 0))
+```
+
+```{r comprehensive-true, echo=FALSE, fig.cap="CDF of the p-values when comparing five algorithms, where one of which uses different weights", dependson = "comprehensive-base"}
 wrswoR.benchmark::p_values_agg %>%
   filter(skew == 1 & func != "R") %>%
-  ggplot(aes(x=factor(N), y=n, fill=cut_p(p_value))) +
+  ggplot(aes(x=N, y=n, fill=cut_p(p_value))) +
   ggplot_base +
-  geom_tile() +
+  comprehensive_base(3) +
   scale_y_continuous(expand = c(0, 0)) +
-  scale_fill_brewer(name = "p-value", palette = "YlOrRd") +
   facet_wrap(~func)
 ```
 
-```{r comprehensive-false, echo=FALSE, fig.cap="CDF of the p-values when comparing five algorithms, where one of which uses different weights"}
+```{r comprehensive-false, echo=FALSE, fig.cap="CDF of the p-values when comparing five algorithms, where one of which uses different weights", dependson = "comprehensive-base"}
 wrswoR.benchmark::p_values_agg %>%
   filter(func == "R") %>%
-  ggplot(aes(x=factor(N), y=n, fill=cut_p(p_value))) +
+  ggplot(aes(x=N, y=n, fill=cut_p(p_value))) +
   ggplot_base +
-  geom_tile() +
+  comprehensive_base(4) +
   scale_y_continuous(expand = c(0, 0)) +
-  scale_fill_brewer(name = "p-value", palette = "YlOrRd") +
   facet_wrap(~skew, ncol = 4)
 ```
 
