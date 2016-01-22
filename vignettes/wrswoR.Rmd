@@ -536,13 +536,14 @@ timings %>%
   ungroup %>%
   spread(expr, median) %>%
   mutate(crank_vs_expj = crank / expj) %>%
+  mutate(r = paste0("$r = ", r, "$")) %>%
   ggplot(aes(x=prob_mix, y=crank_vs_expj, color=n)) +
   scale_x_discrete(name = "Weights distribution") +
-  scale_y_log10(name = "Ratio of median run times\n(crank vs. expj)", breaks = 2 ** (-1:3)) +
+  scale_y_log10(name = "Ratio of median run times\n(\\emph{crank} vs. \\emph{expj})", breaks = 2 ** (-1:3)) +
   ggplot_base +
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
   geom_point() +
-  scale_color_continuous(trans="log", breaks = as.integer(10 ** (2:5))) +
+  scale_color_continuous(name = "$n$", trans="log", breaks = as.integer(10 ** c(2, 4, 6)), labels = pow10) +
   facet_wrap(~r)
 ```
 
@@ -557,7 +558,7 @@ for absolute run times of around 10 microseconds for $n = 100$.
 ```{r run-time-break-even, echo=FALSE, fig.cap="Comparison of \\proglang{R} and \\emph{expj} run times for \\emph{linear ascending} weights", dependson=c("break-even-base", "ggplot-base")}
 break_even %>%
   filter(expr %in% c("R", "expj")) %>%
-  filter(prob_mix == "Linear (asc.)") %>%
+  filter(prob_mix == "linear $\\nearrow$") %>%
   filter(r %in% c(0.01, 0.1, 1)) %>%
   group_by(n, expr, prob, r) %>%
   summarize(median = median(time)) %>%
@@ -567,9 +568,9 @@ break_even %>%
   ggplot(aes(x=n, y=R_vs_expj, color=r, group=r)) +
   ggplot_base +
   geom_line() +
-  scale_x_log10() +
-  scale_y_log10(name = "Ratio of median run times (R vs. expj)", breaks = 2 ** (-1:5)) +
-  scale_color_continuous(trans="log", breaks = 10 ** (-2:0))
+  scale_x_log10(name = "$n$") +
+  scale_y_log10(name = "Ratio of median run times\n(\\proglang{R} vs. \\emph{expj})", breaks = 2 ** (-1:5)) +
+  scale_color_continuous(name = "$r$", trans="log", breaks = 10 ** (-2:0))
 ```
 
 
