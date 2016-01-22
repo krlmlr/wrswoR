@@ -667,7 +667,7 @@ implementation.
 The modification consists of updating
 $$p_i^\prime \coloneqq p_i \cdot \left(1 + \text{skew} \cdot \frac{i - 1}{n - 1}\right),$$
 where a skew of zero means no change, and a skew of 1% corresponds to
-relative differences increasing between 0% and 1%.
+relative differences increasing between `r percent(0)` and `r percent(0.01)`.
 
 The test for equal proportions can be substituted by Fisher's exact test,
 which tends to produce lower p-values and therefore is usually more powerful
@@ -707,7 +707,7 @@ Fisher's method cannot reject the null hypothesis of uniformity
 As an example for a positive test,
 \cref{fig:correctness-false} shows results for the same experiment,
 now substituting the stock implementation with a faulty one with
-$\text{skew} = `r (skew. - 1) * 100`\%$.
+$\text{skew} = `r percent(skew. - 1)`$.
 Despite the relative similarity of the weight distributions,
 the distribution of the p-values deviates substantially from the
 uniform distribution,
