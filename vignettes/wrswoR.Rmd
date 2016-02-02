@@ -552,8 +552,8 @@ using version 0.4 of the \pkg{wrswoR} package.
 
 \Cref{fig:run-time-log} presents an overview of the median run time
 for different input sizes, output size ratios, weight distributions and algorithms.
-The \proglang{R} implementation is clearly outperformed by all other implementations
-for $n = \num{`r max(timings$n)`}$, in many cases even for much smaller inputs.
+The \proglang{R} implementation is outperformed by all other implementations
+for $n \approx \num{1000}$, in many cases even for much smaller inputs.
 In the log-log scale used here, the slope of the curves translates to computational complexity;
 the steeper slope for the \proglang{R} implementation corresponds to its quadratic complexity
 compared to the (in most cases) slightly superlinear complexity of the other algorithms.
@@ -596,8 +596,9 @@ The *expj* algorithm seems to be favorable if $r$ is small or
 $n$ is large.
 For the pathological *geometric* cases, the run time differences between
 *ascending* and *descending* weights are substantial for small $r$.
-The advantage of the *expj* algorithm for $r = 1$ and large $n$ is surprising.
-\fxwarning{Explain once expj algorithm has been described}
+The advantage of the *expj* algorithm for $r = 1$ and large $n$ is surprising
+and can only be explained with run time differences between partial sort
+(which is used for *crank*) and priority queue (for *expj*) implementations.
 
 ```{r run-time-crank-expj, echo=FALSE, fig.cap="Comparison of \\emph{crank} and \\emph{expj} run times", dependson=c("timing-base", "ggplot-base")}
 timings %>%
@@ -620,11 +621,15 @@ timings %>%
 
 For the break-even analysis, *expj* is compared to the stock implementation in
 \cref{fig:run-time-break-even}.
-At $n=1000$, the *expj* algorithm starts to outperform the stock implementation
-for all tested values of $r$.
-Again, the worst slowdown of the *expj* algorithm seems to be around 2,
+The worst slowdown of the *expj* algorithm seems to be around 2,
 for absolute run times of around 10 microseconds for $n = 100$.
-\fxwarning{The case $r=0.01$ is because sampling without replacement includes a mandatory sorting.}
+It is remarkable that the worst slowdown occurs with $r = 0.1$
+in this plot.
+The relative slowness of the stock implementation for the case $r = 0.01$
+is due to a mandatory pre-sorting of weights using heap sort
+even for $s = 1$,
+which does not occur in the *expj* implementation.
+
 
 ```{r run-time-break-even, echo=FALSE, fig.cap="Comparison of \\proglang{R} and \\emph{expj} run times for \\emph{linear ascending} weights", dependson=c("break-even-base", "ggplot-base")}
 break_even %>%
