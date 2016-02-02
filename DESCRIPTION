@@ -16,12 +16,14 @@ LinkingTo: Rcpp (>= 0.11.5)
 URL: https://github.com/krlmlr/wrswoR
 BugReports: https://github.com/krlmlr/wrswoR/issues
 Suggests:
+    import,
     kimisc (>= 0.2-4),
     testthat,
     roxygen2,
     knitr,
     rmarkdown,
     rticles (>= 0.1),
+    knitcitations,
     metap,
     tidyr,
     Rcpp,
