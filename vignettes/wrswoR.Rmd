@@ -14,8 +14,8 @@ title:
   # For running headers, if needed
   short:     "Accelerating weighted random sampling without replacement"
 abstract: >
-  Random sampling from discrete populations is a central part of Monte-Carlo
-  simulations.
+  Random sampling from discrete populations
+  is one of the basic primitives in statistical computing.
   This article briefly introduces weighted and unweighted sampling with and
   without replacement.
   The case of weighted sampling without replacement appears to be most difficult
@@ -73,15 +73,21 @@ knit_print.function <- function(x, options) {
 
 # Introduction
 
-Random sampling is one of the basic primitives in statistical computing.
+Random sampling from discrete populations
+is one of the basic primitives in statistical computing.
 This paper focuses on a specific variant: sampling without replacement from a
 finite population with non-uniform weight distribution.
 One application for weighted sampling without replacement is the
 "Truncate-Replicate-Sample" method for stochastic
 conversion of positive real-valued weights to integer weights in the domain
 of spatial microsimulation [@Lovelace_ComputersEnvironmentandUrbanSystems_2013].
-(For consistency, the term *weight* is used throughout this paper for denoting
-the relative probability that an item is sampled.)
+Further applications include market surveys, quality control in manufacturing,
+and on-line advertising [@Efraimidis_ArXiv10120256Cs_2010].
+
+Throughout this paper, the term *weight* refers to
+the relative probability that an item is sampled.
+A related problem, sampling from a population with given inclusion probabilities
+(without specifying an order) is beyond the scope of this paper.
 
 First, different techniques for sampling from discrete populations are reviewed.
 Several implementations for sampling without replacement are discussed,
