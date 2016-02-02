@@ -694,6 +694,7 @@ break_even_point %>%
 
 # Correctness
 
+This section aims at validating the new implementations.
 A correct implementation should satisfy the following criteria:
 
 1. All output items are between $1$ and $n$.
@@ -706,7 +707,7 @@ A correct implementation should satisfy the following criteria:
 Verifying these criteria seems to be challenging
 due to the stochasticity of the algorithms.
 The first two can be simply checked by observing the output.
-Below, a description of the procedure for checking the third criterion is given.
+The following subsection describes a procedure for checking the third criterion.
 
 
 ## Methodology
