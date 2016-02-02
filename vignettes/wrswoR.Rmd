@@ -641,12 +641,11 @@ break_even %>%
   ungroup %>%
   spread(expr, median) %>%
   mutate(R_vs_expj = R / expj) %>%
-  ggplot(aes(x=n, y=R_vs_expj, color=r, group=r)) +
+  ggplot(aes(x=n, y=R_vs_expj, color=factor(r))) +
   ggplot_base +
   geom_line() +
-  scale_x_log10(name = "$n$") +
-  scale_y_log10(name = "Ratio of median run times\n(\\proglang{R} vs. \\emph{expj})", breaks = 2 ** (-1:5)) +
-  scale_color_continuous(name = "$r$", trans="log", breaks = 10 ** (-2:0))
+  scale_x_log10(name = "$n$", breaks = c(10, 30, 100, 300, 1000)) +
+  scale_y_log10(name = "Ratio of median run times\n(\\proglang{R} vs. \\emph{expj})", breaks = 2 ** (-1:5))
 ```
 
 
