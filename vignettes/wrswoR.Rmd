@@ -438,7 +438,7 @@ denoted by $r = \frac{s}{n}$.
 The following weight distributions (used for $p_i$) were tested:
 
 \begin{description}
-  \item[uniform]
+  \item[uniform] $p_i = 1$ everywhere
   \item[linear] Sequence from $1$ to $n$ ($\{p_i\} = \{1,\ldots n\}$),
   *ascending* ($\nearrow$), *descending* ($\searrow$) and *shuffled* ($\leadsto$)
   \item[geometric] Starting at $1$, the weight is multiplied with a constant $\alpha$ for each step
