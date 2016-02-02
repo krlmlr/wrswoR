@@ -174,8 +174,8 @@ Sampling an item means selecting a box and choosing between the two items in thi
 
 The preprocessing time of $O(n)$ required for Walker's alias method
 (in a modification suggested by @Vose_IEEETrans.Softw.Eng._1991)
-is also the lower bound for arbitrary weight distributions.
-It is easy to see that the entire weight vector must be read at least once.
+is also the lower bound for arbitrary weight distributions:
+The entire weight vector must be read at least once.
 Hence, for non-uniform weights,
 the run time is at least $O(n + s)$, and the input size $n$ will dominate
 unless $s \gg n$.
