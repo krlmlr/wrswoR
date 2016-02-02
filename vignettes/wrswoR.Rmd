@@ -799,7 +799,7 @@ $\text{skew} = `r percent(skew. - 1)`$.
 Despite the relative similarity of the weight distributions,
 the distribution of the p-values deviates substantially from the
 uniform distribution,
-with more than expected p-values close to zero.
+with more p-values close to zero than expected.
 Here, Fisher's method detects significant, although not overwhelming,
 evidence against the null hypothesis
 ($p = `r signif(metap::sumlog(p_values_false$p_value)$p, 3)`$).
