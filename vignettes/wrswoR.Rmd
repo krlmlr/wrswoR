@@ -952,14 +952,61 @@ wrswoR.benchmark::p_values_agg %>%
 
 # Conclusions and future work
 
-- Pre-sort weights using radix sort
-    - For expj
-    - Sorting by exponent may already be enough
-- Faster heap (g-heap?) \fxwarning{Where is that used? Not mentioned before}
-- Generic C library
-- Allow termination of loop in R
-- Test more failure modes
-- Parallel version
+This paper describes four new implementations for weighted random sampling
+without replacement in \proglang{R}.
+The new implementations, even those written in pure \proglang{R},
+clearly outperform the one provided by the \pkg{base}
+package if the number of items to choose from is just above 1000.
+Each of the algorithms presented here has its advantages:
+
+- Rejection sampling is a simple and straightforward method that builds upon
+  weighted sampling with replacement.
+- One-pass sampling can be parallelized easily.
+- Reservoir sampling with exponential jumps is fast even for degenerate weight
+  distributions, and economical in its use of random numbers.
+
+In particular, reservoir sampling with exponential jumps
+[@efraimidis_weighted_2006] requires just about double the time
+of the stock implementation in the most favorable case,
+code optimization (such as using a cache-efficient heap structure for the
+priority queue)
+might help further reduce this threshold or even remove it entirely.
+Reservoir sampling performs best if the weights are pre-sorted in descending
+order.
+An optional sorting step could be provided for convenience.
+
+For validation, the new implementations have been compared with the
+stock implementation by counting the number of occurrences for each item
+and each possible position in a large number of runs,
+and testing the null hypothesis of equal proportions.
+This yields a massive amount of p-values, which can be combined using
+Fisher's method, a meta-analysis technique.
+The validation methodology is able to clearly detect a simulated implementation
+error, which consisted of skewing the input frequency distribution
+in a predefined fashion,
+whereas no difference between the new and the stock implementations could be
+measured.
+So far, the detection of non-systematic errors or other failure modes
+has not been tested.
+
+In order to include a faster sampling algorithm into base \proglang{R},
+an implementation in \proglang{C}
+seems necessary.  Other platforms for scientific computing, such as
+\proglang{Python} or \proglang{Julia}, would also benefit if this implementation
+was provided in an open-source library with a documented interface.
+
+For the current implementation in \proglang{R}, a user might not expect
+a natural operation such as random sampling
+to take excessive time, without the ability to interrupt it.
+Calling `R_CheckUserInterrupt()` every $10^7$ or so operations
+in the current implementation would at least save the unaware user
+the frustration of a lost workspace.
+
+The algorithms presented here generate an ordered sample of items based on
+relative weights.  If the relative importance is instead given as inclusion
+probabilities, and the order is not important, as e.g. in the application of
+survey sampling, the `UPxxx()` functions in the \pkg{sampling} package
+`r knitcitations::citep(citation("sampling"))` offer a viable alternative.
 
 
 # Acknowledgments

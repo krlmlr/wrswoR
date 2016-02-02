@@ -28,6 +28,7 @@ Suggests:
     tidyr,
     Rcpp,
     microbenchmark,
+    sampling,
     BatchExperiments,
     dplyr,
     ggplot2,
