@@ -410,15 +410,17 @@ Instead of directly specifying $s$, it is given as a fraction of $n$,
 denoted by $r = \frac{s}{n}$.
 The following weight distributions (used for $p_i$) were tested:
 
-- *uniform*
-- *linear*: Sequence from $1$ to $n$ ($\{p_i\} = \{1,\ldots n\}$),
+\begin{description}
+  \item[uniform]
+  \item[linear] Sequence from $1$ to $n$ ($\{p_i\} = \{1,\ldots n\}$),
   *ascending* ($\nearrow$), *descending* ($\searrow$) and *shuffled* ($\leadsto$)
-- *geometric*: Starting at $1$, the weight is multiplied with a constant $\alpha$ for each step
+  \item[geometric] Starting at $1$, the weight is multiplied with a constant $\alpha$ for each step
   ($p_{i+1} = \alpha p_i$, *ascending*, *descending*, and *shuffled*);
   the constant is chosen so that both minimal and maximal weights
   and the sum of weights is still representable as a floating-point number.
+\end{description}
 
-The *geometric* case is very extreme and unlikely to occur in practice,
+The geometric case is very extreme and unlikely to occur in practice,
 it is included here to test potential limitations of the implementations.
 
 ```{r timing-base, echo=FALSE}
