@@ -561,6 +561,10 @@ for $n \approx \num{1000}$, in many cases even for much smaller inputs.
 In the log-log scale used here, the slope of the curves translates to computational complexity;
 the steeper slope for the \proglang{R} implementation corresponds to its quadratic complexity
 compared to the (in most cases) slightly superlinear complexity of the other algorithms.
+No data were obtained for the \proglang{R} implementation if the computation
+would have taken too long,
+this is reflected by a premature ending of the corresponding curves
+in \cref{fig:run-time-log}.
 
 ```{r run-time-log, echo=FALSE, fig.height=8, fig.cap="Median run times", dependson=c("timing-base", "ggplot-base")}
 timings %>%
