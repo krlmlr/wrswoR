@@ -15,14 +15,15 @@ title:
   short:     "Accelerating weighted random sampling without replacement"
 abstract: >
   Random sampling from discrete populations is a central part of Monte-Carlo
-  simulations. (What other applications?)
+  simulations.
   This article briefly introduces weighted and unweighted sampling with and
   without replacement.
   The case of weighted sampling without replacement appears to be most difficult
-  to implement, which might be one reason why the \proglang{R} implementation
-  performs slowly for large input.
-  Four alternative implementations for the case of weighted
-  sampling without replacement are presented and validated.
+  to implement efficiently, which might be one reason why the \proglang{R}
+  implementation performs slowly for large input.
+  This paper presents four alternative implementations for the case of weighted
+  sampling without replacement, with an analysis of their run time and
+  correctness.
 keywords:
   # at least one keyword must be supplied
   formatted: [Weighted sampling, performance, meta-analysis, "\\proglang{R}"]
@@ -73,29 +74,27 @@ knit_print.function <- function(x, options) {
 # Introduction
 
 Random sampling is one of the basic primitives in statistical computing.
-\fxwarning{Used where?}
-
-For consistency, the term *weight* is used throughout this paper for denoting
-the relative probability that an item is sampled.
-
-This paper focuses on a specific variant: sampling without replacement from a finite population
-with non-uniform weight distribution.
-\fxwarning{Application?}
+This paper focuses on a specific variant: sampling without replacement from a
+finite population with non-uniform weight distribution.
+One application for weighted sampling without replacement is the
+"Truncate-Replicate-Sample" method for stochastic
+conversion of positive real-valued weights to integer weights in the domain
+of spatial microsimulation [@Lovelace_ComputersEnvironmentandUrbanSystems_2013].
+(For consistency, the term *weight* is used throughout this paper for denoting
+the relative probability that an item is sampled.)
 
 First, different techniques for sampling from discrete populations are reviewed.
 Several implementations for sampling without replacement are discussed,
-this includes evaluation of runtime performance and correctness.
+this includes evaluation of run time performance and correctness.
 The paper concludes with suggestions for incorporating the findings into base
 \proglang{R}.
 
 
 # Sampling from discrete populations
 
-\fxwarning{Longer introduction}
-\fxwarning{Put in context of Tillé's book (start with chapter 3)}
+
 We use \cref{alg:sample} as a definition of sampling from discrete populations
 with or without replacement from arbitrary (including uniform) weight distributions.
-From this definition, the following can be observed:
 
 \begin{algorithm}
   \caption{$\text{sample}(n, s, \text{replace}, p_i)$}
@@ -120,6 +119,8 @@ From this definition, the following can be observed:
   \end{algorithmic}
 \end{algorithm}
 
+From this definition, the following can be observed:
+
 - Sampling with replacement appears to be a simpler problem than sampling without
   replacement, as the lines \ref{alg:sample:if} and
   \ref{alg:sample:if-end} in \cref{alg:sample} are not required.
@@ -131,6 +132,14 @@ In this framework, sampling without replacement with non-uniform weights
 seems to be the hardest problem.
 This also holds for the more specialized algorithms that implement
 each case.
+
+@Tille_Sampl.Algorithms_2006b defines a more rigorous framework for sampling
+algorithms from the perspective of the likelihood that a sample is selected
+based on a given sampling design.  In the context of that framework,
+\cref{alg:sample} belongs to the class of "draw by draw" algorithms.
+For the application of sampling theory, the order of the selected elements
+is not important and usually ignored; in contrast, \cref{alg:sample}
+returns an ordered sequence of sampled elements.
 
 
 ## Sampling with replacement
@@ -190,7 +199,7 @@ array.
 Removal of an item with known index can be done in $O(1)$ time
 by simply replacing it with the last item in the array
 and truncating the array by one.
-\fxwarning{Reservoir for $s \ll n$}
+
 For the non-uniform case,
 lines \ref{alg:sample:norm} and \ref{alg:sample:remove}
 in \cref{alg:sample} can be implemented with
@@ -204,7 +213,7 @@ that can be initialized in $O(n)$ time and supports
 simultaneous lookup and update in $O(\log n)$ time,
 we refer to the original paper for details.
 
-# Explanation of the code
+# Implementation
 
 \proglang{R} offers reasonably efficient implementations for all cases except
 non-uniform sampling without replacement,
@@ -214,7 +223,7 @@ This paper explores alternative approaches:
 rejection sampling, one-pass sampling and reservoir sampling.
 Only the first can be described formally within the framework of \cref{alg:sample},
 however an actual implementation would use sampling *with* replacement as a subroutine.
-The last two are based on arithmetic transformation of a weight distribution.
+The last two are based on an arithmetic transformation of a weight distribution.
 
 
 ## Rejection sampling
@@ -226,10 +235,11 @@ and repeating the sampling in line \ref{alg:sample:norm}
 until hitting a valid item.
 Note that the distribution of the result is not modified if invalid items
 are purged occasionally.
+This corresponds to the class of rejective algorithms in the framework of
+@Tille_Sampl.Algorithms_2006b.
 
 Therefore, sampling without replacement can be emulated by
 repeated sampling with replacement, as shown in \cref{alg:sample-rej}.
-\fxwarning{Reference? Yates (1960) p. 347 contains this, as well as Tillé 3.8}
 The general idea is to sample slightly more items than necessary (with replacement),
 and then to throw away the duplicate items.
 If the resulting sequence of items is shorter than requested,
@@ -263,34 +273,38 @@ purging the invalid items.
   \end{algorithmic}
 \end{algorithm}
 
-Here, the function expected.items() estimates
+Here, $\text{expected.items}(n, s)$ is an estimate for
 the number of items that need to be drawn with replacement,
 so that the result can be expected to contain at least $s$ unique items.
 (An incorrect estimate only affects the run time, not the correctness
 of the algorithm.)
+Note that, with $\text{expected.items}(n, s) = 1$ everywhere,
+\cref{alg:sample,alg:sample-rej} are in fact identical.
 For a uniform distribution, it can be shown that, with
 $\text{expected.items}(n, s) \geq n (H_n - H_{n-s}) = n \sum_{i=n-s+1}^n \frac{1}{i}$,
 the result has $s$ unique items in expectation.
-\fxwarning{Expected amortized run time? Look it up in a reference}
-(With $\text{expected.items}(n, s) = 1$ everywhere,
-\cref{alg:sample,alg:sample-rej} are in fact identical.)
+This is an underestimate for non-uniform distributions.
+Nevertheless, the implementation in this package uses this estimate, capped at
+$2n$.
+As shown in \cref{sec:tests}, this algorithm performs worse than the alternatives
+shown in the following section, but still outperforms the stock implementation
+for large values of $n$ and $s$.
+Therefore, no tuning of the estimation of the number of expected items
+has been performed.
 
 
-## Reservoir sampling
+## One-pass sampling
 
 A particularly interesting algorithm has been devised only recently by
 @efraimidis_weighted_2006.
-In the simplest version, it is sufficient to draw $n$ random numbers,
+In the simplest version (here referred to as *one-pass sampling*),
+it is sufficient to draw $n$ random numbers,
 combine them arithmetically with the weight distribution $p_i$,
 and perform a partial sort to find the indexes of the $s$ smallest items.
 \Cref{alg:sample-rank} is a modified version of Algorithm A in the original paper
 that operates on the logarithmic scale and uses multiplication
 instead of exponentiation
 for increased numeric stability.
-\fxwarning{Describe transformation}
-In line \ref{alg:sample-rank:sample}, $\text{Exp}(1)$ refers to i.i.d.\ samples
-from the exponential distribution with rate 1.
-\fxwarning{Logarithm of the uniform}
 
 \begin{algorithm}
   \caption{$\text{sample.rank}(n, s, p_i)$}
@@ -307,6 +321,11 @@ from the exponential distribution with rate 1.
   \end{algorithmic}
 \end{algorithm}
 
+The arithmetic transformation of the weight distribution is carried out
+in line \ref{alg:sample-rank:sample}.
+A sequence of i.i.d.\ samples from the exponential distribution with rate 1
+is divided by the weights, the order of the results defines the sampling order.
+
 The algorithm amazes with its elegance and simplicity.
 Computational complexity is dominated by the partial sort
 (which can be implemented in $O(n + s \log n)$,
@@ -314,20 +333,26 @@ or even in $O(n)$ for floating-point numbers
 [@terdiman_radix_2000].
 However, the cost of generating $n$ random variates may outweigh
 the cost for sorting even for moderately large values of $s$.
-To overcome this issue,
-@efraimidis_weighted_2006
-describe *reservoir sampling with exponential jumps* -- 
-an extension where each generated random number decides how many items are skipped
+The next subsection describes an extension to overcome this issue.
+
+
+## Reservoir sampling
+
+*Reservoir sampling with exponential jumps* is a modified version of one-pass
+sampling.
+A reservoir of "active" items is maintained.
+Each generated random number decides how many input items are skipped
 until the current "least likely" item is removed from the reservoir.
 Only $O(s \log \frac{n}{s})$ random numbers (in expectation) are needed with this extension,
-the simple version always requires $n$ random numbers.
+whereas the simple version always requires $n$ random numbers.
 The exponential jumps method requires fewer updates of the reservoir
-(and therefore fewer random numbers)
+(and therefore fewer random numbers and less run time)
 if the weights are arranged in descending order.
 We refer to the original paper for more details, including formal proofs of correctness.
+\fxwarning{Really show the algorithm, page 184}
 
 
-# Code
+# Implementation
 
 The \pkg{wrswoR} package contains implementations for the two algorithms
 presented in the previous section, one \proglang{R} implementation
@@ -363,11 +388,12 @@ Compared to \code{sample.int}, the base \proglang{R} function,
 the \code{replace} parameter has been removed, and \code{prob} cannot be \code{NULL}.
 To simplify testing the new routines against the \proglang{R} implementation,
 a wrapper function \code{sample_int_R} is provided.
-The subsequent section shows performance characteristics and correctness
+The subsequent sections show performance characteristics and correctness
 of the new implementations compared to the base \proglang{R} version.
 
 
-# Tests
+# Performance
+\label{sec:tests}
 
 This section presents run time tests for various combinations of input parameters,
 attempts to provide guidance when to choose which implementation,
@@ -384,14 +410,16 @@ Instead of directly specifying $s$, it is given as a fraction of $n$,
 denoted by $r = \frac{s}{n}$.
 The following weight distributions (used for $p_i$) were tested:
 
-- *Uniform*
-- *Linear*: Sequence from $1$ to $n$ ($\{p_i\} = \{1,\ldots n\}$),
+- *uniform*
+- *linear*: Sequence from $1$ to $n$ ($\{p_i\} = \{1,\ldots n\}$),
   *ascending* ($\nearrow$), *descending* ($\searrow$) and *shuffled* ($\leadsto$)
-- *Geometric*: Starting at $1$, the weight is multiplied with a constant $\alpha$ for each step
+- *geometric*: Starting at $1$, the weight is multiplied with a constant $\alpha$ for each step
   ($p_{i+1} = \alpha p_i$, *ascending*, *descending*, and *shuffled*);
   the constant is chosen so that both minimal and maximal weights
   and the sum of weights is still representable as a floating-point number.
-  \fxwarning{Extreme case}
+
+The *geometric* case is very extreme and unlikely to occur in practice,
+it is included here to test potential limitations of the implementations.
 
 ```{r timing-base, echo=FALSE}
 ggplot_base <- list(
@@ -571,7 +599,7 @@ At $n=1000$, the *expj* algorithm starts to outperform the stock implementation
 for all tested values of $r$.
 Again, the worst slowdown of the *expj* algorithm seems to be around 2,
 for absolute run times of around 10 microseconds for $n = 100$.
-\fxwarning{The case $r=0.01$ is unclear.}
+\fxwarning{The case $r=0.01$ is because sampling without replacement includes a mandatory sorting.}
 
 ```{r run-time-break-even, echo=FALSE, fig.cap="Comparison of \\proglang{R} and \\emph{expj} run times for \\emph{linear ascending} weights", dependson=c("break-even-base", "ggplot-base")}
 break_even %>%
@@ -614,12 +642,12 @@ break_even %>%
 
 
 
-## Correctness
+# Correctness
 
-A correct implementation should obey the following criteria:
+A correct implementation should satisfy the following criteria:
 
 1. All output items are between $1$ and $n$.
-2. Each item occurs at most once in the output.\fxwarning{Really check this in \pkg{wrswoR.sample}.}
+2. Each item occurs at most once in the output.
 3. For given parameters $n$, $s$ and $p_i$,
   the probability that item $i$ is at position $j$ in the output
   (with $1 \leq i \leq n$ and $1 \leq j \leq s$)
@@ -629,6 +657,9 @@ Verifying these criteria seems to be challenging
 due to the stochasticity of the algorithms.
 The first two can be simply checked by observing the output.
 Below, a description of the procedure for checking the third criterion is given.
+
+
+## Methodology
 
 For fixed $i$ and $j$ and for fixed parameters $n$, $s$, and $p_i$,
 each call to the sampling routine is a Bernoulli trial
@@ -692,6 +723,9 @@ p_values_true <- wrswoR.benchmark::p_values_7 %>% filter(N == N., s == s., skew 
 p_values_false <- wrswoR.benchmark::p_values_7 %>% filter(N == N., s == s., skew == skew.)
 ```
 
+
+## Example
+
 \Cref{fig:correctness-true} shows a Schweder plot [@Schweder_Biometrika_1982]
 of the p-values resulting from an experiment that
 draws $N = `r paste0("2^{", log2(N.), "}")`$ samples for $n = `r n.`$,
@@ -749,6 +783,9 @@ p_values_false %>%
   scale_color_discrete(name = "$i$") +
   scale_shape_discrete(name = "$j$")
 ```
+
+
+## Results
 
 A fairly comprehensive test for
 all $n \in \{
