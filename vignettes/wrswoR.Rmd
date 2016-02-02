@@ -868,13 +868,6 @@ the smaller the skew, the larger the $N$ where rejection occurs.
 This comparison is less sensitive to implementation errors that occur only for
 specific arguments
 (e.g., if an implementation behaves as expected except if $n$ is a power of 2).
-\Cref{fig:comprehensive-true,fig:comprehensive-false} demonstrate p-values
-further disaggregated by $n$.
-
-- Correct implementations are all blue, faulty implementations turn grey sooner or later.
-- For small skew cannot conclusively disprove correctness for all $n$, need more data.
-- A few dark spots with correct implementation, but not more than expected (each meta-analysis is an analysis in itself)
-- Show which tiles in the heatmap correspond to the plots
 
 ```{r comprehensive-base, echo = FALSE, dependson="ggplot-base"}
 p_value_breakpoints <- c(0, 1e-100, 1e-4, 1e-2, 1e-1, 9e-1, 1)
@@ -910,6 +903,14 @@ wrswoR.benchmark::p_values_agg_agg %>%
   scale_y_discrete(name = "skew/implementation", expand = c(0, 0)) +
   facet_wrap(~facet, ncol = 1, scales = "free_y")
 ```
+
+\Cref{fig:comprehensive-true,fig:comprehensive-false} demonstrate p-values
+further disaggregated by $n$.
+
+- Correct implementations are all blue, faulty implementations turn grey sooner or later.
+- For small skew cannot conclusively disprove correctness for all $n$, need more data.
+- A few dark spots with correct implementation, but not more than expected (each meta-analysis is an analysis in itself)
+- Show which tiles in the heatmap correspond to the plots
 
 ```{r comprehensive-true, echo=FALSE, fig.cap="Combined p-values for different values of $n$ and $N$, resulting from comparing the new algorithms with the stock implementation", dependson = "comprehensive-base"}
 wrswoR.benchmark::p_values_agg %>%
