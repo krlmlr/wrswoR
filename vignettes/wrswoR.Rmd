@@ -343,13 +343,36 @@ sampling.
 A reservoir of "active" items is maintained.
 Each generated random number decides how many input items are skipped
 until the current "least likely" item is removed from the reservoir.
+\Cref{alg:sample-expj} shows a verbal description,
+further details and formal proofs of correctness are beyond the scope of this
+paper and can be found in [@efraimidis_weighted_2006].
 Only $O(s \log \frac{n}{s})$ random numbers (in expectation) are needed with this extension,
 whereas the simple version always requires $n$ random numbers.
 The exponential jumps method requires fewer updates of the reservoir
 (and therefore fewer random numbers and less run time)
 if the weights are arranged in descending order.
-We refer to the original paper for more details, including formal proofs of correctness.
-\fxwarning{Really show the algorithm, page 184}
+
+\begin{algorithm}
+  \caption{$\text{sample.expj}(n, s, p_i)$}
+  \label{alg:sample-expj}
+  \begin{algorithmic}[1]
+    \REQUIRE $n$: Size of the population
+    \REQUIRE $s$: Number of items to sample
+    \REQUIRE $p_i$: Weight of each item for $i \in \{1,\ldots,n\}$
+    \ENSURE Returns a vector $k_j \in \{1,\ldots,n\}$ with
+      $j \in \{1,\ldots,s\}$ that contains the indexes of the items sampled
+    \STATE Initialize reservoir with the first $s$ elements
+    \STATE Set keys for these elements based on their weight and one random number per item
+    \WHILE{not all items processed}
+      \STATE Choose item with lowest key in the reservoir
+      \STATE Determine number of items to skip, based on this key and a random number
+      \STATE Replace item with lowest key with current item in the reservoir
+      \STATE Set the new item's key based on its weight and a random number
+    \ENDWHILE
+    \RETURN Items in reservoir sorted by their key
+  \end{algorithmic}
+\end{algorithm}
+
 
 
 # Implementation
