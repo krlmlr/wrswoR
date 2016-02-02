@@ -351,6 +351,9 @@ whereas the simple version always requires $n$ random numbers.
 The exponential jumps method requires fewer updates of the reservoir
 (and therefore fewer random numbers and less run time)
 if the weights are arranged in descending order.
+In addition to drawing random numbers, the extraction of the minimal item
+from a priority queue (line \ref{alg:sample-expj:pq}) is the most expensive
+operation.
 
 \begin{algorithm}
   \caption{$\text{sample.expj}(n, s, p_i)$}
@@ -365,6 +368,7 @@ if the weights are arranged in descending order.
     \STATE Set keys for these elements based on their weight and one random number per item
     \WHILE{not all items processed}
       \STATE Choose item with lowest key in the reservoir
+        \label{alg:sample-expj:pq}
       \STATE Determine number of items to skip, based on this key and a random number
       \STATE Replace item with lowest key with current item in the reservoir
       \STATE Set the new item's key based on its weight and a random number
