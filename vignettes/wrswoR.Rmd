@@ -648,15 +648,36 @@ break_even %>%
   scale_y_log10(name = "Ratio of median run times\n(\\proglang{R} vs. \\emph{expj})", breaks = 2 ** (-1:5))
 ```
 
-
-```{r point-break-even, echo=FALSE, fig.cap="Break-even point of \\proglang{R} and \\emph{expj} run times", dependson=c("break-even-base", "ggplot-base")}
-break_even %>%
+```{r break-even-point, echo = FALSE}
+break_even_point <-
+  break_even %>%
   filter(expr %in% c("R", "expj")) %>%
   group_by(n, expr, prob, mix, r) %>%
   summarize(median = median(time)) %>%
   ungroup %>%
   spread(expr, median) %>%
-  mutate(rate = R / expj) %>%
+  mutate(rate = R / expj)
+
+break_even_point_max <-
+  break_even_point %>%
+  .[["rate"]] %>%
+  min
+```
+
+
+\Cref{fig:point-break-even} shows a more detailed break-even point analysis
+for a larger range of $r$ and for all weight distributions tested.
+Compared to *expj*, the stock implementation performs best with a uniform weight
+distribution, offsetting the break-even point to just below 500 for the
+best choice of $r \approx 0.1$.
+In other words, for $n < 500$ and $s = \lceil 0.1n \rceil$, the stock implementation is still
+the best choice in the case of a uniform or near-uniform distribution,
+with a speedup of at most
+`r round(1 / break_even_point_max, 2)`.
+
+
+```{r point-break-even, echo=FALSE, fig.cap="Break-even point of \\proglang{R} and \\emph{expj} run times", dependson=c("break-even-base", "ggplot-base", "break-even-point")}
+break_even_point %>%
   group_by(prob, mix, r) %>%
   summarize(smallest_n_where_expj_is_better = n[tail(which(rate < 1), 1L) + 1L]) %>%
   ungroup %>% 
