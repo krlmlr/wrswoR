@@ -287,8 +287,8 @@ This is an underestimate for non-uniform distributions.
 Nevertheless, the implementation in this package uses this estimate, capped at
 $2n$.
 As shown in \cref{sec:tests}, this algorithm performs worse than the alternatives
-shown in the following section, but still outperforms the stock implementation
-for large values of $n$ and $s$.
+shown in the following section in the majority of cases, but still outperforms
+the stock implementation for large values of $n$ and $s$.
 Therefore, no tuning of the estimation of the number of expected items
 has been performed.
 
