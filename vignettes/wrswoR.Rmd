@@ -865,9 +865,6 @@ for all $N$, the same holds for all new algorithms.
 On the other hand, all skews tested led to strong rejection of the correctness
 hypothesis (p-value effectively 0) sooner or later; as expected,
 the smaller the skew, the larger the $N$ where rejection occurs.
-This comparison is less sensitive to implementation errors that occur only for
-specific arguments
-(e.g., if an implementation behaves as expected except if $n$ is a power of 2).
 
 ```{r comprehensive-base, echo = FALSE, dependson="ggplot-base"}
 p_value_breakpoints <- c(0, 1e-100, 1e-4, 1e-2, 1e-1, 9e-1, 1)
@@ -904,15 +901,22 @@ wrswoR.benchmark::p_values_agg_agg %>%
   facet_wrap(~facet, ncol = 1, scales = "free_y")
 ```
 
-\Cref{fig:comprehensive-true,fig:comprehensive-false} demonstrate p-values
-further disaggregated by $n$.
+This comparison is less sensitive to implementation errors that occur only for
+specific arguments
+(e.g., if an implementation behaves as expected except if $n$ is a power of 2).
+Therefore, it is helpful to further disaggregate the p-values.
+\Cref{fig:comprehensive-true} shows combined p-vaules separately for all pairs
+of $n$ and $N$ when comparing the new algorithms to the stock implementation.
+Some p-values are in the range of $(0.01, 0.1]$ or even $\left(10^{-4}, 0.01\right]$,
+but this can be expected
+due to the uniform distribution of the p-values under the null hypothesis.
+The plot in \cref{fig:comprehensive-false} is similar, but shows the p-values
+that result from comparing the stock implementation with a skewed version of
+itself, for different skews.
+Here, for all skews except 0, the combined p-value approaches zero sooner or
+later as $N$ increases.
 
-- Correct implementations are all blue, faulty implementations turn grey sooner or later.
-- For small skew cannot conclusively disprove correctness for all $n$, need more data.
-- A few dark spots with correct implementation, but not more than expected (each meta-analysis is an analysis in itself)
-- Show which tiles in the heatmap correspond to the plots
-
-```{r comprehensive-true, echo=FALSE, fig.cap="Combined p-values for different values of $n$ and $N$, resulting from comparing the new algorithms with the stock implementation", dependson = "comprehensive-base"}
+```{r comprehensive-true, echo=FALSE, fig.cap="Combined p-values for different values of $n$ and $N$, resulting from comparing the new algorithms to the stock implementation", dependson = "comprehensive-base"}
 wrswoR.benchmark::p_values_agg %>%
   ungroup %>% 
   filter(skew == 1 & func != "R") %>%
@@ -924,7 +928,7 @@ wrswoR.benchmark::p_values_agg %>%
   facet_wrap(~func, nrow = 1)
 ```
 
-```{r comprehensive-false, echo=FALSE, fig.cap="Combined p-values for different values of $n$ and $N$, resulting from comparing the stock implementation with a skewed version of itself", dependson = "comprehensive-base"}
+```{r comprehensive-false, echo=FALSE, fig.cap="Combined p-values for different values of $n$ and $N$, resulting from comparing the stock implementation to a skewed version of itself", dependson = "comprehensive-base"}
 wrswoR.benchmark::p_values_agg %>%
   ungroup %>%
   filter(func == "R") %>%
