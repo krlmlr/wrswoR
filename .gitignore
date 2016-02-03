@@ -7,5 +7,4 @@
 *.o
 *.so
 /inst/web/
-inst/doc
 /man
