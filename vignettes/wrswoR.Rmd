@@ -3,8 +3,8 @@ author:
   - name: Kirill Müller
     affiliation: IVT, ETH Zurich
     address: >
-      Stefano-Franscini-Platz 9
-      8093 Zürich
+      Stefano-Franscini-Platz 9,
+      CH-8093 Zürich
     email: kirill.mueller@ivt.baug.ethz.ch
     url: http://www.ivt.ethz.ch
 title:
@@ -14,15 +14,16 @@ title:
   # For running headers, if needed
   short:     "Accelerating weighted random sampling without replacement"
 abstract: >
-  Random sampling from discrete populations is a central part of Monte-Carlo
-  simulations. (What other applications?)
+  Random sampling from discrete populations
+  is one of the basic primitives in statistical computing.
   This article briefly introduces weighted and unweighted sampling with and
   without replacement.
   The case of weighted sampling without replacement appears to be most difficult
-  to implement, which might be one reason why the \proglang{R} implementation
-  performs slowly for large input.
-  Four alternative implementations for the case of weighted
-  sampling without replacement are presented and validated.
+  to implement efficiently, which might be one reason why the \proglang{R}
+  implementation performs slowly for large input.
+  This paper presents four alternative implementations for the case of weighted
+  sampling without replacement, with an analysis of their run time and
+  correctness.
 keywords:
   # at least one keyword must be supplied
   formatted: [Weighted sampling, performance, meta-analysis, "\\proglang{R}"]
@@ -37,7 +38,10 @@ preamble: >
   \usepackage{ragged2e}
   \usepackage{mathtools}
   \usepackage{siunitx}
-output: rticles::jss_article
+  \usepackage{latexsym}
+output:
+  rticles::jss_article:
+    fig_crop: false
 bibliography: [ my.bib, knitcitations.bib ]
 vignette: >
   %\VignetteIndexEntry{Accelerating weighted random sampling without replacement}
@@ -46,7 +50,7 @@ vignette: >
 ---
 
 
-```{r echo=FALSE, message=FALSE}
+```{r init, echo=FALSE, message=FALSE}
 library(wrswoR)
 import::from(tidyr, spread, gather, gather_, .library = .libPaths())
 import::from(plyr, ldply, .library = .libPaths())
@@ -56,7 +60,10 @@ import::from(cluster, daisy, .library = .libPaths())
 import::from(magrittr, "%>%", .library = .libPaths())
 library(ggplot2)
 set.seed(20150710L)
+library(tikzDevice)
+options(tikzDocumentDeclaration = "\\documentclass{jss}\\usepackage{siunitx}\\usepackage{latexsym}")
 knitr::opts_chunk$set(cache=TRUE)
+knitr::opts_chunk$set(dev="tikz")
 knitcitations::cite_options("pandoc")
 
 knit_print.function <- function(x, options) {
@@ -66,29 +73,34 @@ knit_print.function <- function(x, options) {
 
 # Introduction
 
-\fxwarning{(Everywhere) Refer to weights and not probabilities}
+Random sampling from discrete populations
+is one of the basic primitives in statistical computing.
+This paper focuses on a specific variant: sampling without replacement from a
+finite population with non-uniform weight distribution.
+One application for weighted sampling without replacement is the
+"Truncate-Replicate-Sample" method for stochastic
+conversion of positive real-valued weights to integer weights in the domain
+of spatial microsimulation [@Lovelace_ComputersEnvironmentandUrbanSystems_2013].
+Further applications include market surveys, quality control in manufacturing,
+and on-line advertising [@Efraimidis_ArXiv10120256Cs_2010].
 
-Random sampling is one of the basic primitives in statistical computing.
-\fxwarning{Used where?}
-
-This paper focuses on a specific variant: sampling without replacement from a finite population
-with non-uniform probability distribution.
-\fxwarning{Application?}
+Throughout this paper, the term *weight* refers to
+the relative probability that an item is sampled.
+A related problem, sampling from a population with given inclusion probabilities
+(without specifying an order) is beyond the scope of this paper.
 
 First, different techniques for sampling from discrete populations are reviewed.
 Several implementations for sampling without replacement are discussed,
-this includes evaluation of runtime performance and correctness.
+this includes evaluation of run time performance and correctness.
 The paper concludes with suggestions for incorporating the findings into base
 \proglang{R}.
 
 
 # Sampling from discrete populations
 
-\fxwarning{Longer introduction}
-\fxwarning{Put in context of Tillé's book (start with chapter 3)}
+
 We use \cref{alg:sample} as a definition of sampling from discrete populations
-with or without replacement from arbitrary (including uniform) probability distributions.
-From this definition, the following can be observed:
+with or without replacement from arbitrary (including uniform) weight distributions.
 
 \begin{algorithm}
   \caption{$\text{sample}(n, s, \text{replace}, p_i)$}
@@ -97,7 +109,7 @@ From this definition, the following can be observed:
     \REQUIRE $n$: Size of the population
     \REQUIRE $s$: Number of items to sample
     \REQUIRE $\text{replace}$: \TRUE{} to request sampling with replacement
-    \REQUIRE $p_i$: Relative probability of each item for $i \in \{1,\ldots,n\}$
+    \REQUIRE $p_i$: Weight of each item for $i \in \{1,\ldots,n\}$
     \ENSURE Returns a vector $k_j \in \{1,\ldots,n\} $ with
       $j \in \{1,\ldots,s\}$ that contains the indexes of the items sampled
     \IF{$s = 0$}
@@ -113,23 +125,33 @@ From this definition, the following can be observed:
   \end{algorithmic}
 \end{algorithm}
 
+From this definition, the following can be observed:
+
 - Sampling with replacement appears to be a simpler problem than sampling without
   replacement, as the lines \ref{alg:sample:if} and
   \ref{alg:sample:if-end} in \cref{alg:sample} are not required.
-- If all probabilities $p_i$ are equal, the selection probability $\mathrm{P}(i=k)$
+- If all weights $p_i$ are equal, the selection probability $\mathrm{P}(i=k)$
   of the sampled items in line \ref{alg:sample:norm} always equals $\frac{1}{n}$
   and does not have to be computed explicitly.
 
-In this framework, sampling without replacement with non-uniform probabilities
+In this framework, sampling without replacement with non-uniform weights
 seems to be the hardest problem.
 This also holds for the more specialized algorithms that implement
 each case.
+
+@Tille_Sampl.Algorithms_2006b defines a more rigorous framework for sampling
+algorithms from the perspective of the likelihood that a sample is selected
+based on a given sampling design.  In the context of that framework,
+\cref{alg:sample} belongs to the class of "draw by draw" algorithms.
+For the application of sampling theory, the order of the selected elements
+is not important and usually ignored; in contrast, \cref{alg:sample}
+returns an ordered sequence of sampled elements.
 
 
 ## Sampling with replacement
 
 The *with replacement* case corresponds to repeated selection of $k$ from *the same*
-discrete probability distribution.
+discrete weight distribution.
 The uniform case can be implemented easily by transforming the
 output of a random number generator
 that returns uniformly distributed floating-point numbers in $[0, 1)$.
@@ -158,13 +180,13 @@ Sampling an item means selecting a box and choosing between the two items in thi
 
 The preprocessing time of $O(n)$ required for Walker's alias method
 (in a modification suggested by @Vose_IEEETrans.Softw.Eng._1991)
-is also the lower bound for arbitrary probability distributions.
-It is easy to see that the entire probability vector must be read at least once.
-Hence, for nonuniform probabilities,
+is also the lower bound for arbitrary weight distributions:
+The entire weight vector must be read at least once.
+Hence, for non-uniform weights,
 the run time is at least $O(n + s)$, and the input size $n$ will dominate
 unless $s \gg n$.
 More recently, @Marsaglia_J.Stat.Softw._2004 have suggested a table-based method
-that seems to perform much faster in practice but expresses the probabilities
+that seems to perform much faster in practice but expresses the weights
 as rationals with a fixed base and is therefore not usable directly
 for distributions with a large range.
 @Shmerling_StatisticsProbabilityLetters_2013 presents a comprehesive review
@@ -183,7 +205,7 @@ array.
 Removal of an item with known index can be done in $O(1)$ time
 by simply replacing it with the last item in the array
 and truncating the array by one.
-\fxwarning{Reservoir for $s \ll n$}
+
 For the non-uniform case,
 lines \ref{alg:sample:norm} and \ref{alg:sample:remove}
 in \cref{alg:sample} can be implemented with
@@ -197,7 +219,7 @@ that can be initialized in $O(n)$ time and supports
 simultaneous lookup and update in $O(\log n)$ time,
 we refer to the original paper for details.
 
-# Explanation of the code
+# Implementation
 
 \proglang{R} offers reasonably efficient implementations for all cases except
 non-uniform sampling without replacement,
@@ -207,7 +229,7 @@ This paper explores alternative approaches:
 rejection sampling, one-pass sampling and reservoir sampling.
 Only the first can be described formally within the framework of \cref{alg:sample},
 however an actual implementation would use sampling *with* replacement as a subroutine.
-The last two are based on arithmetic transformation of a probability distribution.
+The last two are based on an arithmetic transformation of a weight distribution.
 
 
 ## Rejection sampling
@@ -219,10 +241,11 @@ and repeating the sampling in line \ref{alg:sample:norm}
 until hitting a valid item.
 Note that the distribution of the result is not modified if invalid items
 are purged occasionally.
+This corresponds to the class of rejective algorithms in the framework of
+@Tille_Sampl.Algorithms_2006b.
 
 Therefore, sampling without replacement can be emulated by
 repeated sampling with replacement, as shown in \cref{alg:sample-rej}.
-\fxwarning{Reference? Yates (1960) p. 347 contains this, as well as Tillé 3.8}
 The general idea is to sample slightly more items than necessary (with replacement),
 and then to throw away the duplicate items.
 If the resulting sequence of items is shorter than requested,
@@ -242,7 +265,7 @@ purging the invalid items.
   \begin{algorithmic}[1]
     \REQUIRE $n$: Size of the population
     \REQUIRE $s$: Number of items to sample
-    \REQUIRE $p_i$: Relative probability of each item for $i \in \{1,\ldots,n\}$
+    \REQUIRE $p_i$: Weight of each item for $i \in \{1,\ldots,n\}$
     \ENSURE Returns a vector $k_j \in \{1,\ldots,n\} $ with
       $j \in \{1,\ldots,s\}$ that contains the indexes of the items sampled
     \STATE $k_i \leftarrow \text{unique}(\text{sample}(n, \text{expected.items}(n, s), \TRUE, p_i))$
@@ -256,34 +279,38 @@ purging the invalid items.
   \end{algorithmic}
 \end{algorithm}
 
-Here, the function expected.items() estimates
+Here, $\text{expected.items}(n, s)$ is an estimate for
 the number of items that need to be drawn with replacement,
 so that the result can be expected to contain at least $s$ unique items.
 (An incorrect estimate only affects the run time, not the correctness
 of the algorithm.)
+Note that, with $\text{expected.items}(n, s) = 1$ everywhere,
+\cref{alg:sample,alg:sample-rej} are in fact identical.
 For a uniform distribution, it can be shown that, with
 $\text{expected.items}(n, s) \geq n (H_n - H_{n-s}) = n \sum_{i=n-s+1}^n \frac{1}{i}$,
 the result has $s$ unique items in expectation.
-\fxwarning{Expected amortized run time? Look it up in a reference}
-(With $\text{expected.items}(n, s) = 1$ everywhere,
-\cref{alg:sample,alg:sample-rej} are in fact identical.)
+This is an underestimate for non-uniform distributions.
+Nevertheless, the implementation in this package uses this estimate, capped at
+$2n$.
+As shown in \cref{sec:tests}, this algorithm performs worse than the alternatives
+shown in the following section in the majority of cases, but still outperforms
+the stock implementation for large values of $n$ and $s$.
+Therefore, no tuning of the estimation of the number of expected items
+has been performed.
 
 
-## Reservoir sampling
+## One-pass sampling
 
 A particularly interesting algorithm has been devised only recently by
 @efraimidis_weighted_2006.
-In the simplest version, it is sufficient to draw $n$ random numbers,
-combine them arithmetically with the probability distribution $p_i$,
+In the simplest version (here referred to as *one-pass sampling*),
+it is sufficient to draw $n$ random numbers,
+combine them arithmetically with the weight distribution $p_i$,
 and perform a partial sort to find the indexes of the $s$ smallest items.
 \Cref{alg:sample-rank} is a modified version of Algorithm A in the original paper
 that operates on the logarithmic scale and uses multiplication
 instead of exponentiation
 for increased numeric stability.
-\fxwarning{Describe transformation}
-In line \ref{alg:sample-rank:sample}, $\text{Exp}(1)$ refers to i.i.d.\ samples
-from the exponential distribution with rate 1.
-\fxwarning{Logarithm of the uniform}
 
 \begin{algorithm}
   \caption{$\text{sample.rank}(n, s, p_i)$}
@@ -291,7 +318,7 @@ from the exponential distribution with rate 1.
   \begin{algorithmic}[1]
     \REQUIRE $n$: Size of the population
     \REQUIRE $s$: Number of items to sample
-    \REQUIRE $p_i$: Relative probability of each item for $i \in \{1,\ldots,n\}$
+    \REQUIRE $p_i$: Weight of each item for $i \in \{1,\ldots,n\}$
     \ENSURE Returns a vector $k_j \in \{1,\ldots,n\}$ with
       $j \in \{1,\ldots,s\}$ that contains the indexes of the items sampled
     \STATE $r_i \leftarrow \text{Exp}(1) / p_i$ for all $i \in \{1,\ldots,n\}$
@@ -300,6 +327,11 @@ from the exponential distribution with rate 1.
   \end{algorithmic}
 \end{algorithm}
 
+The arithmetic transformation of the weight distribution is carried out
+in line \ref{alg:sample-rank:sample}.
+A sequence of i.i.d.\ samples from the exponential distribution with rate 1
+is divided by the weights, the order of the results defines the sampling order.
+
 The algorithm amazes with its elegance and simplicity.
 Computational complexity is dominated by the partial sort
 (which can be implemented in $O(n + s \log n)$,
@@ -307,20 +339,53 @@ or even in $O(n)$ for floating-point numbers
 [@terdiman_radix_2000].
 However, the cost of generating $n$ random variates may outweigh
 the cost for sorting even for moderately large values of $s$.
-To overcome this issue,
-@efraimidis_weighted_2006
-describe *reservoir sampling with exponential jumps* -- 
-an extension where each generated random number decides how many items are skipped
+The next subsection describes an extension to overcome this issue.
+
+
+## Reservoir sampling
+
+*Reservoir sampling with exponential jumps* is a modified version of one-pass
+sampling.
+A reservoir of "active" items is maintained.
+Each generated random number decides how many input items are skipped
 until the current "least likely" item is removed from the reservoir.
+\Cref{alg:sample-expj} shows a verbal description,
+further details and formal proofs of correctness are beyond the scope of this
+paper and can be found in [@efraimidis_weighted_2006].
 Only $O(s \log \frac{n}{s})$ random numbers (in expectation) are needed with this extension,
-the simple version always requires $n$ random numbers.
+whereas the simple version always requires $n$ random numbers.
 The exponential jumps method requires fewer updates of the reservoir
-(and therefore fewer random numbers)
+(and therefore fewer random numbers and less run time)
 if the weights are arranged in descending order.
-We refer to the original paper for more details, including formal proofs of correctness.
+In addition to drawing random numbers, the extraction of the minimal item
+from a priority queue (line \ref{alg:sample-expj:pq}) is the most expensive
+operation.
+
+\begin{algorithm}
+  \caption{$\text{sample.expj}(n, s, p_i)$}
+  \label{alg:sample-expj}
+  \begin{algorithmic}[1]
+    \REQUIRE $n$: Size of the population
+    \REQUIRE $s$: Number of items to sample
+    \REQUIRE $p_i$: Weight of each item for $i \in \{1,\ldots,n\}$
+    \ENSURE Returns a vector $k_j \in \{1,\ldots,n\}$ with
+      $j \in \{1,\ldots,s\}$ that contains the indexes of the items sampled
+    \STATE Initialize reservoir with the first $s$ elements
+    \STATE Set keys for these elements based on their weight and one random number per item
+    \WHILE{not all items processed}
+      \STATE Choose item with lowest key in the reservoir
+        \label{alg:sample-expj:pq}
+      \STATE Determine number of items to skip, based on this key and a random number
+      \STATE Replace item with lowest key with current item in the reservoir
+      \STATE Set the new item's key based on its weight and a random number
+    \ENDWHILE
+    \RETURN Items in reservoir sorted by their key
+  \end{algorithmic}
+\end{algorithm}
 
 
-# Code
+
+# Implementation
 
 The \pkg{wrswoR} package contains implementations for the two algorithms
 presented in the previous section, one \proglang{R} implementation
@@ -356,11 +421,12 @@ Compared to \code{sample.int}, the base \proglang{R} function,
 the \code{replace} parameter has been removed, and \code{prob} cannot be \code{NULL}.
 To simplify testing the new routines against the \proglang{R} implementation,
 a wrapper function \code{sample_int_R} is provided.
-The subsequent section shows performance characteristics and correctness
+The subsequent sections show performance characteristics and correctness
 of the new implementations compared to the base \proglang{R} version.
 
 
-# Tests
+# Performance
+\label{sec:tests}
 
 This section presents run time tests for various combinations of input parameters,
 attempts to provide guidance when to choose which implementation,
@@ -377,15 +443,20 @@ Instead of directly specifying $s$, it is given as a fraction of $n$,
 denoted by $r = \frac{s}{n}$.
 The following weight distributions (used for $p_i$) were tested:
 
-- *Uniform*
-- *Linear*: Sequence from $1$ to $n$ ($\{p_i\} = \{1,\ldots n\}$, *ascending*, *descending* and *shuffled*)
-- *Geometric*: Starting at $1$, the weight is multiplied with a constant $\alpha$ for each step
+\begin{description}
+  \item[uniform] $p_i = 1$ everywhere
+  \item[linear] Sequence from $1$ to $n$ ($\{p_i\} = \{1,\ldots n\}$),
+  *ascending* ($\nearrow$), *descending* ($\searrow$) and *shuffled* ($\leadsto$)
+  \item[geometric] Starting at $1$, the weight is multiplied with a constant $\alpha$ for each step
   ($p_{i+1} = \alpha p_i$, *ascending*, *descending*, and *shuffled*);
   the constant is chosen so that both minimal and maximal weights
   and the sum of weights is still representable as a floating-point number.
-  \fxwarning{Extreme case}
+\end{description}
 
-```{r echo=FALSE}
+The geometric case is very extreme and unlikely to occur in practice,
+it is included here to test potential limitations of the implementations.
+
+```{r timing-base, echo=FALSE}
 ggplot_base <- list(
   theme_bw(11)
 )
@@ -394,6 +465,13 @@ ALGOS <- c("R", "rej", "rank", "crank", "expj")
 
 REMOVE_PROB <- c("linear_double", "linear_half")
 
+combine_prob_mix <- function(prob, mix) {
+  prob <- as.character(prob)
+  mix <- as.character(mix)
+  
+  ifelse(prob == "Uniform", prob, paste(prob, mix))
+}
+
 timings <- 
   wrswoR.benchmark::timings %>%
   tbl_df %>%
@@ -401,14 +479,18 @@ timings <-
   filter(!(prob %in% REMOVE_PROB)) %>%
   mutate(expr = factor(expr, levels = ALGOS)) %>%
   mutate(prob = factor(
-    prob, levels = c("uniform", "linear", "rev_linear", "shuffled_linear", "exp", "rexp"),
-    labels = c("Uniform", "Linear asc.", "Linear desc.", "Linear shuffled", "Geometric asc.", "Geometric desc.")))
+    prob, levels = c("uniform", "linear", "exp"),
+    labels = c("uniform", "linear", "geometric"))) %>% 
+  mutate(mix = factor(
+    mix, levels = c("asc", "desc", "shuffle"),
+    labels = c("$\\nearrow$", "$\\searrow$", "$\\leadsto$"))) %>%
+  mutate(prob_mix = kimisc::ofactor(combine_prob_mix(prob, mix)))
 
 BASE <- 1.007
 N <- max(timings$n)
 ```
 
-```{r echo=FALSE}
+```{r break-even-base, echo=FALSE, dependson = "timing-base"}
 break_even <- 
   wrswoR.benchmark::break_even %>%
   tbl_df %>%
@@ -416,12 +498,16 @@ break_even <-
   filter(!(prob %in% REMOVE_PROB)) %>%
   mutate(expr = factor(expr, levels = ALGOS)) %>%
   mutate(prob = factor(
-    prob, levels = c("uniform", "linear", "rev_linear", "shuffled_linear", "exp", "rexp"),
-    labels = c("Uniform", "Linear asc.", "Linear desc.", "Linear shuffled", "Geometric asc.", "Geometric desc.")))
+    prob, levels = c("uniform", "linear", "exp"),
+    labels = c("uniform", "linear", "geometric"))) %>% 
+  mutate(mix = factor(
+    mix, levels = c("asc", "desc", "shuffle"),
+    labels = c("$\\nearrow$", "$\\searrow$", "$\\leadsto$"))) %>%
+  mutate(prob_mix = kimisc::ofactor(combine_prob_mix(prob, mix)))
 ```
 
 
-```{r echo=FALSE}
+```{r ggplot-base, echo=FALSE}
 ggplot_perf_base <-
   ggplot_base %>%
   c(list(
@@ -436,6 +522,31 @@ ggplot_time_base <-
 ggplot_time_per_item_base <-
   ggplot_base %>%
   c(list(ylab("Run time per element (s)")))
+
+math <- function(x) paste0("$", x, "$")
+
+pow10 <- function(x, in_math = FALSE) {
+  x <- ifelse(x %in% 0:1, x, paste0("10^{", log10(x), "}"))
+  if (!in_math)
+    x <- math(x)
+  x
+}
+
+pow2 <- function(x) {
+  ifelse(x %in% 0:1, x, paste0("$2^{", log2(x), "}$"))
+}
+
+percent <- function(x) {
+  paste0("\\SI{", round(x * 100, 5), "}{\\percent}")
+}
+
+format_expr <- function(x) {
+  ifelse(x == "R", "\\proglang{R}", paste0("\\emph{", x, "}"))
+}
+
+relabel_expr <- function(x) {
+  factor(x, labels = format_expr(levels(x)))
+}
 ```
 
 
@@ -445,29 +556,35 @@ The run time was measured using the \pkg{microbenchmark} package
 `r knitcitations::citep(citation("microbenchmark"))`
 in block order with a warmup of 10 iterations
 using the default 100 iterations.
-The tests ran on a single core of an Intel(R) Xeon(R) CPU E5-2643 clocked at 3.30 GHz
-with 10 MB cache.
-\fxwarning{Which version of the package?}
+The tests ran on a single core of an Intel Xeon CPU X5680 clocked at 3.33 GHz
+with 12 MB cache,
+using version 0.4 of the \pkg{wrswoR} package.
 
 \Cref{fig:run-time-log} presents an overview of the median run time
 for different input sizes, output size ratios, weight distributions and algorithms.
-The \proglang{R} implementation is clearly outperformed by all other implementations
-for $n = \num{`r max(timings$n)`}$, in many cases even for much smaller inputs.
+The \proglang{R} implementation is outperformed by all other implementations
+for $n \approx \num{1000}$, in many cases even for much smaller inputs.
 In the log-log scale used here, the slope of the curves translates to computational complexity;
 the steeper slope for the \proglang{R} implementation corresponds to its quadratic complexity
 compared to the (in most cases) slightly superlinear complexity of the other algorithms.
+No data were obtained for the \proglang{R} implementation if the computation
+would have taken too long,
+this is reflected by a premature ending of the corresponding curves
+in \cref{fig:run-time-log}.
 
-```{r run-time-log, echo=FALSE, fig.height=7, fig.cap="Median run times"}
+```{r run-time-log, echo=FALSE, fig.height=8, fig.cap="Median run times", dependson=c("timing-base", "ggplot-base")}
 timings %>%
-  group_by(n, expr, prob, r) %>%
+  group_by(n, expr, prob_mix, r) %>%
   summarize(median = median(time)) %>%
   ungroup %>%
+  mutate(r = paste0("$r = ", r, "$")) %>%
+  mutate(expr = relabel_expr(expr)) %>%
   ggplot(aes(x=n, y=median * 1e-9, color=expr)) +
-  scale_y_log10() +
   ggplot_time_base +
   geom_line() +
-  scale_x_log10() +
-  facet_grid(prob~r) +
+  scale_x_log10(name = "$n$", breaks = 10 ** c(2,4,6), labels = pow10) +
+  scale_y_log10(labels = pow10) +
+  facet_grid(prob_mix~r) +
   theme(legend.position="bottom")
 ```
 
@@ -493,59 +610,109 @@ The *expj* algorithm seems to be favorable if $r$ is small or
 $n$ is large.
 For the pathological *geometric* cases, the run time differences between
 *ascending* and *descending* weights are substantial for small $r$.
-The advantage of the *expj* algorithm for $r = 1$ and large $n$ is surprising.
-\fxwarning{Explain once expj algorithm has been described}
+The advantage of the *expj* algorithm for $r = 1$ and large $n$ is surprising
+and can only be explained with run time differences between partial sort
+(which is used for *crank*) and priority queue (for *expj*) implementations.
 
-```{r run-time-crank-expj, echo=FALSE, fig.cap="Comparison of \\emph{crank} and \\emph{expj} run times"}
+```{r run-time-crank-expj, echo=FALSE, fig.cap="Comparison of \\emph{crank} and \\emph{expj} run times", dependson=c("timing-base", "ggplot-base")}
 timings %>%
   filter(expr %in% c("crank", "expj")) %>%
-  group_by(n, expr, prob, r) %>%
+  group_by(n, expr, prob_mix, r) %>%
   summarize(median = median(time)) %>%
   ungroup %>%
   spread(expr, median) %>%
   mutate(crank_vs_expj = crank / expj) %>%
-  ggplot(aes(x=prob, y=crank_vs_expj, color=n)) +
+  mutate(r = paste0("$r = ", r, "$")) %>%
+  ggplot(aes(x=prob_mix, y=crank_vs_expj, color=n)) +
   scale_x_discrete(name = "Weights distribution") +
-  scale_y_log10(name = "Ratio of median run times\n(crank vs. expj)", breaks = 2 ** (-1:3)) +
+  scale_y_log10(name = "Ratio of median run times\n(\\emph{crank} vs. \\emph{expj})", breaks = 2 ** (-1:3)) +
   ggplot_base +
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
   geom_point() +
-  scale_color_continuous(trans="log", breaks = as.integer(10 ** (2:5))) +
+  scale_color_continuous(name = "$n$", trans="log", breaks = as.integer(10 ** c(2, 4, 6)), labels = pow10) +
   facet_wrap(~r)
 ```
 
 For the break-even analysis, *expj* is compared to the stock implementation in
 \cref{fig:run-time-break-even}.
-At $n=1000$, the *expj* algorithm starts to outperform the stock implementation
-for all tested values of $r$.
-Again, the worst slowdown of the *expj* algorithm seems to be around 2,
+The worst slowdown of the *expj* algorithm seems to be around 2,
 for absolute run times of around 10 microseconds for $n = 100$.
-\fxwarning{The case $r=0.01$ is unclear.}
+It is remarkable that the worst slowdown occurs with $r = 0.1$
+in this plot.
+The relative slowness of the stock implementation for the case $r = 0.01$
+is due to a mandatory pre-sorting of weights using heap sort
+even for $s = 1$,
+which does not occur in the *expj* implementation.
 
-```{r run-time-break-even, echo=FALSE, fig.cap="Comparison of \\proglang{R} and \\emph{expj} run times for \\emph{linear ascending} weights"}
+
+```{r run-time-break-even, echo=FALSE, fig.cap="Comparison of \\proglang{R} and \\emph{expj} run times for \\emph{linear ascending} weights", dependson=c("break-even-base", "ggplot-base")}
 break_even %>%
   filter(expr %in% c("R", "expj")) %>%
-  filter(prob == "Linear asc.") %>%
+  filter(prob_mix == "linear $\\nearrow$") %>%
+  filter(r %in% c(0.01, 0.1, 1)) %>%
   group_by(n, expr, prob, r) %>%
   summarize(median = median(time)) %>%
   ungroup %>%
   spread(expr, median) %>%
   mutate(R_vs_expj = R / expj) %>%
-  ggplot(aes(x=n, y=R_vs_expj, linetype=factor(r))) +
+  ggplot(aes(x=n, y=R_vs_expj, color=factor(r))) +
   ggplot_base +
   geom_line() +
-  scale_x_log10() +
-  scale_y_log10(breaks = 2 ** (-1:5))
+  scale_x_log10(name = "$n$", breaks = c(10, 30, 100, 300, 1000)) +
+  scale_y_log10(name = "Ratio of median run times\n(\\proglang{R} vs. \\emph{expj})", breaks = 2 ** (-1:5))
+```
+
+```{r break-even-point, echo = FALSE}
+break_even_point <-
+  break_even %>%
+  filter(expr %in% c("R", "expj")) %>%
+  group_by(n, expr, prob, mix, r) %>%
+  summarize(median = median(time)) %>%
+  ungroup %>%
+  spread(expr, median) %>%
+  mutate(rate = R / expj)
+
+break_even_point_max <-
+  break_even_point %>%
+  .[["rate"]] %>%
+  min
+```
+
+
+\Cref{fig:point-break-even} shows a more detailed break-even point analysis
+for a larger range of $r$ and for all weight distributions tested.
+Compared to *expj*, the stock implementation performs best with a uniform weight
+distribution, offsetting the break-even point to just below 500 for the
+best choice of $r \approx 0.1$.
+In other words, for $n < 500$ and $s = \lceil 0.1n \rceil$, the stock implementation is still
+the best choice in the case of a uniform or near-uniform distribution,
+with a speedup of at most
+`r round(1 / break_even_point_max, 2)`.
+
+
+```{r point-break-even, echo=FALSE, fig.cap="Break-even point of \\proglang{R} and \\emph{expj} run times", dependson=c("break-even-base", "ggplot-base", "break-even-point")}
+break_even_point %>%
+  group_by(prob, mix, r) %>%
+  summarize(smallest_n_where_expj_is_better = n[tail(which(rate < 1), 1L) + 1L]) %>%
+  ungroup %>% 
+  ggplot(aes(x=r, y=smallest_n_where_expj_is_better, color=prob, linetype=mix)) +
+  ggplot_base +
+  geom_line() +
+  scale_x_log10(name = "$r$") +
+  scale_y_log10(name = "$n$", breaks = c(50, 100, 200, 400)) +
+  scale_linetype(name = "Order") +
+  scale_color_discrete(name = "Distribution")
 ```
 
 
 
-## Correctness
+# Correctness
 
-A correct implementation should obey the following criteria:
+This section aims at validating the new implementations.
+A correct implementation should satisfy the following criteria:
 
 1. All output items are between $1$ and $n$.
-2. Each item occurs at most once in the output.\fxwarning{Really check this in \pkg{wrswoR.sample}.}
+2. Each item occurs at most once in the output.
 3. For given parameters $n$, $s$ and $p_i$,
   the probability that item $i$ is at position $j$ in the output
   (with $1 \leq i \leq n$ and $1 \leq j \leq s$)
@@ -554,7 +721,10 @@ A correct implementation should obey the following criteria:
 Verifying these criteria seems to be challenging
 due to the stochasticity of the algorithms.
 The first two can be simply checked by observing the output.
-Below, a description of the procedure for checking the third criterion is given.
+The following subsection describes a procedure for checking the third criterion.
+
+
+## Methodology
 
 For fixed $i$ and $j$ and for fixed parameters $n$, $s$, and $p_i$,
 each call to the sampling routine is a Bernoulli trial
@@ -591,12 +761,12 @@ caught an implementation error in the *expj* algorithm
 that occurred only in the case $1 < s < n$.
 
 To assert the sensitivity of the testing procedure,
-a faulty implementation was simulated by passing altered probabilities to R's
+a faulty implementation was simulated by passing altered weights to R's
 implementation.
 The modification consists of updating
 $$p_i^\prime \coloneqq p_i \cdot \left(1 + \text{skew} \cdot \frac{i - 1}{n - 1}\right),$$
 where a skew of zero means no change, and a skew of 1% corresponds to
-relative differences increasing between 0% and 1%.
+relative differences increasing between `r percent(0)` and `r percent(0.01)`.
 
 The test for equal proportions can be substituted by Fisher's exact test,
 which tends to produce lower p-values and therefore is usually more powerful
@@ -607,21 +777,24 @@ on a support of the order of $N$.
 Using this test would have been prohibitive in the setting described here.
 
 ```{r def-plot-p-values, echo=FALSE}
-n <- 7
-s <- 4
-skew <- 1.0025
-alpha <- 1.08
-N <- 2 ** 22
+n. <- 7
+s. <- 4
+skew. <- 1.0025
+alpha. <- 1.08
+N. <- 2 ** 22
 
-p_values_true <- wrswoR.benchmark::p_values_7 %>% filter(N == global(N), s == global(s), skew == 1, func == "crank")
+p_values_true <- wrswoR.benchmark::p_values_7 %>% filter(N == N., s == s., skew == 1, func == "crank")
 
-p_values_false <- wrswoR.benchmark::p_values_7 %>% filter(N == global(N), s == global(s), skew == global(skew))
+p_values_false <- wrswoR.benchmark::p_values_7 %>% filter(N == N., s == s., skew == skew.)
 ```
+
+
+## Example
 
 \Cref{fig:correctness-true} shows a Schweder plot [@Schweder_Biometrika_1982]
 of the p-values resulting from an experiment that
-draws $N = `r paste0("2^{", log2(N), "}")`$ samples for $n = `r n`$,
-$s = `r s`$, and a geometric weight distribution with $\alpha = `r alpha`$,
+draws $N = `r paste0("2^{", log2(N.), "}")`$ samples for $n = `r n.`$,
+$s = `r s.`$, and a geometric weight distribution with $\alpha = `r alpha.`$,
 using all five algorithms.
 Different values of $i$ and $j$ are denoted with different colors and shapes.
 The theoretical distribution is shown as a dotted line,
@@ -636,16 +809,16 @@ Fisher's method cannot reject the null hypothesis of uniformity
 As an example for a positive test,
 \cref{fig:correctness-false} shows results for the same experiment,
 now substituting the stock implementation with a faulty one with
-$\text{skew} = `r (skew - 1) * 100`\%$.
+$\text{skew} = `r percent(skew. - 1)`$.
 Despite the relative similarity of the weight distributions,
 the distribution of the p-values deviates substantially from the
 uniform distribution,
-with more than expected p-values close to zero.
+with more p-values close to zero than expected.
 Here, Fisher's method detects significant, although not overwhelming,
 evidence against the null hypothesis
 ($p = `r signif(metap::sumlog(p_values_false$p_value)$p, 3)`$).
 
-```{r correctness-true, echo=FALSE, dependson="def-plot-p-values", fig.cap="CDF of the p-values when comparing the five algorithms"}
+```{r correctness-true, echo=FALSE, dependson="def-plot-p-values", fig.cap="Schweder plot for p-values resulting from comparing the \\emph{crank} and \\proglang{R} algorithms"}
 p_values_true %>%
   rename(`p-value` = p_value) %>%
   arrange(`p-value`) %>%
@@ -653,13 +826,15 @@ p_values_true %>%
   mutate_each(funs(factor), i, j) %>% 
   ggplot(aes(y = `Rank`, x = `p-value`, color = i, shape = j)) +
   ggplot_base +
-  geom_point() +
   geom_abline(slope = nrow(p_values_true), intercept = 0, linetype = 3) +
-  coord_fixed(ratio = 1 / nrow(p_values_true))
+  geom_point() +
+  coord_fixed(ratio = 1 / nrow(p_values_true)) +
+  scale_color_discrete(name = "$i$") +
+  scale_shape_discrete(name = "$j$")
 ```
 
 
-```{r correctness-false, echo=FALSE, dependson="def-plot-p-values", fig.cap="CDF of the p-values when comparing five algorithms, where one of which uses different weights"}
+```{r correctness-false, echo=FALSE, dependson="def-plot-p-values", fig.cap="Schweder plot for p-values resulting from comparing the \\proglang{R} implementation with a skewed version of itself"}
 p_values_false %>%
   rename(`p-value` = p_value) %>%
   arrange(`p-value`) %>%
@@ -667,10 +842,15 @@ p_values_false %>%
   mutate_each(funs(factor), i, j) %>% 
   ggplot(aes(y = `Rank`, x = `p-value`, color = i, shape = j)) +
   ggplot_base +
-  geom_point() +
   geom_abline(slope = nrow(p_values_false), intercept = 0, linetype = 3) +
-  coord_fixed(ratio = 1 / nrow(p_values_false))
+  geom_point() +
+  coord_fixed(ratio = 1 / nrow(p_values_false)) +
+  scale_color_discrete(name = "$i$") +
+  scale_shape_discrete(name = "$j$")
 ```
+
+
+## Results
 
 A fairly comprehensive test for
 all $n \in \{
@@ -679,13 +859,13 @@ all $n \in \{
 a subset of $s \in \{1, \ldots, n\}$
 and all $(i, j)$ was also carried out.
 For each combination, the cell frequencies $f_{i,j}$ were collected for all new
-algorithms, and the stock implementation with and without altered probabilities
+algorithms, and the stock implementation with and without altered weights
 (using $\text{skew}$ values between
-$`r 100 * (min(wrswoR.benchmark::p_values_agg$skew[wrswoR.benchmark::p_values_agg$skew > 1]) - 1)` \%$
+`r percent(min(wrswoR.benchmark::p_values_agg$skew[wrswoR.benchmark::p_values_agg$skew > 1]) - 1)`
 and
-$`r 100 * (max(wrswoR.benchmark::p_values_agg$skew) - 1)` \%$),
-for $N$ ranging from $2^{`r log2(min(wrswoR.benchmark::p_values_agg$N))`}$ to
-$2^{`r log2(max(wrswoR.benchmark::p_values_agg$N))`}$ (only powers of $2$).
+`r percent(max(wrswoR.benchmark::p_values_agg$skew) - 1)`),
+for $N$ ranging from `r pow2(min(wrswoR.benchmark::p_values_agg$N))` to
+`r pow2(max(wrswoR.benchmark::p_values_agg$N))` (only powers of $2$).
 Each cell frequency was compared to that of the stock implementation.
 This resulted in around \num{5e8} p-values, which were again
 combined using Fisher's method.
@@ -693,50 +873,84 @@ combined using Fisher's method.
 \Cref{fig:comprehensive} shows the results of the meta-analysis
 separately for each $N$ and for each (supposedly correct or faulty)
 implementation.
-Comparing the stock implementation to itself resulted in a p-value of almost 1
+Comparing the stock implementation to itself (using different random seeds)
+resulted in a p-value of almost 1
 for all $N$, the same holds for all new algorithms.
 On the other hand, all skews tested led to strong rejection of the correctness
 hypothesis (p-value effectively 0) sooner or later; as expected,
 the smaller the skew, the larger the $N$ where rejection occurs.
+
+```{r comprehensive-base, echo = FALSE, dependson="ggplot-base"}
+p_value_breakpoints <- c(0, 1e-100, 1e-4, 1e-2, 1e-1, 9e-1, 1)
+  
+cut_p <- function(x) {
+  stopifnot(x >= 0)
+  stopifnot(x <= 1)
+  x_orig <- x
+  x <- kimisc::cut_format(x, p_value_breakpoints, include.lowest = TRUE, format_fun = function(x) ifelse(x >= 0.01, x, pow10(x, in_math = TRUE)), paren = c("$\\left(", "$\\left[", "\\right)$", "\\right]$"))
+  x <- factor(as.character(x), levels = rev(levels(x)))
+  x
+}
+
+comprehensive_base <- function(by) list(
+  geom_raster(),
+  scale_x_log10(name = "$N$", expand = c(0, 0), breaks = 2 ** seq.int(24, 8, by = -by), labels = pow2),
+  scale_fill_brewer(name = "p-value", palette = "YlOrRd", drop = FALSE),
+  NULL
+)
+```
+
+
+```{r comprehensive, echo=FALSE, fig.cap="Combining p-values for a comprehensive test", dependson = "comprehensive-base"}
+wrswoR.benchmark::p_values_agg_agg %>%
+  ungroup %>%
+  mutate(facet = kimisc::ofactor(ifelse(skew == 1, "skew 0", "\\proglang{R}"))) %>%
+  ggplot(aes(x=N, y=kimisc::ofactor(
+    ifelse(skew == 1, format_expr(func),
+           percent(skew - 1))),
+    fill=cut_p(p_value))) +
+  ggplot_base +
+  comprehensive_base(2) +
+  scale_y_discrete(name = "skew/implementation", expand = c(0, 0)) +
+  facet_wrap(~facet, ncol = 1, scales = "free_y")
+```
+
 This comparison is less sensitive to implementation errors that occur only for
 specific arguments
 (e.g., if an implementation behaves as expected except if $n$ is a power of 2).
-\Cref{fig:comprehensive-true,fig:comprehensive-false} demonstrate p-values
-further disaggregated by $n$.
+Therefore, it is helpful to further disaggregate the p-values.
+\Cref{fig:comprehensive-true} shows combined p-vaules separately for all pairs
+of $n$ and $N$ when comparing the new algorithms to the stock implementation.
+Some p-values are in the range of $(0.01, 0.1]$ or even $\left(10^{-4}, 0.01\right]$,
+but this can be expected
+due to the uniform distribution of the p-values under the null hypothesis.
+The plot in \cref{fig:comprehensive-false} is similar, but shows the p-values
+that result from comparing the stock implementation with a skewed version of
+itself, for different skews.
+Here, for all skews except 0, the combined p-value approaches zero sooner or
+later as $N$ increases.
 
-- Correct implementations are all blue, faulty implementations turn grey sooner or later.
-- For small skew cannot conclusively disprove correctness for all $n$, need more data.
-- A few dark spots with correct implementation, but not more than expected (each meta-analysis is an analysis in itself)
-- Show which tiles in the heatmap correspond to the plots
-
-
-```{r comprehensive, echo=FALSE, fig.cap="Combining p-values for a comprehensive test"}
-wrswoR.benchmark::p_values_agg_agg %>%
-  ggplot(aes(x=factor(N), y=interaction(func, skew), fill=p_value)) +
-  ggplot_base +
-  geom_tile() +
-  scale_fill_continuous(limits = c(1e-4, 1), trans = "log10")
-```
-
-```{r comprehensive-true, echo=FALSE, fig.cap="CDF of the p-values when comparing five algorithms, where one of which uses different weights"}
+```{r comprehensive-true, echo=FALSE, fig.cap="Combined p-values for different values of $n$ and $N$, resulting from comparing the new algorithms to the stock implementation", dependson = "comprehensive-base"}
 wrswoR.benchmark::p_values_agg %>%
+  ungroup %>% 
   filter(skew == 1 & func != "R") %>%
-  ggplot(aes(x=factor(N), y=n, fill=p_value)) +
+  mutate(func = format_expr(func)) %>%
+  ggplot(aes(x=N, y=n, fill=cut_p(p_value))) +
   ggplot_base +
-  geom_tile() +
-  scale_y_continuous(expand = c(0, 0)) +
-  scale_fill_continuous(limits = c(1e-4, 1), trans = "log10") +
-  facet_wrap(~func)
+  comprehensive_base(4) +
+  scale_y_continuous(name = "$n$", expand = c(0, 0)) +
+  facet_wrap(~func, nrow = 1)
 ```
 
-```{r comprehensive-false, echo=FALSE, fig.cap="CDF of the p-values when comparing five algorithms, where one of which uses different weights"}
+```{r comprehensive-false, echo=FALSE, fig.cap="Combined p-values for different values of $n$ and $N$, resulting from comparing the stock implementation to a skewed version of itself", dependson = "comprehensive-base"}
 wrswoR.benchmark::p_values_agg %>%
+  ungroup %>%
   filter(func == "R") %>%
-  ggplot(aes(x=factor(N), y=n, fill=p_value)) +
+  mutate(skew = kimisc::ofactor(paste0("skew ", percent(skew - 1)))) %>%
+  ggplot(aes(x=N, y=n, fill=cut_p(p_value))) +
   ggplot_base +
-  geom_tile() +
-  scale_y_continuous(expand = c(0, 0)) +
-  scale_fill_continuous(limits = c(1e-4, 1), trans = "log10") +
+  comprehensive_base(4) +
+  scale_y_continuous(name = "$n$", expand = c(0, 0)) +
   facet_wrap(~skew, ncol = 4)
 ```
 
@@ -744,18 +958,83 @@ wrswoR.benchmark::p_values_agg %>%
 
 # Conclusions and future work
 
-- Pre-sort weights using radix sort
-    - For expj
-    - Sorting by exponent may already be enough
-- Faster heap (g-heap?) \fxwarning{Where is that used? Not mentioned before}
-- Generic C library
-- Allow termination of loop in R
-- Test more failure modes
-- Parallel version
+This paper describes four new implementations for weighted random sampling
+without replacement in \proglang{R}.
+The new implementations, even those written in pure \proglang{R},
+clearly outperform the one provided by the \pkg{base}
+package if the number of items to choose from is just above 1000.
+Each of the algorithms presented here has its advantages:
 
-This would have been much more difficult without the \pkg{BatchJobs} and
-\pkg{BatchExperiment} packages
-`r knitcitations::citep(c(citation("BatchJobs"), citation("BatchExperiments")))`.
+- Rejection sampling is a simple and straightforward method that builds upon
+  weighted sampling with replacement.
+- One-pass sampling can be parallelized easily.
+- Reservoir sampling with exponential jumps is fast even for degenerate weight
+  distributions, and economical in its use of random numbers.
+
+In particular, reservoir sampling with exponential jumps
+[@efraimidis_weighted_2006] requires just about double the time
+of the stock implementation in the most favorable case,
+code optimization (such as using a cache-efficient heap structure for the
+priority queue)
+might help further reduce this threshold or even remove it entirely.
+Reservoir sampling performs best if the weights are pre-sorted in descending
+order.
+An optional sorting step could be provided for convenience.
+
+For validation, the new implementations have been compared with the
+stock implementation by counting the number of occurrences for each item
+and each possible position in a large number of runs,
+and testing the null hypothesis of equal proportions.
+This yields a massive amount of p-values, which can be combined using
+Fisher's method, a meta-analysis technique.
+The validation methodology is able to clearly detect a simulated implementation
+error, which consisted of skewing the input frequency distribution
+in a predefined fashion,
+whereas no difference between the new and the stock implementations could be
+measured.
+So far, the detection of non-systematic errors or other failure modes
+has not been tested.
+
+In order to include a faster sampling algorithm into base \proglang{R},
+an implementation in \proglang{C}
+seems necessary.  Other platforms for scientific computing, such as
+\proglang{Python} or \proglang{Julia}, would also benefit if this implementation
+was provided in an open-source library with a documented interface.
+
+For the current implementation in \proglang{R}, a user might not expect
+a natural operation such as random sampling
+to take excessive time, without the ability to interrupt it.
+Calling `R_CheckUserInterrupt()` every $10^7$ or so operations
+in the current implementation would at least save the unaware user
+the frustration of a lost workspace.
+
+The algorithms presented here generate an ordered sample of items based on
+relative weights.  If the relative importance is instead given as inclusion
+probabilities, and the order is not important, as e.g. in the application of
+survey sampling, the `UPxxx()` functions in the \pkg{sampling} package
+`r knitcitations::citep(citation("sampling"))` offer a viable alternative.
+
+
+# Acknowledgments
+
+This work would have been much more difficult without the \pkg{BatchJobs}
+and \pkg{BatchExperiment} packages
+`r knitcitations::citep(citation("BatchExperiments"))`.
+The \pkg{dplyr}
+`r knitcitations::citep(citation("dplyr"))`
+and \pkg{tidyr} packages
+`r knitcitations::citep(citation("tidyr"))`
+helped processing the data;
+the plots were created using \pkg{ggplot2}
+`r knitcitations::citep(citation("ggplot2"))`
+and \pkg{tikzDevice}
+`r knitcitations::citep(citation("tikzDevice"))`.
+This document was created using \pkg{knitr}
+`r knitcitations::citep(citation("knitr"))`
+and \pkg{rmarkdown}
+`r knitcitations::citep(citation("rmarkdown"))`.
+
+
 
 
 # References {.unnumbered}
