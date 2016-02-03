@@ -127,7 +127,7 @@ dependencies-hook:
 
 install dependencies: dependencies-hook
 	Rscript -e "sessionInfo()"
-	Rscript -e "options(repos = c(CRAN = 'http://cran.rstudio.com')); devtools::install_deps(dependencies = TRUE)"
+	Rscript -e "options(repos = c(CRAN = 'http://cran.rstudio.com')); devtools::install_deps(dependencies = TRUE, upgrade = FALSE)"
 
 test:
 	Rscript -e "devtools::check(document = TRUE, check_dir = '.', cleanup = FALSE)"
@@ -137,7 +137,7 @@ covr:
 	Rscript -e 'if (!requireNamespace("covr")) devtools::install_github("jimhester/covr"); covr::codecov()'
 
 lintr:
-	Rscript -e 'if (!requireNamespace("lintr")) devtools::install_github("jimhester/lintr"); lintr::lint_package()'
+	Rscript -e 'Sys.setenv(LINTR_COMMENT_BOT="FALSE"); if (!requireNamespace("lintr")) devtools::install_github("jimhester/lintr"); lintr::lint_package()'
 
 check-rev-dep:
 	echo "Running reverse dependency checks for CRAN ..."
@@ -198,3 +198,9 @@ upgrade: git-is-clean
 uninstall: git-is-clean
 	echo "Uninstalling makeR"
 	sh ./makeR/uninstall
+
+
+## Obsolete
+
+init:
+	true
