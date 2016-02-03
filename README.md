@@ -5,5 +5,5 @@ A package with different implementations of weighted random sampling without rep
 
 ```
 library(devtools)
-install_github('wrswoR', 'krlmlr')
+install_github("krlmlr/wrswoR")
 ```
