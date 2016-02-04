@@ -28,7 +28,7 @@ if (is.null(master)) {
   changes_since_master <- system(paste0('git show -s $(git rev-list --first-parent ', master, '.. | head -n -1) --format=format:"%b" | sed "/^$/d"'), intern=TRUE)
 
   news <- character()
-  news <- readLines("NEWS.md")
+  try(news <- readLines("NEWS.md"))
   news <- c(paste0("Version ", version, " (", date, ")"), "===", "", changes_since_master, "", "", news)
   writeLines(news, "NEWS.md")
 }
