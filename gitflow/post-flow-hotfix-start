@@ -13,6 +13,7 @@ write.dcf(desc, "DESCRIPTION")
 git2r::add(repo, "DESCRIPTION")
 git2r::commit(repo, paste("bump version to", version))
 
-news <- readLines("NEWS.md")
+news <- character()
+try(news <- readLines("NEWS.md"))
 news <- c(paste0("Version ", version, " (", date, ")"), "===", "", "", "", news)
 writeLines(news, "NEWS.md")
