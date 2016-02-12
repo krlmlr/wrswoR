@@ -13,8 +13,6 @@ Imports:
     Rcpp,
     logging (>= 0.4-13)
 LinkingTo: Rcpp (>= 0.11.5)
-URL: https://github.com/krlmlr/wrswoR
-BugReports: https://github.com/krlmlr/wrswoR/issues
 Suggests:
     wrswoR.benchmark (>= 0.1),
     import,
@@ -33,6 +31,9 @@ Suggests:
     dplyr,
     ggplot2,
     tikzDevice (>= 0.9-1)
+URL: http://krlmlr.github.io/wrswoR
+URLNote: https://github.com/krlmlr/wrswoR
+BugReports: https://github.com/krlmlr/wrswoR/issues
 LazyData: true
 VignetteBuilder: knitr
 RoxygenNote: 5.0.1.9000
