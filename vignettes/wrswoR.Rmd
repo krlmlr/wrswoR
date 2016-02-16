@@ -52,6 +52,9 @@ vignette: >
 
 
 ```{r init, echo=FALSE, message=FALSE}
+# Set on_cran to FALSE to get tikzDevice plots and citation
+on_cran <- Sys.getenv("USER") != "muelleki"
+
 library(wrswoR)
 import::from(tidyr, spread, gather, gather_, .library = .libPaths())
 import::from(plyr, ldply, .library = .libPaths())
@@ -64,7 +67,11 @@ set.seed(20150710L)
 library(tikzDevice)
 options(tikzDocumentDeclaration = "\\documentclass{jss}\\usepackage{siunitx}\\usepackage{latexsym}")
 knitr::opts_chunk$set(cache=TRUE)
-knitr::opts_chunk$set(dev="tikz")
+if (on_cran) {
+  knitr::opts_chunk$set(dev="png")
+} else {
+  knitr::opts_chunk$set(dev="tikz")
+}
 knitcitations::cite_options("pandoc")
 
 knit_print.function <- function(x, options) {
@@ -1078,5 +1085,7 @@ based on a template provided by \pkg{rticles}
 \justifying
 
 ```{r echo=FALSE, message=FALSE, cache=FALSE}
-knitcitations::write.bibtex()
+if (!on_cran) {
+  knitcitations::write.bibtex()
+}
 ```
