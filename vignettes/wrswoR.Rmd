@@ -1085,7 +1085,10 @@ based on a template provided by \pkg{rticles}
 \justifying
 
 ```{r echo=FALSE, message=FALSE, cache=FALSE}
+# Work around encoding issue on Windows
 if (!on_cran) {
   knitcitations::write.bibtex()
+} else {
+  writeLines(character(), "knitcitations.bib")
 }
 ```
