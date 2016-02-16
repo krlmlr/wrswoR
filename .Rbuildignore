@@ -8,3 +8,4 @@
 ^wercker\.yml$
 ^\.lintr$
 ^appveyor\.yml$
+^vignettes/jss[.].*$
