@@ -1,7 +1,7 @@
 Encoding: UTF-8
 Package: wrswoR
 Type: Package
-Title: Weighted random sampling without replacement
+Title: Weighted Random Sampling without Replacement
 Version: 0.4-1
 Authors@R: person(given = "Kirill", family = "Müller", role = c("aut",
         "cre"), email = "krlmlr+r@mailbox.org")
