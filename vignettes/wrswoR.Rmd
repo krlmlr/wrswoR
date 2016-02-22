@@ -942,7 +942,7 @@ comprehensive_base <- function(by) list(
 wrswoR.benchmark::p_values_agg_agg %>%
   ungroup %>%
   arrange_by_func %>%
-  mutate(facet = kimisc::ofactor(ifelse(skew == 1, "skew 0", "\\proglang{R}"))) %>%
+  mutate(facet = kimisc::ofactor(ifelse(skew == 1, paste0("skew ", percent(0)), "\\proglang{R}"))) %>%
   ggplot(aes(x=N, y=kimisc::ofactor(
     ifelse(skew == 1, format_expr(func),
            percent(skew - 1))),
