@@ -9,6 +9,7 @@
 ^\.lintr$
 ^appveyor\.yml$
 ^vignettes/jss[.].*$
+^vignettes/out$
 ^inst/web$
 ^inst/staticdocs$
 ^cran-comments\.md$
