@@ -6,7 +6,7 @@ build:
   steps:
     - script:
         name: kill-vignette
-        code: if ! { sed -i '/^VignetteBuilder:/d' DESCRIPTION; rm -r vignettes; rm -r inst/doc; }; then fail "Killing vignettes failed"; fi
+        code: if ! { sed -i '/^VignetteBuilder:/d' DESCRIPTION; rm -r vignettes; }; then fail "Killing vignettes failed"; fi
     - script:
         name: install
         code: if ! make dependencies; then fail "Install failed"; fi
