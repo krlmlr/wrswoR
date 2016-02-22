@@ -1,5 +1,5 @@
 #!/usr/bin/env Rscript
 
 devtools::install()
+system("git push --follow-tags", wait = TRUE)
 autoroxy::rox_off()
-system("git push --follow-tags", wait = FALSE)

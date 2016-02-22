@@ -3,4 +3,6 @@
 exportPattern("^[a-zA-Z][[:alpha:]]*")
 importFrom(Rcpp,evalCpp)
 importFrom(logging,logdebug)
+importFrom(stats,rexp)
+importFrom(utils,head)
 useDynLib(wrswoR)

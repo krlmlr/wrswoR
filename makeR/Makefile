@@ -129,9 +129,14 @@ install dependencies: dependencies-hook
 	Rscript -e "sessionInfo()"
 	Rscript -e "options(repos = c(CRAN = 'http://cran.rstudio.com')); devtools::install_deps(dependencies = TRUE, upgrade = FALSE)"
 
-test:
-	Rscript -e "devtools::check(document = TRUE, check_dir = '.', cleanup = FALSE)"
+test_run:
+	Rscript -e "devtools::check(document = TRUE, check_dir = '.', cleanup = FALSE, args = '--no-manual')"
+
+test: test_run
 	! egrep -A 5 "ERROR|WARNING|NOTE" *.Rcheck/00check.log
+
+test_allow_note: test_run
+	! egrep -A 5 "ERROR|WARNING" *.Rcheck/00check.log
 
 covr:
 	Rscript -e 'if (!requireNamespace("covr")) devtools::install_github("jimhester/covr"); covr::codecov()'
