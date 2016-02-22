@@ -11,3 +11,4 @@
 ^vignettes/jss[.].*$
 ^inst/web$
 ^inst/staticdocs$
+^/home/muelleki/git/R/wrswoR/cran-comments\.md$
