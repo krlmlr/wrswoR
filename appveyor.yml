@@ -36,7 +36,8 @@ environment:
 branches:
   only:
     - master
-    - release/*
+    - /release.[0-9.-]+/
+    - production
 
 build_script:
   - travis-tool.sh install_deps
