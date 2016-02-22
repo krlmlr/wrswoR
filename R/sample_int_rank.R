@@ -25,6 +25,8 @@
 #' set.seed(42)
 #' stopifnot(abs(table(replicate(sample_int_rank(6, 3, p), n=n)) / n -
 #'   c(1, rep(0.4, 5))) < 0.04)
+#' @importFrom stats rexp
+#' @importFrom utils head
 sample_int_rank <- function(n, size, prob) {
   .check_args(n, size, prob)
   head(order(rexp(n) / prob), size)
