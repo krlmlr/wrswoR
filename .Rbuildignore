@@ -11,3 +11,4 @@
 ^vignettes/jss[.].*$
 ^inst/web$
 ^inst/staticdocs$
+^cran-comments\.md$

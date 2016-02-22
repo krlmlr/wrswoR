@@ -1,36 +1,20 @@
 Encoding: UTF-8
 Package: wrswoR
 Type: Package
-Title: Weighted random sampling without replacement
-Version: 0.4
-Authors@R: person(given = "Kirill", family = "Müller", role = c("aut", "cre"), email = "krlmlr+r@mailbox.org")
+Title: Weighted Random Sampling without Replacement
+Version: 0.4-1
+Authors@R: person(given = "Kirill", family = "Müller", role = c("aut",
+        "cre"), email = "krlmlr+r@mailbox.org")
 Description: A collection of implementations of classical and novel
-    algorithms for weighted sampling without replacement.
+        algorithms for weighted sampling without replacement.
 License: GPL-3
-Depends:
-    R (>= 3.0.2)
-Imports:
-    Rcpp,
-    logging (>= 0.4-13)
+Depends: R (>= 3.0.2)
+Imports: Rcpp, logging (>= 0.4-13)
 LinkingTo: Rcpp (>= 0.11.5)
-Suggests:
-    wrswoR.benchmark (>= 0.1),
-    import,
-    kimisc (>= 0.2-4),
-    testthat,
-    roxygen2,
-    knitr,
-    rmarkdown,
-    rticles (>= 0.1),
-    knitcitations,
-    metap,
-    tidyr,
-    microbenchmark,
-    sampling,
-    BatchExperiments,
-    dplyr,
-    ggplot2,
-    tikzDevice (>= 0.9-1)
+Suggests: wrswoR.benchmark (>= 0.1), import, kimisc (>= 0.2-4),
+        testthat, roxygen2, knitr, rmarkdown, rticles (>= 0.1),
+        knitcitations, metap, tidyr, microbenchmark, sampling,
+        BatchExperiments, dplyr, ggplot2, tikzDevice (>= 0.9-1)
 URL: http://krlmlr.github.io/wrswoR
 URLNote: https://github.com/krlmlr/wrswoR
 BugReports: https://github.com/krlmlr/wrswoR/issues
