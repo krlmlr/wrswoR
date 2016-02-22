@@ -19,6 +19,7 @@ branches:
 
 build_script:
   - travis-tool.sh install_deps
+  - Rscript -e "devtools::load_all()"
 
 test_script:
   - travis-tool.sh run_tests
