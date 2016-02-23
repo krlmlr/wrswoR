@@ -43,6 +43,7 @@ preamble: >
 output:
   rticles::jss_article:
     fig_crop: false
+    citation_package: natbib
 bibliography: [ my.bib, knitcitations.bib ]
 vignette: >
   %\VignetteIndexEntry{Accelerating weighted random sampling without replacement}
@@ -1080,10 +1081,6 @@ based on a template provided by \pkg{rticles}
 
 
 
-# References {.unnumbered}
-
-\justifying
-
 ```{r echo=FALSE, message=FALSE, cache=FALSE}
 # Work around encoding issue on Windows
 if (!on_cran) {
@@ -1092,3 +1089,5 @@ if (!on_cran) {
   writeLines(character(), "knitcitations.bib")
 }
 ```
+
+\bibliography{my,knitcitations}
