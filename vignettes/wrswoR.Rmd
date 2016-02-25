@@ -1059,6 +1059,9 @@ survey sampling, the `UPxxx()` functions in the \pkg{sampling} package
 
 # Acknowledgments
 
+
+The author would like to thank the Swiss National Science Foundation for
+financial support (grant~138270).
 This work would have been much more difficult without the \pkg{BatchJobs}
 and \pkg{BatchExperiment} packages
 `r knitcitations::citep(citation("BatchExperiments"))`.
