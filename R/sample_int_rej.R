@@ -12,13 +12,15 @@
 #' @author Kirill Müller (for \code{*_int_rej})
 #' @examples
 #' ## Rejection sampling
-#' s <- sample_int_rej(200000, 100000, runif(200000))
+#' s <- sample_int_rej(20000, 10000, runif(20000))
 #' stopifnot(unique(s) == s)
 #' p <- c(995, rep(1, 5))
 #' n <- 1000
 #' set.seed(42)
-#' stopifnot(abs(table(replicate(sample_int_rej(6, 3, p), n=n)) / n -
-#'   c(1, rep(0.4, 5))) < 0.04)
+#' tbl <- table(replicate(sample_int_rej(6, 3, p),
+#'                        n = n)) / n
+#' stopifnot(abs(tbl - c(1, rep(0.4, 5))) < 0.04)
+#'
 sample_int_rej <- function(n, size, prob) {
   .check_args(n, size, prob)
   .sample_int_rej(n, size, prob, 2, 1)
