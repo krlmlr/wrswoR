@@ -358,7 +358,7 @@ earlier in this sorting order.
 are equivalent.
 
 The algorithm amazes with its elegance and simplicity.
-This also allows for almost trivial parallelization,
+It allows for almost trivial parallelization,
 provided that independent
 random number generators are available to each thread.
 Computational complexity is dominated by the partial sort
