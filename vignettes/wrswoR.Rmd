@@ -610,7 +610,7 @@ running Red Hat Enterprise Linux Server release 7.2,
 \Cref{fig:run-time-log} presents an overview of the median run time
 for different input sizes, output size ratios, weight distributions and implementations.
 The \proglang{R} implementation is outperformed by all other implementations
-for $n \approx \num{1000}$, in many cases even for much smaller inputs.
+for $n \approx \num{10000}$, in many cases even for much smaller inputs.
 In the log-log scale used here, the slope of the curves translates to computational complexity;
 the steeper slope for the \proglang{R} implementation corresponds to its quadratic complexity
 compared to the only slightly superlinear complexity of the other algorithms.
@@ -1015,10 +1015,13 @@ wrswoR.benchmark::p_values_agg %>%
 # Conclusions and future work
 
 This paper describes four new implementations for weighted random sampling
-without replacement in \proglang{R}.
+without replacement in \proglang{R}:
+Rejection sampling, two implementations of one-pass sampling,
+and reservoir sampling with exponential jumps.
 The new implementations, even those written in pure \proglang{R},
 clearly outperform the one provided by the \pkg{base}
-package if the number of items to choose from is just above 1000.
+package if the number of items to choose from is just above \num{10000},
+this threshold is below \num{500} for reservoir sampling with exponential jumps.
 Each of the algorithms presented here has its advantages:
 
 - Rejection sampling is a simple and straightforward method that builds upon
