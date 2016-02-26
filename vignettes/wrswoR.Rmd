@@ -84,7 +84,7 @@ knit_print.function <- function(x, options) {
 # Introduction
 
 \newcommand{\pairadice}{%
-  \raisebox{-0.5ex}{\includegraphics[height=2ex]{pair_of_dice}}}
+  \raisebox{-0.5ex}{\includegraphics[height=2ex,width=!]{pair_of_dice}}}
 
 Random sampling from discrete populations
 is one of the basic primitives in statistical computing.
