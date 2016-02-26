@@ -7,7 +7,7 @@ author:
       CH-8093 Zürich
     email: kirill.mueller@ivt.baug.ethz.ch
     url: http://www.ivt.ethz.ch
-submitdate: 2016-02-22
+submitdate: 2016-02-26
 title:
   formatted: "Accelerating weighted random sampling without replacement"
   # If you use tex in the formatted title, also supply version without
