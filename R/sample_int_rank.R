@@ -7,7 +7,7 @@
 #'   \code{*_ccrank} uses \code{std::vector}; surprisingly, \code{*_crank} seems
 #'   to be faster on most inputs). It can be
 #'   shown that the order statistic of \eqn{U^{(1/w_i)}} has the same
-#'   distribution as random sampling without replacement (\eqn{U=\text{uniform}(0,1)}
+#'   distribution as random sampling without replacement (\eqn{U=\mbox{uniform}(0,1)}
 #'   distribution). To increase numerical stability, \eqn{\log(U) /
 #'   w_i}{log(U) / w_i} is computed instead; the log transform does not
 #'   change the order statistic.
