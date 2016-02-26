@@ -1,3 +1,9 @@
+Version 1.0-1 (2016-02-26)
+===
+
+- Polish submitted version of the paper.
+
+
 Version 1.0 (2016-02-22)
 ===
 
