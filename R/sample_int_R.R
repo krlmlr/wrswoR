@@ -23,13 +23,16 @@
 #' @seealso \code{\link[base]{sample.int}}
 #' @references \url{http://stackoverflow.com/q/15113650/946850}
 #' @examples
+#' # Base R implementation
 #' s <- sample_int_R(2000, 1000, runif(2000))
 #' stopifnot(unique(s) == s)
 #' p <- c(995, rep(1, 5))
 #' n <- 1000
 #' set.seed(42)
-#' stopifnot(abs(table(replicate(sample_int_R(6, 3, p), n=n)) / n -
-#'   c(1, rep(0.4, 5))) < 0.04)
+#' tbl <- table(replicate(sample_int_R(6, 3, p),
+#'                        n = n)) / n
+#' stopifnot(abs(tbl - c(1, rep(0.4, 5))) < 0.04)
+#'
 #' @rdname sample_int
 #' @aliases sample_int_R
 sample_int_R <- function(n, size, prob) {

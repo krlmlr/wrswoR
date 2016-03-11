@@ -7,7 +7,7 @@ author:
       CH-8093 Zürich
     email: kirill.mueller@ivt.baug.ethz.ch
     url: http://www.ivt.ethz.ch
-submitdate: 2016-02-22
+submitdate: 2016-02-26
 title:
   formatted: "Accelerating weighted random sampling without replacement"
   # If you use tex in the formatted title, also supply version without
@@ -21,7 +21,8 @@ abstract: >
   without replacement.
   The case of weighted sampling without replacement appears to be most difficult
   to implement efficiently, which might be one reason why the \proglang{R}
-  implementation performs slowly for large input.
+  implementation
+  performs slowly for large problem sizes.
   This paper presents four alternative implementations for the case of weighted
   sampling without replacement, with an analysis of their run time and
   correctness.
@@ -43,6 +44,7 @@ preamble: >
 output:
   rticles::jss_article:
     fig_crop: false
+    citation_package: natbib
 bibliography: [ my.bib, knitcitations.bib ]
 vignette: >
   %\VignetteIndexEntry{Accelerating weighted random sampling without replacement}
@@ -81,6 +83,9 @@ knit_print.function <- function(x, options) {
 
 # Introduction
 
+\newcommand{\pairadice}{%
+  \raisebox{-0.5ex}{\includegraphics[height=2ex,width=!]{pair_of_dice}}}
+
 Random sampling from discrete populations
 is one of the basic primitives in statistical computing.
 This paper focuses on a specific variant: sampling without replacement from a
@@ -101,7 +106,8 @@ First, different techniques for sampling from discrete populations are reviewed.
 Several implementations for sampling without replacement are discussed,
 this includes evaluation of run time performance and correctness.
 The paper concludes with suggestions for incorporating the findings into base
-\proglang{R}.
+\proglang{R}
+`r knitcitations::citep(citation())`.
 
 
 # Sampling from discrete populations
@@ -109,6 +115,7 @@ The paper concludes with suggestions for incorporating the findings into base
 
 \Cref{alg:sample} is offered as a definition of sampling from discrete populations
 with or without replacement from arbitrary (including uniform) weight distributions.
+(A pair of dice indicates random draws.)
 
 \begin{algorithm}
   \caption{$\text{sample}(n, s, \text{replace}, p_i)$}
@@ -123,7 +130,8 @@ with or without replacement from arbitrary (including uniform) weight distributi
     \IF{$s = 0$}
       \RETURN vector of length 0
     \ENDIF
-    \STATE Randomly select $k$ so that, for all $i$,
+    \STATE \pairadice{}
+      Randomly select $k$ so that, for all $i$,
       $\mathrm{P}(k=i) = \frac{p_i}{\sum_{j}p_j}$
       \label{alg:sample:norm}
     \IF{not replace}\label{alg:sample:if}
@@ -137,7 +145,7 @@ with or without replacement from arbitrary (including uniform) weight distributi
 From this definition, the following can be observed:
 
 - Sampling with replacement appears to be a simpler problem than sampling without
-  replacement, as the lines \ref{alg:sample:if} and
+  replacement, as the lines \ref{alg:sample:if} to
   \ref{alg:sample:if-end} in \cref{alg:sample} are not required.
 - If all weights $p_i$ are equal, the problem is simpler as well:
   The selection probability $\mathrm{P}(i=k)$
@@ -281,7 +289,8 @@ purging the invalid items.
     \REQUIRE $p_i$: Weight of each item for $i \in \{1,\ldots,n\}$
     \ENSURE Returns a vector $k_j \in \{1,\ldots,n\}$ for
       $j \in \{1,\ldots,s\}$ that contains the indexes of the items sampled
-    \STATE $k_i \leftarrow \text{unique}(\text{sample}(n, \text{expected.items}(n, s), \TRUE, p_i))$
+    \STATE \pairadice{}
+      $k_i \leftarrow \text{unique}(\text{sample}(n, \text{expected.items}(n, s), \TRUE, p_i))$
       \label{alg:sample-rej:sample}
     \STATE $l \leftarrow \text{length}(k_i)$
     \IF{$l \geq s$}
@@ -306,10 +315,10 @@ This is an underestimate for non-uniform distributions.
 Nevertheless, the implementation in this package uses this estimate, capped at
 $2n$.
 As shown in \cref{sec:tests}, this algorithm performs worse than the alternatives
-shown in the following section in the majority of cases, but still outperforms
+shown in the following section in the majority of cases, but still better than
 the stock implementation for large values of $n$ and $s$.
 Therefore, no tuning of the estimation of the number of expected items
-has been performed.
+has been carried out.
 
 
 ## One-pass sampling
@@ -321,9 +330,7 @@ it is sufficient to draw $n$ random numbers,
 combine them arithmetically with the weight distribution $p_i$,
 and perform a partial sort to find the indexes of the $s$ smallest items.
 \Cref{alg:sample-rank} is a modified version of Algorithm A in the original paper
-that operates on the logarithmic scale and uses multiplication
-instead of exponentiation
-for increased numeric stability.
+that operates on the logarithmic scale for increased numeric stability.
 
 \begin{algorithm}
   \caption{$\text{sample.rank}(n, s, p_i)$}
@@ -334,7 +341,8 @@ for increased numeric stability.
     \REQUIRE $p_i$: Weight of each item for $i \in \{1,\ldots,n\}$
     \ENSURE Returns a vector $k_j \in \{1,\ldots,n\}$ for
       $j \in \{1,\ldots,s\}$ that contains the indexes of the items sampled
-    \STATE $r_i \leftarrow \text{Exp}(1) / p_i$ for all $i \in \{1,\ldots,n\}$
+    \STATE \pairadice{}
+      $r_i \leftarrow \text{Exp}(1) / p_i$ for all $i \in \{1,\ldots,n\}$
       \label{alg:sample-rank:sample}
     \RETURN the positions of the $s$ smallest elements in $r_i$\label{alg:sample-rank:rec}
   \end{algorithmic}
@@ -350,7 +358,7 @@ earlier in this sorting order.
 are equivalent.
 
 The algorithm amazes with its elegance and simplicity.
-This also allows for almost trivial parallelization,
+It allows for almost trivial parallelization,
 provided that independent
 random number generators are available to each thread.
 Computational complexity is dominated by the partial sort
@@ -391,13 +399,16 @@ operation.
     \ENSURE Returns a vector $k_j \in \{1,\ldots,n\}$ for
       $j \in \{1,\ldots,s\}$ that contains the indexes of the items sampled
     \STATE Initialize reservoir with the first $s$ elements
-    \STATE Set keys for these elements based on their weight and one random number per item
+    \STATE \pairadice{}
+      Set keys for these elements based on their weight and one random number per item
     \WHILE{not all items processed}
       \STATE Choose item with lowest key in the reservoir
         \label{alg:sample-expj:pq}
-      \STATE Determine number of items to skip, based on this key and a random number
+      \STATE \pairadice{}
+        Determine number of items to skip, based on this key and a random number
       \STATE Replace item with lowest key with current item in the reservoir
-      \STATE Set the new item's key based on its weight and a random number
+      \STATE \pairadice{}
+        Set the new item's key based on its weight and a random number
     \ENDWHILE
     \RETURN Items in reservoir sorted by their key
   \end{algorithmic}
@@ -407,17 +418,31 @@ operation.
 
 # Implementation
 
-The \pkg{wrswoR} package contains implementations for the two algorithms
-presented in the previous section, one \proglang{R} implementation
+The \pkg{wrswoR} package
+`r knitcitations::citep(citation("wrswoR"))`
+contains implementations for the algorithms
+presented in the previous section:
+One \proglang{R} implementation
 of rejection sampling (\cref{alg:sample-rej}, denoted by *rej*),
 two implementations (\proglang{R} and \proglang{C++})
-of one-pass sampling (\cref{alg:sample-rank}, *rank* and *crank*)
+of one-pass sampling (\cref{alg:sample-rank}, *rank* and *crank*),
 and one \proglang{C++} implementation of reservoir sampling with exponential jumps
 (*expj*, \cref{alg:sample-expj}).
-In the package, the corresponding functions are prefixed with \code{sample_int_}.
 The \pkg{Rcpp} package
 `r knitcitations::citep(citation("Rcpp"))`
 is used to generate the glue between \proglang{R} and \proglang{C++}.
+
+In the package, the functions are prefixed with \code{sample_int_}.
+All functions share the same interface,
+the function arguments correspond to those of \cref{alg:sample,alg:sample-rej,alg:sample-rank,alg:sample-expj}:
+\code{size} is the $s$ argument, and \code{prob} is the $p_i$ argument.
+For testing the new routines against the \proglang{R} implementation,
+a wrapper function \code{sample_int_R()} is provided,
+which calls the base \proglang{R} function \code{sample.int()}
+with \code{replace = FALSE}:
+```{r, echo=FALSE}
+sample_int_R
+```
 
 The \proglang{R} implementations are very similar to the pseudocode:
 As an example, the *rank* implementation is shown below.
@@ -426,25 +451,12 @@ As an example, the *rank* implementation is shown below.
 sample_int_rank
 ```
 
-The function arguments correspond to those of \cref{alg:sample,alg:sample-rej,alg:sample-rank,alg:sample-expj}:
-\code{size} is the $s$ argument, and \code{prob} is the $p_i$ argument.
-
 The *crank* implementation has been somewhat optimized for cache efficiency.
 Due to its relative complexity, the *expj* implementation is kept very close
 to the pseudocode in the original paper,
 still this function also operates on the logarithmic scale for numeric stability.
 The transformation works in a fashion very similar to that of
 \cref{alg:sample-rank}.
-
-All functions share the same interface.
-Compared to the base \proglang{R} function \code{sample.int()},
-the \code{replace} parameter has been removed, and \code{prob} cannot be \code{NULL}.
-To simplify testing the new routines against the \proglang{R} implementation,
-a wrapper function \code{sample_int_R()} is provided:
-
-```{r, echo=FALSE}
-sample_int_R
-```
 
 The remainder of this paper presents performance characteristics and
 a validation of the new implementations.
@@ -457,7 +469,8 @@ This section presents run time tests for various combinations of input parameter
 attempts to provide guidance when to choose which implementation,
 and discusses the correctness of the implementation.
 All test results shown in this section are based on data available
-in the \pkg{wrswoR.benchmark} package.
+in the \pkg{wrswoR.benchmark} package
+`r knitcitations::citep(citation("wrswoR.benchmark"))`.
 
 
 ## Input parameters
@@ -564,7 +577,7 @@ pow2 <- function(x) {
 }
 
 percent <- function(x) {
-  paste0("\\SI{", round(x * 100, 5), "}{\\percent}")
+  paste0("\\ensuremath{", round(x * 100, 5), "\\,\\%}")
 }
 
 format_expr <- function(x) {
@@ -596,7 +609,7 @@ running Red Hat Enterprise Linux Server release 7.2,
 \Cref{fig:run-time-log} presents an overview of the median run time
 for different input sizes, output size ratios, weight distributions and implementations.
 The \proglang{R} implementation is outperformed by all other implementations
-for $n \approx \num{1000}$, in many cases even for much smaller inputs.
+for $n \approx \num{10000}$, in many cases even for much smaller inputs.
 In the log-log scale used here, the slope of the curves translates to computational complexity;
 the steeper slope for the \proglang{R} implementation corresponds to its quadratic complexity
 compared to the only slightly superlinear complexity of the other algorithms.
@@ -691,7 +704,7 @@ break_even %>%
   ggplot(aes(x=n, y=R_vs_expj, color=factor(r, levels = c("1", "0.1", "0.01")))) +
   ggplot_base +
   geom_line() +
-  scale_x_log10(name = "$n$", breaks = c(10, 30, 100, 300, 1000)) +
+  scale_x_log10(name = "$n$", breaks = c(10, 30, 100, 300, 1000, 3000)) +
   scale_y_log10(name = "Ratio of median run times\n(\\proglang{R} vs. \\emph{expj})", breaks = 2 ** (-1:5)) +
   scale_color_discrete(name = "$r$")
 ```
@@ -867,7 +880,8 @@ p_values_true %>%
   geom_point() +
   coord_fixed(ratio = 1 / nrow(p_values_true)) +
   scale_color_discrete(name = "$i$") +
-  scale_shape_discrete(name = "$j$")
+  scale_shape_discrete(name = "$j$") +
+  list()
 ```
 
 
@@ -883,7 +897,8 @@ p_values_false %>%
   geom_point() +
   coord_fixed(ratio = 1 / nrow(p_values_false)) +
   scale_color_discrete(name = "$i$") +
-  scale_shape_discrete(name = "$j$")
+  scale_shape_discrete(name = "$j$") +
+  list()
 ```
 
 
@@ -999,10 +1014,13 @@ wrswoR.benchmark::p_values_agg %>%
 # Conclusions and future work
 
 This paper describes four new implementations for weighted random sampling
-without replacement in \proglang{R}.
+without replacement in \proglang{R}:
+Rejection sampling, two implementations of one-pass sampling,
+and reservoir sampling with exponential jumps.
 The new implementations, even those written in pure \proglang{R},
 clearly outperform the one provided by the \pkg{base}
-package if the number of items to choose from is just above 1000.
+package if the number of items to choose from is just above \num{10000},
+this threshold is below \num{500} for reservoir sampling with exponential jumps.
 Each of the algorithms presented here has its advantages:
 
 - Rejection sampling is a simple and straightforward method that builds upon
@@ -1033,7 +1051,7 @@ in a predefined fashion,
 whereas no difference between the new and the stock implementations could be
 measured.
 So far, the detection of non-systematic errors or other failure modes
-has not been tested.
+have not been tested.
 
 In order to include a faster sampling algorithm into base \proglang{R},
 an implementation in \proglang{C}
@@ -1058,6 +1076,9 @@ survey sampling, the `UPxxx()` functions in the \pkg{sampling} package
 
 # Acknowledgments
 
+
+The author would like to thank the Swiss National Science Foundation for
+financial support (grant~138270).
 This work would have been much more difficult without the \pkg{BatchJobs}
 and \pkg{BatchExperiment} packages
 `r knitcitations::citep(citation("BatchExperiments"))`.
@@ -1080,10 +1101,6 @@ based on a template provided by \pkg{rticles}
 
 
 
-# References {.unnumbered}
-
-\justifying
-
 ```{r echo=FALSE, message=FALSE, cache=FALSE}
 # Work around encoding issue on Windows
 if (!on_cran) {
@@ -1092,3 +1109,5 @@ if (!on_cran) {
   writeLines(character(), "knitcitations.bib")
 }
 ```
+
+\bibliography{my,knitcitations}

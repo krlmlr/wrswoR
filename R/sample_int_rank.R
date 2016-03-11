@@ -6,8 +6,8 @@
 #'   implementations (\code{_crank} uses R vectors internally, while
 #'   \code{*_ccrank} uses \code{std::vector}; surprisingly, \code{*_crank} seems
 #'   to be faster on most inputs). It can be
-#'   shown that the order statistic of \eqn{U^(1/w_i)} has the same
-#'   distribution as random sampling without replacement (U=uniform(0,1)
+#'   shown that the order statistic of \eqn{U^{(1/w_i)}} has the same
+#'   distribution as random sampling without replacement (\eqn{U=\mbox{uniform}(0,1)}{U=uniform(0,1)}
 #'   distribution). To increase numerical stability, \eqn{\log(U) /
 #'   w_i}{log(U) / w_i} is computed instead; the log transform does not
 #'   change the order statistic.
@@ -18,13 +18,15 @@
 #' Letters} 97, no. 5 (2006): 181-185.
 #' @examples
 #' ## Algorithm A
-#' s <- sample_int_rank(200000, 100000, runif(200000))
+#' s <- sample_int_rank(20000, 10000, runif(20000))
 #' stopifnot(unique(s) == s)
 #' p <- c(995, rep(1, 5))
 #' n <- 1000
 #' set.seed(42)
-#' stopifnot(abs(table(replicate(sample_int_rank(6, 3, p), n=n)) / n -
-#'   c(1, rep(0.4, 5))) < 0.04)
+#' tbl <- table(replicate(sample_int_rank(6, 3, p),
+#'                        n = n)) / n
+#' stopifnot(abs(tbl - c(1, rep(0.4, 5))) < 0.04)
+#'
 #' @importFrom stats rexp
 #' @importFrom utils head
 sample_int_rank <- function(n, size, prob) {

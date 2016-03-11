@@ -69,8 +69,8 @@ often run faster than R's implementation, especially when \code{n} and
   implementations (\code{_crank} uses R vectors internally, while
   \code{*_ccrank} uses \code{std::vector}; surprisingly, \code{*_crank} seems
   to be faster on most inputs). It can be
-  shown that the order statistic of \eqn{U^(1/w_i)} has the same
-  distribution as random sampling without replacement (U=uniform(0,1)
+  shown that the order statistic of \eqn{U^{(1/w_i)}} has the same
+  distribution as random sampling without replacement (\eqn{U=\mbox{uniform}(0,1)}{U=uniform(0,1)}
   distribution). To increase numerical stability, \eqn{\log(U) /
   w_i}{log(U) / w_i} is computed instead; the log transform does not
   change the order statistic.
@@ -86,65 +86,76 @@ often run faster than R's implementation, especially when \code{n} and
   \url{http://stats.stackexchange.com/q/20590/6432}.
 }
 \examples{
+# Base R implementation
 s <- sample_int_R(2000, 1000, runif(2000))
 stopifnot(unique(s) == s)
 p <- c(995, rep(1, 5))
 n <- 1000
 set.seed(42)
-stopifnot(abs(table(replicate(sample_int_R(6, 3, p), n=n)) / n -
-  c(1, rep(0.4, 5))) < 0.04)
+tbl <- table(replicate(sample_int_R(6, 3, p),
+                       n = n)) / n
+stopifnot(abs(tbl - c(1, rep(0.4, 5))) < 0.04)
+
 ## Algorithm A, Rcpp version using std::vector
-s <- sample_int_ccrank(200000, 100000, runif(200000))
+s <- sample_int_ccrank(20000, 10000, runif(20000))
 stopifnot(unique(s) == s)
 p <- c(995, rep(1, 5))
 n <- 1000
 set.seed(42)
-stopifnot(abs(table(replicate(sample_int_ccrank(6, 3, p), n=n)) / n -
-  c(1, rep(0.4, 5))) < 0.04)
+tbl <- table(replicate(sample_int_ccrank(6, 3, p),
+                       n = n)) / n
+stopifnot(abs(tbl - c(1, rep(0.4, 5))) < 0.04)
+
 ## Algorithm A, Rcpp version using R vectors
-s <- sample_int_crank(200000, 100000, runif(200000))
+s <- sample_int_crank(20000, 10000, runif(20000))
 stopifnot(unique(s) == s)
 p <- c(995, rep(1, 5))
 n <- 1000
 set.seed(42)
-stopifnot(abs(table(replicate(sample_int_crank(6, 3, p), n=n)) / n -
-  c(1, rep(0.4, 5))) < 0.04)
+tbl <- table(replicate(sample_int_crank(6, 3, p),
+                       n = n)) / n
+stopifnot(abs(tbl - c(1, rep(0.4, 5))) < 0.04)
+
 ## Algorithm A-ExpJ (with log-transformed keys)
-\dontrun{
-s <- sample_int_expj(200000, 100000, runif(200000))
-}
+s <- sample_int_expj(20000, 10000, runif(20000))
 stopifnot(unique(s) == s)
 p <- c(995, rep(1, 5))
 n <- 1000
 set.seed(42)
-stopifnot(abs(table(replicate(sample_int_expjs(6, 3, p), n=n)) / n -
-  c(1, rep(0.4, 5))) < 0.04)
+tbl <- table(replicate(sample_int_expj(6, 3, p),
+                       n = n)) / n
+stopifnot(abs(tbl - c(1, rep(0.4, 5))) < 0.04)
+
 ## Algorithm A-ExpJ (paper version)
-\dontrun{
-s <- sample_int_expjs(200000, 100000, runif(200000))
-}
+s <- sample_int_expjs(20000, 10000, runif(20000))
 stopifnot(unique(s) == s)
 p <- c(995, rep(1, 5))
 n <- 1000
 set.seed(42)
-stopifnot(abs(table(replicate(sample_int_expjs(6, 3, p), n=n)) / n -
-  c(1, rep(0.4, 5))) < 0.04)
+tbl <- table(replicate(sample_int_expjs(6, 3, p),
+                       n = n)) / n
+stopifnot(abs(tbl - c(1, rep(0.4, 5))) < 0.04)
+
 ## Algorithm A
-s <- sample_int_rank(200000, 100000, runif(200000))
+s <- sample_int_rank(20000, 10000, runif(20000))
 stopifnot(unique(s) == s)
 p <- c(995, rep(1, 5))
 n <- 1000
 set.seed(42)
-stopifnot(abs(table(replicate(sample_int_rank(6, 3, p), n=n)) / n -
-  c(1, rep(0.4, 5))) < 0.04)
+tbl <- table(replicate(sample_int_rank(6, 3, p),
+                       n = n)) / n
+stopifnot(abs(tbl - c(1, rep(0.4, 5))) < 0.04)
+
 ## Rejection sampling
-s <- sample_int_rej(200000, 100000, runif(200000))
+s <- sample_int_rej(20000, 10000, runif(20000))
 stopifnot(unique(s) == s)
 p <- c(995, rep(1, 5))
 n <- 1000
 set.seed(42)
-stopifnot(abs(table(replicate(sample_int_rej(6, 3, p), n=n)) / n -
-  c(1, rep(0.4, 5))) < 0.04)
+tbl <- table(replicate(sample_int_rej(6, 3, p),
+                       n = n)) / n
+stopifnot(abs(tbl - c(1, rep(0.4, 5))) < 0.04)
+
 }
 \author{
 Kirill Müller (for \code{_*expj*})
