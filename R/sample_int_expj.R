@@ -1,9 +1,9 @@
 #' @rdname sample_int
-#' @details \code{sample_int_expj} and \code{sample_int_expjs}
+#' @details `sample_int_expj()` and `sample_int_expjs()`
 #'   implement one-pass random sampling with a reservor with exponential jumps
 #'   (Efraimidis and Spirakis, 2006, Algorithm A-ExpJ).  Both functions are
-#'   implemented in \code{Rcpp}; \code{*_expj} uses log-transformed keys,
-#'   \code{*_expjs} implements the algorithm in the paper verbatim
+#'   implemented in `Rcpp`; `*_expj()` uses log-transformed keys,
+#'   `*_expjs()` implements the algorithm in the paper verbatim
 #'   (at the cost of numerical stability).
 #' @examples
 #' ## Algorithm A-ExpJ (with log-transformed keys)

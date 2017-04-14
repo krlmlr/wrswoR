@@ -37,7 +37,7 @@ sample_int_rej(n, size, prob)
 }
 \value{
 An integer vector of length \code{size} with elements from
-  \code{1:n}.
+\code{1:n}.
 }
 \description{
 These functions implement weighted sampling without replacement using various
@@ -45,47 +45,47 @@ algorithms, i.e., they take a sample of the specified
 \code{size} from the elements of \code{1:n} without replacement, using the
 weights defined by \code{prob}.  The call
 \code{sample_int_*(n, size, prob)} is equivalent
-to \code{sample.int(n, size, replace=F, prob)}.  (The results will
+to \code{sample.int(n, size, replace = F, prob)}.  (The results will
 most probably be different for the same random seed, but the
 returned samples are distributed identically for both calls.)
-Except for \code{sample_int_R} (which
+Except for \code{sample_int_R()} (which
 has quadratic complexity as of this writing), all functions have complexity
 \eqn{O(n \log n)}{O(n log n)} or better and
 often run faster than R's implementation, especially when \code{n} and
 \code{size} are large.
 }
 \details{
-\code{sample_int_R} is a simple wrapper for \code{\link[base]{sample.int}}.
+\code{sample_int_R()} is a simple wrapper for \code{\link[base:sample.int]{base::sample.int()}}.
 
-\code{sample_int_expj} and \code{sample_int_expjs}
-  implement one-pass random sampling with a reservor with exponential jumps
-  (Efraimidis and Spirakis, 2006, Algorithm A-ExpJ).  Both functions are
-  implemented in \code{Rcpp}; \code{*_expj} uses log-transformed keys,
-  \code{*_expjs} implements the algorithm in the paper verbatim
-  (at the cost of numerical stability).
+\code{sample_int_expj()} and \code{sample_int_expjs()}
+implement one-pass random sampling with a reservor with exponential jumps
+(Efraimidis and Spirakis, 2006, Algorithm A-ExpJ).  Both functions are
+implemented in \code{Rcpp}; \code{*_expj()} uses log-transformed keys,
+\code{*_expjs()} implements the algorithm in the paper verbatim
+(at the cost of numerical stability).
 
-\code{sample_int_rank}, \code{sample_int_crank} and
-  \code{sample_int_ccrank} implement one-pass random sampling
-  (Efraimidis and Spirakis, 2006, Algorithm A).  The first function is
-  implemented purely in R, the other two are optimized \code{Rcpp}
-  implementations (\code{_crank} uses R vectors internally, while
-  \code{*_ccrank} uses \code{std::vector}; surprisingly, \code{*_crank} seems
-  to be faster on most inputs). It can be
-  shown that the order statistic of \eqn{U^{(1/w_i)}} has the same
-  distribution as random sampling without replacement (\eqn{U=\mbox{uniform}(0,1)}{U=uniform(0,1)}
-  distribution). To increase numerical stability, \eqn{\log(U) /
+\code{sample_int_rank()}, \code{sample_int_crank()} and
+\code{sample_int_ccrank()} implement one-pass random sampling
+(Efraimidis and Spirakis, 2006, Algorithm A).  The first function is
+implemented purely in R, the other two are optimized \code{Rcpp}
+implementations (\code{*_crank()} uses R vectors internally, while
+\code{*_ccrank()} uses \code{std::vector}; surprisingly, \code{*_crank()} seems
+to be faster on most inputs). It can be
+shown that the order statistic of \eqn{U^{(1/w_i)}} has the same
+distribution as random sampling without replacement (\eqn{U=\mbox{uniform}(0,1)}{U=uniform(0,1)}
+distribution). To increase numerical stability, \eqn{\log(U) /
   w_i}{log(U) / w_i} is computed instead; the log transform does not
-  change the order statistic.
+change the order statistic.
 
-\code{sample_int_rej} uses repeated weighted sampling with
-  replacement and a variant of rejection sampling. It is implemented purely
-  in R.
-  This function simulates weighted sampling without replacement using
-  somewhat more draws \emph{with} replacement, and then discarding
-  duplicate values (rejection sampling).  If too few items are
-  sampled, the routine calls itself recursively on a (hopefully) much
-  smaller problem.  See also
-  \url{http://stats.stackexchange.com/q/20590/6432}.
+\code{sample_int_rej()} uses repeated weighted sampling with
+replacement and a variant of rejection sampling. It is implemented purely
+in R.
+This function simulates weighted sampling without replacement using
+somewhat more draws \emph{with} replacement, and then discarding
+duplicate values (rejection sampling).  If too few items are
+sampled, the routine calls itself recursively on a (hopefully) much
+smaller problem.  See also
+\url{http://stats.stackexchange.com/q/20590/6432}.
 }
 \examples{
 # Base R implementation
@@ -167,9 +167,9 @@ random sampling with a reservoir." \emph{Information Processing
 Letters} 97, no. 5 (2006): 181-185.
 }
 \seealso{
-\code{\link[base]{sample.int}}
+\code{\link[base:sample.int]{base::sample.int()}}
 }
 \author{
-Dinre (for \code{*_rank}), Kirill Müller
-  (for all other functions)
+Dinre (for \code{*_rank()}), Kirill Müller
+(for all other functions)
 }

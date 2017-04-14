@@ -1,6 +1,6 @@
 #' @rdname sample_int
 #'
-#' @details \code{sample_int_rej} uses repeated weighted sampling with
+#' @details `sample_int_rej()` uses repeated weighted sampling with
 #'   replacement and a variant of rejection sampling. It is implemented purely
 #'   in R.
 #'   This function simulates weighted sampling without replacement using
