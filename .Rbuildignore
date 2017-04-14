@@ -13,3 +13,4 @@
 ^inst/web$
 ^inst/staticdocs$
 ^cran-comments\.md$
+^tic\.R$

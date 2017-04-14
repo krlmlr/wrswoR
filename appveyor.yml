@@ -23,8 +23,6 @@ environment:
 
   - R_VERSION: stable
 
-  - R_VERSION: patched
-
   - R_VERSION: oldrel
     RTOOLS_VERSION: 32
     CRAN: http://cran.rstudio.com
@@ -37,6 +35,7 @@ branches:
 
 build_script:
   - travis-tool.sh install_deps
+  - travis-tool.sh install_r devtools
   - Rscript -e "devtools::load_all()"
 
 test_script:
