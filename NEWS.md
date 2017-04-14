@@ -1,3 +1,9 @@
+Version 1.0-10 (2017-04-14)
+===
+
+- Internal tweaks.
+
+
 Version 1.0-1 (2016-02-26)
 ===
 
