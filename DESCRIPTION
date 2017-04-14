@@ -21,4 +21,4 @@ URLNote: https://github.com/krlmlr/wrswoR
 BugReports: https://github.com/krlmlr/wrswoR/issues
 LazyData: true
 VignetteBuilder: knitr
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
