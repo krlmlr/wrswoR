@@ -30,7 +30,6 @@ matrix:
   - r: release
     env:
     - BUILD_PKGDOWN=true
-  - r: oldrel
   - r: devel
   - os: osx
     osx_image: xcode7.3
