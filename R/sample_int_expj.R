@@ -5,10 +5,6 @@
 #'   implemented in \code{Rcpp}; \code{*_expj} uses log-transformed keys,
 #'   \code{*_expjs} implements the algorithm in the paper verbatim
 #'   (at the cost of numerical stability).
-#' @author Kirill Müller (for \code{_*expj*})
-#' @references Efraimidis, Pavlos S., and Paul G. Spirakis. "Weighted
-#' random sampling with a reservoir." \emph{Information Processing
-#' Letters} 97, no. 5 (2006): 181-185.
 #' @examples
 #' ## Algorithm A-ExpJ (with log-transformed keys)
 #' s <- sample_int_expj(20000, 10000, runif(20000))
