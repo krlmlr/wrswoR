@@ -12,7 +12,7 @@ License: GPL-3
 Depends: R (>= 3.0.2)
 Imports: Rcpp, logging (>= 0.4-13)
 LinkingTo: Rcpp (>= 0.11.5)
-Suggests: wrswoR.benchmark (>= 0.1), import, kimisc (>= 0.2-4),
+Suggests: wrswoR.benchmark (>= 0.1-4), import, kimisc (>= 0.2-4),
         testthat, roxygen2, knitr, rmarkdown, rticles (>= 0.1),
         knitcitations, metap, tidyr, microbenchmark, sampling,
         BatchExperiments, dplyr, ggplot2, tikzDevice (>= 0.9-1)
@@ -23,3 +23,5 @@ LazyData: true
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
 Roxygen: list(markdown = TRUE)
+Remotes:
+    krlmlr/wrswoR.benchmark
