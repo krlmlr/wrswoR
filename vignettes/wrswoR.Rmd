@@ -32,7 +32,7 @@ keywords:
   plain:     [Weighted sampling, performance, meta-analysis, R]
 preamble: >
   \usepackage{amsmath}
-  \usepackage[USenglish]{babel}
+  \usepackage[american]{babel}
   \usepackage{algorithm}
   \usepackage{algorithmic}
   \usepackage[draft]{fixme}
