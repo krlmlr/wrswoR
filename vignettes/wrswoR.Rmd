@@ -2,18 +2,13 @@
 author:
   - name: Kirill Müller
     affiliation: IVT, ETH Zurich
-    address: >
-      Stefano-Franscini-Platz 9,
-      CH-8093 Zürich
+    address:
+    - Stefano-Franscini-Platz 9,
+    - CH-8093 Zürich
     email: kirill.mueller@ivt.baug.ethz.ch
     url: http://www.ivt.ethz.ch
-submitdate: 2016-02-26
 title:
-  formatted: "Accelerating weighted random sampling without replacement"
-  # If you use tex in the formatted title, also supply version without
-  plain:     "Accelerating weighted random sampling without replacement"
-  # For running headers, if needed
-  short:     "Accelerating weighted random sampling without replacement"
+  "Accelerating weighted random sampling without replacement"
 abstract: >
   Random sampling from discrete populations
   is one of the basic primitives in statistical computing.
@@ -26,23 +21,15 @@ abstract: >
   This paper presents four alternative implementations for the case of weighted
   sampling without replacement, with an analysis of their run time and
   correctness.
-keywords:
-  # at least one keyword must be supplied
-  formatted: [Weighted sampling, performance, meta-analysis, "\\proglang{R}"]
-  plain:     [Weighted sampling, performance, meta-analysis, R]
 preamble: >
-  \usepackage{amsmath}
-  \usepackage[american]{babel}
   \usepackage{algorithm}
   \usepackage{algorithmic}
-  \usepackage[draft]{fixme}
   \usepackage[capitalize]{cleveref}
-  \usepackage{ragged2e}
   \usepackage{mathtools}
-  \usepackage{siunitx}
   \usepackage{latexsym}
+  \newcommand{\proglang}{\relax}
 output:
-  rticles::jss_article:
+  rticles::rjournal_article:
     fig_crop: false
     citation_package: natbib
 bibliography: [ my.bib, knitcitations.bib ]
@@ -75,10 +62,6 @@ if (on_cran) {
   knitr::opts_chunk$set(dev="tikz")
 }
 knitcitations::cite_options("pandoc")
-
-knit_print.function <- function(x, options) {
-  dput(x)
-}
 ```
 
 # Introduction
@@ -449,15 +432,15 @@ The \pkg{Rcpp} package
 `r knitcitations::citep(citation("Rcpp"))`
 is used to generate the glue between \proglang{R} and \proglang{C++}.
 
-In the package, the functions are prefixed with \code{sample_int_}.
+In the package, the functions are prefixed with `sample_int_`.
 All functions share the same interface,
 the function arguments correspond to those of \cref{alg:sample,alg:sample-rej,alg:sample-rank,alg:sample-expj}:
-\code{size} is the $s$ argument, and \code{prob} is the $p_i$ argument.
+`size` is the $s$ argument, and `prob` is the $p_i$ argument.
 See also the documentation in \cref{pkg:wrswoR} for details.
 For testing the new routines against the \proglang{R} implementation,
-a wrapper function \code{sample_int_R()} is provided,
-which calls the base \proglang{R} function \code{sample.int()}
-with \code{replace = FALSE}.
+a wrapper function `sample_int_R()` is provided,
+which calls the base \proglang{R} function `sample.int()`
+with `replace = FALSE`.
 
 The \proglang{R} implementations are very similar to the pseudocode:
 As an example, the *rank* implementation is shown below.
@@ -636,7 +619,7 @@ running Red Hat Enterprise Linux Server release 7.2,
 \Cref{fig:run-time-log} presents an overview of the median run time
 for different input sizes, output size ratios, weight distributions and implementations.
 The \proglang{R} implementation is outperformed by all other implementations
-for $n \approx \num{10000}$, in many cases even for much smaller inputs.
+for $n \approx 10000$, in many cases even for much smaller inputs.
 In the log-log scale used here, the slope of the curves translates to computational complexity;
 the steeper slope for the \proglang{R} implementation corresponds to its quadratic complexity
 compared to the only slightly superlinear complexity of the other algorithms.
@@ -870,7 +853,7 @@ seems to require considerable computational resources.
 Therefore, the value of $\pi_{i,j}$ is assumed unknown,
 and only the equality of the proportions is tested for the different implementations
 using a two-sided test for equal proportions (essentially a $\chi^2$ test,
-implemented by the \code{prop.test()} function).
+implemented by the `prop.test()` function).
 The correctness check is performed as follows:
 
 - The parameters $n$, $s$, and $p_i$, and the implementation under test, are fixed.
@@ -1011,7 +994,7 @@ and
 for $N$ ranging from `r pow2(min(wrswoR.benchmark::p_values_agg$N))` to
 `r pow2(max(wrswoR.benchmark::p_values_agg$N))` (only powers of $2$).
 Each cell frequency was compared to that of the stock implementation.
-This resulted in around \num{5e8} p-values, which were again
+This resulted in around 500 million p-values, which were again
 combined using Fisher's method.
 
 \Cref{fig:comprehensive} shows the results of the meta-analysis
@@ -1111,8 +1094,8 @@ Rejection sampling, two implementations of one-pass sampling,
 and reservoir sampling with exponential jumps.
 The new implementations, even those written in pure \proglang{R},
 clearly outperform the one provided by the \pkg{base}
-package if the number of items to choose from is just above \num{10000},
-this threshold is below \num{500} for reservoir sampling with exponential jumps.
+package if the number of items to choose from is just above 10000,
+this threshold is below 500 for reservoir sampling with exponential jumps.
 Each of the algorithms presented here has its advantages:
 
 - Rejection sampling is a simple and straightforward method that builds upon
@@ -1155,7 +1138,7 @@ For the current implementation in \proglang{R}, a user might not expect
 a natural operation such as random sampling
 to take excessive time, without the ability to interrupt it.
 Allowing to interrupt execution in the current implementation
-(via \code{R_CheckUserInterrupt()})
+(via `R_CheckUserInterrupt()`)
 would at least save the unaware user
 the frustration of a lost workspace.
 
@@ -1202,6 +1185,8 @@ if (!on_cran) {
   writeLines(character(), "knitcitations.bib")
 }
 ```
+
+\bibliography{my,knitcitations}
 
 ```{r session-info, echo=FALSE, cache=FALSE}
 writeLines(capture.output(print(sessionInfo())), "session-info.txt")

@@ -8,7 +8,14 @@
 *.so
 /inst/web/
 /vignettes/*-tikzDictionary
+/vignettes/*.aux
 /vignettes/*.bbl
+/vignettes/*.blg
+/vignettes/*.brf
+/vignettes/*.fdb_latexmk
+/vignettes/*.fls
+/vignettes/*.log
+/vignettes/*.out
 /vignettes/*.pdf
 /vignettes/*.tex
 /vignettes/*_cache
