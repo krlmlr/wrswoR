@@ -7,3 +7,9 @@
 *.o
 *.so
 /inst/web/
+/vignettes/*-tikzDictionary
+/vignettes/*.bbl
+/vignettes/*.pdf
+/vignettes/*.tex
+/vignettes/*_cache
+/vignettes/*_files
