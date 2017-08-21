@@ -442,7 +442,6 @@ In the package, the functions are prefixed with `sample_int_`.
 All functions share the same interface,
 the function arguments correspond to those of \cref{alg:sample,alg:sample-rej,alg:sample-rank,alg:sample-expj}:
 `size` is the $s$ argument, and `prob` is the $p_i$ argument.
-See also the documentation in \cref{pkg:wrswoR} for details.
 For testing the new routines against the \proglang{R} implementation,
 a wrapper function `sample_int_R()` is provided,
 which calls the base \proglang{R} function `sample.int()`
