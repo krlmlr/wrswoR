@@ -40,6 +40,23 @@ vignette: >
 ---
 
 ```{r init-purl, echo=FALSE, message=FALSE}
+# For installation:
+# 
+# install.packages("wrswoR", dependencies = TRUE)
+# 
+# or (for fewer packages)
+# 
+# install.packages(c("wrswoR", "dplyr", "tidyr", "ggplot2", "import", "wrswoR.benchmark", "kimisc"))
+# 
+# The plots in the article were created with tikzDevice.
+# This code creates the plots with the default plot device, some labels contain
+# LaTeX markup.
+# The .zip archive also contains an .Rmd file that can be used to create the
+# article with all plots using
+# 
+# rmarkdown::render("wrswoR.Rmd")
+
+
 on_cran <- FALSE
 
 library(wrswoR)
