@@ -32,6 +32,7 @@ output:
   rticles::rjournal_article:
     fig_crop: false
     citation_package: natbib
+    fig_width: 5.5118
 bibliography: [ my.bib, knitcitations.bib ]
 vignette: >
   %\VignetteIndexEntry{Accelerating weighted random sampling without replacement}
@@ -48,13 +49,21 @@ library(wrswoR)
 import::from(tidyr, spread, gather, gather_, .library = .libPaths())
 import::from(plyr, ldply, .library = .libPaths())
 import::from(dplyr, filter, mutate, select, group_by, summarize, ungroup, tbl_df,
-             rename, arrange, mutate_each, funs, .library = .libPaths())
+             rename, arrange, mutate_at, funs, vars, .library = .libPaths())
 import::from(cluster, daisy, .library = .libPaths())
 import::from(magrittr, "%>%", .library = .libPaths())
 library(ggplot2)
 set.seed(20150710L)
 library(tikzDevice)
-options(tikzDocumentDeclaration = "\\documentclass{jss}\\usepackage{siunitx}\\usepackage{latexsym}")
+options(tikzDocumentDeclaration = c(
+  "\\documentclass[a4paper]{report}",
+  "\\usepackage[scaled=0.92]{helvet}",
+  "\\usepackage{palatino,mathpazo}",
+  "\\usepackage[scaled=1.02]{inconsolata}",
+  "\\usepackage{siunitx}",
+  "\\usepackage{latexsym}",
+  "\\newcommand{\\proglang}{\\relax}"
+))
 knitr::opts_chunk$set(cache=TRUE)
 if (on_cran) {
   knitr::opts_chunk$set(dev="png")
@@ -100,15 +109,13 @@ optimized and ready-to-use implementation for the statistical software package \
 First, different techniques for sampling from discrete populations are reviewed.
 Several implementations for sampling without replacement are discussed,
 this includes evaluation of run time performance and correctness.
-The paper concludes with suggestions for incorporating the findings into
-\proglang{R}.
 
 
 # Sampling from discrete populations
 
 
 \Cref{alg:sample} is offered as a definition of sampling from discrete populations
-with or without replacement from arbitrary, including uniform, weight distributions.
+with or without replacement from arbitrary weight distributions.
 (A pair of dice \pairadice{} indicates random draws.)
 
 \begin{algorithm}[t]
@@ -774,7 +781,7 @@ The median of the overheads of sampling from a shuffled distribution of weights
 is compared with the corresponding cost of sorting in \cref{fig:overhead-sorting}.
 It seems that prior sorting cannot reduce the overall run time.
 
-```{r overhead-sorting, fig.cap="Overhead of unsorted data vs.\\ sorting costs", echo=FALSE, dependson=c("ggplot-base")}
+```{r overhead-sorting, fig.cap="Overhead of unsorted data vs.\\ sorting costs", fig.height=4.5, echo=FALSE, dependson=c("ggplot-base")}
 median_timings <-
   timings %>%
   group_by(prob, mix, expr, n, r) %>%
@@ -794,8 +801,7 @@ median_timings_sort <-
 timings_filter <- . %>%
   filter(prob != "uniform") %>%
   filter(mix != "$\\nearrow$") %>% 
-  filter(n > 10000) %>%
-  mutate(n = kimisc::ofactor(paste0("$n = ", n, "$")))
+  filter(n > 10000)
 
 median_timings %>%
   timings_filter %>% 
@@ -813,7 +819,7 @@ median_timings %>%
   ) +
   facet_grid(n ~ prob, scales = "free_y") +
   xlab("$r$") +
-  ylab("Overhead [s]") +
+  ylab("Overhead [s] for different $n$") +
   scale_fill_brewer("Algorithm", palette = "Accent") +
   scale_color_manual("Sorting", values = c(" " = "red"))
 ```
@@ -946,7 +952,7 @@ p_values_true %>%
   rename(`p-value` = p_value) %>%
   arrange(`p-value`) %>%
   mutate(`Rank` = seq_along(`p-value`)) %>% 
-  mutate_each(funs(factor), i, j) %>% 
+  mutate_at(vars(i, j), funs(factor)) %>% 
   ggplot(aes(y = `Rank`, x = `p-value`, color = i, shape = j)) +
   ggplot_base +
   geom_abline(slope = nrow(p_values_true), intercept = 0, linetype = 3) +
@@ -964,7 +970,7 @@ p_values_false %>%
   rename(`p-value` = p_value) %>%
   arrange(`p-value`) %>%
   mutate(`Rank` = seq_along(`p-value`)) %>% 
-  mutate_each(funs(factor), i, j) %>% 
+  mutate_at(vars(i, j), funs(factor)) %>% 
   ggplot(aes(y = `Rank`, x = `p-value`, color = i, shape = j)) +
   ggplot_base +
   geom_abline(slope = nrow(p_values_false), intercept = 0, linetype = 3) +
@@ -1028,7 +1034,7 @@ comprehensive_base <- function(by) list(
 ```
 
 
-```{r comprehensive, echo=FALSE, fig.cap="Combining p-values for a comprehensive test", dependson = "comprehensive-base"}
+```{r comprehensive, echo=FALSE, fig.cap="Combining p-values for a comprehensive test", fig.height=3.8, dependson = "comprehensive-base"}
 wrswoR.benchmark::p_values_agg_agg %>%
   ungroup %>%
   arrange_by_func %>%
@@ -1059,7 +1065,7 @@ itself, for different skews.
 Here, for all skews except 0, the combined p-value approaches zero sooner or
 later as $N$ increases.
 
-```{r comprehensive-true, echo=FALSE, fig.cap="Combined p-values for different values of $n$ and $N$, resulting from comparing each new code to the stock implementation", dependson = "comprehensive-base"}
+```{r comprehensive-true, echo=FALSE, fig.cap="Combined p-values for different values of $n$ and $N$, resulting from comparing each new code to the stock implementation", fig.height=3.8, dependson = "comprehensive-base"}
 wrswoR.benchmark::p_values_agg %>%
   ungroup %>% 
   arrange_by_func %>%
@@ -1072,7 +1078,7 @@ wrswoR.benchmark::p_values_agg %>%
   facet_wrap(~func, nrow = 1)
 ```
 
-```{r comprehensive-false, echo=FALSE, fig.cap="Combined p-values for different values of $n$ and $N$, resulting from comparing the stock implementation to a skewed version of itself", dependson = "comprehensive-base"}
+```{r comprehensive-false, echo=FALSE, fig.cap="Combined p-values for different values of $n$ and $N$, resulting from comparing the stock implementation to a skewed version of itself", fig.height=3.8, dependson = "comprehensive-base"}
 wrswoR.benchmark::p_values_agg %>%
   ungroup %>%
   filter(func == "R") %>%
@@ -1154,7 +1160,7 @@ survey sampling, the `UPxxx()` functions in the \pkg{sampling} package
 
 
 The author would like to thank the Swiss National Science Foundation for
-financial support (grant~138270).
+financial support (grant 138270).
 This work would have been much more difficult without the \pkg{BatchJobs}
 and \pkg{BatchExperiment} packages
 `r knitcitations::citep(citation("BatchExperiments"))`.
