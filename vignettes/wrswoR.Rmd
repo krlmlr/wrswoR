@@ -39,20 +39,23 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-
-```{r init, echo=FALSE, message=FALSE}
-# Set on_cran to FALSE to get tikzDevice plots and citation
-on_cran <- Sys.getenv("USER") != "muelleki"
+```{r init-purl, echo=FALSE, message=FALSE}
+on_cran <- FALSE
 
 library(wrswoR)
 import::from(tidyr, spread, gather, gather_, .library = .libPaths())
-import::from(plyr, ldply, .library = .libPaths())
 import::from(dplyr, filter, mutate, select, group_by, summarize, ungroup, tbl_df,
              rename, arrange, mutate_at, funs, vars, .library = .libPaths())
-import::from(cluster, daisy, .library = .libPaths())
 import::from(magrittr, "%>%", .library = .libPaths())
 library(ggplot2)
 set.seed(20150710L)
+```
+
+
+```{r init, echo=FALSE, message=FALSE, purl=FALSE}
+# Set on_cran to FALSE to get tikzDevice plots and citation
+on_cran <- Sys.getenv("USER") != "muelleki"
+
 library(tikzDevice)
 options(tikzDocumentDeclaration = c(
   "\\documentclass[a4paper]{report}",
@@ -1181,7 +1184,7 @@ based on a template provided by \pkg{rticles}
 
 
 
-```{r echo=FALSE, message=FALSE, cache=FALSE}
+```{r echo=FALSE, message=FALSE, cache=FALSE, purl=FALSE}
 # Work around encoding issue on Windows
 if (!on_cran) {
   knitcitations::write.bibtex()
@@ -1200,6 +1203,6 @@ writeLines(
 
 \bibliography{wrswoR}
 
-```{r session-info, echo=FALSE, cache=FALSE}
+```{r session-info, echo=FALSE, cache=FALSE, purl=FALSE}
 writeLines(capture.output(print(sessionInfo())), "session-info.txt")
 ```
