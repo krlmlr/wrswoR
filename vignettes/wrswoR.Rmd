@@ -501,7 +501,7 @@ it is included here to test potential limitations of the implementations.
 
 ```{r timing-base, echo=FALSE}
 ggplot_base <- list(
-  theme_bw(11)
+  theme_bw(10)
 )
 
 ALGOS <- c("R", "rej", "rank", "crank", "expj")
