@@ -33,7 +33,6 @@ output:
     fig_crop: false
     citation_package: natbib
     fig_width: 5.5118
-bibliography: [ my.bib, knitcitations.bib ]
 vignette: >
   %\VignetteIndexEntry{Accelerating weighted random sampling without replacement}
   %\VignetteEngine{knitr::rmarkdown}
@@ -1190,9 +1189,17 @@ if (!on_cran) {
 } else {
   writeLines(character(), "knitcitations.bib")
 }
+
+writeLines(
+  c(
+    readLines("my.bib"),
+    readLines("knitcitations.bib")
+  ),
+  "wrswoR.bib"
+)
 ```
 
-\bibliography{my,knitcitations}
+\bibliography{wrswoR}
 
 ```{r session-info, echo=FALSE, cache=FALSE}
 writeLines(capture.output(print(sessionInfo())), "session-info.txt")
