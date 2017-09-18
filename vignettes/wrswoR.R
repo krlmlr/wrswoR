@@ -1,9 +1,5 @@
 ## ----init-purl, echo=FALSE, message=FALSE--------------------------------
-# For installation:
-# 
-# install.packages("wrswoR", dependencies = TRUE)
-# 
-# or (for fewer packages)
+# For installation of dependencies:
 # 
 # install.packages(c("wrswoR", "dplyr", "tidyr", "ggplot2", "import", "wrswoR.benchmark", "kimisc"))
 # 
@@ -14,6 +10,10 @@
 # article with all plots using
 # 
 # rmarkdown::render("wrswoR.Rmd")
+# 
+# This requires more packages to run successfully:
+# 
+# install.packages("wrswoR", dependencies = TRUE)
 
 
 on_cran <- FALSE
