@@ -1,3 +1,11 @@
+## wrswoR 1.0-11 (2018-02-01)
+
+- Remove dependency on cluster.
+- Use native method registration.
+- Prepare for submission to R Journal.
+- Improve vignette.
+
+
 Version 1.0-10 (2017-04-14)
 ===
 
