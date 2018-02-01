@@ -1,5 +1,5 @@
 #'@exportPattern "^[a-zA-Z][[:alpha:]]*"
-#'@useDynLib wrswoR
+#'@useDynLib wrswoR, .registration = TRUE
 
 #'@title Faster weighted sampling without replacement
 #'@description \R's default sampling without replacement using
