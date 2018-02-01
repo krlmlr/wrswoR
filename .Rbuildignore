@@ -14,3 +14,5 @@
 ^inst/staticdocs$
 ^cran-comments\.md$
 ^tic\.R$
+^vignettes/session-info.txt$
+^vignettes/RJournal\.zip$

@@ -7,7 +7,7 @@ using namespace Rcpp;
 
 // sample_int_crank
 IntegerVector sample_int_crank(int n, int size, NumericVector prob);
-RcppExport SEXP wrswoR_sample_int_crank(SEXP nSEXP, SEXP sizeSEXP, SEXP probSEXP) {
+RcppExport SEXP _wrswoR_sample_int_crank(SEXP nSEXP, SEXP sizeSEXP, SEXP probSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -20,7 +20,7 @@ END_RCPP
 }
 // sample_int_ccrank
 SEXP sample_int_ccrank(int n, int size, NumericVector prob);
-RcppExport SEXP wrswoR_sample_int_ccrank(SEXP nSEXP, SEXP sizeSEXP, SEXP probSEXP) {
+RcppExport SEXP _wrswoR_sample_int_ccrank(SEXP nSEXP, SEXP sizeSEXP, SEXP probSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -33,7 +33,7 @@ END_RCPP
 }
 // sample_int_expj
 IntegerVector sample_int_expj(int n, int size, NumericVector prob);
-RcppExport SEXP wrswoR_sample_int_expj(SEXP nSEXP, SEXP sizeSEXP, SEXP probSEXP) {
+RcppExport SEXP _wrswoR_sample_int_expj(SEXP nSEXP, SEXP sizeSEXP, SEXP probSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -46,7 +46,7 @@ END_RCPP
 }
 // sample_int_expjs
 IntegerVector sample_int_expjs(int n, int size, NumericVector prob);
-RcppExport SEXP wrswoR_sample_int_expjs(SEXP nSEXP, SEXP sizeSEXP, SEXP probSEXP) {
+RcppExport SEXP _wrswoR_sample_int_expjs(SEXP nSEXP, SEXP sizeSEXP, SEXP probSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -56,4 +56,17 @@ BEGIN_RCPP
     rcpp_result_gen = Rcpp::wrap(sample_int_expjs(n, size, prob));
     return rcpp_result_gen;
 END_RCPP
+}
+
+static const R_CallMethodDef CallEntries[] = {
+    {"_wrswoR_sample_int_crank", (DL_FUNC) &_wrswoR_sample_int_crank, 3},
+    {"_wrswoR_sample_int_ccrank", (DL_FUNC) &_wrswoR_sample_int_ccrank, 3},
+    {"_wrswoR_sample_int_expj", (DL_FUNC) &_wrswoR_sample_int_expj, 3},
+    {"_wrswoR_sample_int_expjs", (DL_FUNC) &_wrswoR_sample_int_expjs, 3},
+    {NULL, NULL, 0}
+};
+
+RcppExport void R_init_wrswoR(DllInfo *dll) {
+    R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
+    R_useDynamicSymbols(dll, FALSE);
 }

@@ -2,8 +2,8 @@ Encoding: UTF-8
 Package: wrswoR
 Type: Package
 Title: Weighted Random Sampling without Replacement
-Version: 1.0-10
-Date: 2017-04-14
+Version: 1.0-11
+Date: 2018-02-01
 Authors@R: person(given = "Kirill", family = "Müller", role = c("aut",
         "cre"), email = "krlmlr+r@mailbox.org")
 Description: A collection of implementations of classical and novel
@@ -12,7 +12,7 @@ License: GPL-3
 Depends: R (>= 3.0.2)
 Imports: Rcpp, logging (>= 0.4-13)
 LinkingTo: Rcpp (>= 0.11.5)
-Suggests: wrswoR.benchmark (>= 0.1), import, kimisc (>= 0.2-4),
+Suggests: wrswoR.benchmark (>= 0.1-4), import, kimisc (>= 0.2-4),
         testthat, roxygen2, knitr, rmarkdown, rticles (>= 0.1),
         knitcitations, metap, tidyr, microbenchmark, sampling,
         BatchExperiments, dplyr, ggplot2, tikzDevice (>= 0.9-1)
@@ -21,5 +21,7 @@ URLNote: https://github.com/krlmlr/wrswoR
 BugReports: https://github.com/krlmlr/wrswoR/issues
 LazyData: true
 VignetteBuilder: knitr
-RoxygenNote: 6.0.1
+RoxygenNote: 6.0.1.9000
 Roxygen: list(markdown = TRUE)
+Remotes:
+    krlmlr/wrswoR.benchmark
