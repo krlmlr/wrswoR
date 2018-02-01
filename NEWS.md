@@ -1,5 +1,6 @@
 ## wrswoR 1.0-11 (2018-02-01)
 
+- Use microbenchmark package conditionally.
 - Remove dependency on cluster.
 - Use native method registration.
 - Prepare for submission to R Journal.

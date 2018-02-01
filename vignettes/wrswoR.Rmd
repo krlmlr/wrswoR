@@ -633,7 +633,7 @@ arrange_by_func <- . %>%
 ## Run time
 
 The run time was measured using the \pkg{microbenchmark} package
-`r knitcitations::citep(citation("microbenchmark"))`
+`r try(knitcitations::citep(citation("microbenchmark")))`
 in block order with a warmup of 10 iterations
 using the default 100 iterations.
 The tests ran on a single core of an Intel Xeon CPU X5680 clocked at 3.33 GHz
