@@ -32,7 +32,7 @@ sample_int_rej(n, size, prob)
 
 \item{size}{a non-negative integer giving the number of items to choose.}
 
-\item{prob}{A vector of probability weights for obtaining the elements
+\item{prob}{a vector of probability weights for obtaining the elements
     of the vector being sampled.}
 }
 \value{
