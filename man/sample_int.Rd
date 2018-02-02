@@ -58,7 +58,7 @@ often run faster than R's implementation, especially when \code{n} and
 \code{sample_int_R()} is a simple wrapper for \code{\link[base:sample.int]{base::sample.int()}}.
 
 \code{sample_int_expj()} and \code{sample_int_expjs()}
-implement one-pass random sampling with a reservor with exponential jumps
+implement one-pass random sampling with a reservoir with exponential jumps
 (Efraimidis and Spirakis, 2006, Algorithm A-ExpJ).  Both functions are
 implemented in \code{Rcpp}; \code{*_expj()} uses log-transformed keys,
 \code{*_expjs()} implements the algorithm in the paper verbatim

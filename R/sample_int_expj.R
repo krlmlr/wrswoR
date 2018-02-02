@@ -1,6 +1,6 @@
 #' @rdname sample_int
 #' @details `sample_int_expj()` and `sample_int_expjs()`
-#'   implement one-pass random sampling with a reservor with exponential jumps
+#'   implement one-pass random sampling with a reservoir with exponential jumps
 #'   (Efraimidis and Spirakis, 2006, Algorithm A-ExpJ).  Both functions are
 #'   implemented in `Rcpp`; `*_expj()` uses log-transformed keys,
 #'   `*_expjs()` implements the algorithm in the paper verbatim

@@ -1,3 +1,5 @@
-funcnames <- ls("package:wrswoR", pattern = "^sample_int_")
+try({
+  funcnames <- ls("package:wrswoR", pattern = "^sample_int_")
 
-funcs <- lapply(setNames(nm = funcnames), get, pos = "package:wrswoR")
+  funcs <- lapply(setNames(nm = funcnames), get, pos = "package:wrswoR")
+})
