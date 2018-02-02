@@ -2,8 +2,8 @@ Encoding: UTF-8
 Package: wrswoR
 Type: Package
 Title: Weighted Random Sampling without Replacement
-Version: 1.0-11
-Date: 2018-02-01
+Version: 1.1
+Date: 2018-02-02
 Authors@R: person(given = "Kirill", family = "Müller", role = c("aut",
         "cre"), email = "krlmlr+r@mailbox.org")
 Description: A collection of implementations of classical and novel
