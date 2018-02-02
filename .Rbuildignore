@@ -16,3 +16,4 @@
 ^tic\.R$
 ^vignettes/internal$
 ^docs$
+^_pkgdown\.yml$
