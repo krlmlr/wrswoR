@@ -1,6 +1,6 @@
-add_package_checks(args = c("--no-vignettes", "--no-build-vignettes", "--ignore-vignettes"))
+add_package_checks()
 
-if (ci()$is_tag() && Sys.getenv("BUILD_PKGDOWN") != "") {
+if (Sys.getenv("BUILD_PKGDOWN") != "" && Sys.getenv("id_rsa") != "") {
   # pkgdown documentation can be built optionally. Other example criteria:
   # - `inherits(ci(), "TravisCI")`: Only for Travis CI
   # - `ci()$is_tag()`: Only for tags, not for branches
