@@ -1,0 +1,41 @@
+R version 3.4.2 (2017-01-27)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Ubuntu 14.04.5 LTS
+
+Matrix products: default
+BLAS: /home/travis/R-bin/lib/R/lib/libRblas.so
+LAPACK: /home/travis/R-bin/lib/R/lib/libRlapack.so
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] bindrcpp_0.2      tikzDevice_0.10-1 ggplot2_2.2.1     wrswoR_1.1       
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_0.12.15         RColorBrewer_1.1-2   highr_0.6           
+ [4] pillar_1.1.0         compiler_3.4.2       plyr_1.8.4          
+ [7] bindr_0.1            tools_3.4.2          digest_0.6.15       
+[10] import_1.1.0         lattice_0.20-35      memoise_1.1.0       
+[13] lubridate_1.7.1      jsonlite_1.5         evaluate_0.10.1     
+[16] tibble_1.4.2         gtable_0.2.0         pkgconfig_2.0.1     
+[19] rlang_0.1.6.9003     filehash_2.4-1       bibtex_0.4.2        
+[22] curl_3.1             yaml_2.1.16          metap_0.8           
+[25] xml2_1.2.0           RefManageR_0.14.20   dplyr_0.7.4         
+[28] stringr_1.2.0        httr_1.3.1           knitr_1.19          
+[31] kimisc_0.4           knitcitations_1.0.8  tidyselect_0.2.3    
+[34] rprojroot_1.3-2      grid_3.4.2           glue_1.2.0          
+[37] R6_2.2.2             rmarkdown_1.8        reshape2_1.4.3      
+[40] tidyr_0.8.0          purrr_0.2.4          magrittr_1.5        
+[43] codetools_0.2-15     backports_1.1.2      scales_0.5.0        
+[46] htmltools_0.3.6      assertthat_0.2.0     colorspace_1.3-2    
+[49] labeling_0.3         logging_0.7-103      stringi_1.1.6       
+[52] wrswoR.benchmark_0.2 lazyeval_0.2.1       munsell_0.4.3       
