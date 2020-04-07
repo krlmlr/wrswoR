@@ -141,6 +141,9 @@ IntegerVector sample_int_expj(int n, int size, NumericVector prob) {
     // Incrementing iprob is part of Step 7
     for (NumericVector::iterator iprob = prob.begin() + size; iprob != prob.end(); ++iprob) {
 
+      fprintf(stderr, "T_w: %f %d\n", T_w.first, T_w.second);
+      fprintf(stderr, "R.top(): %f %d\n", R.top().first, R.top().second);
+
       // Step 5: Let r = random(0, 1) and X_w = log(r) / log(T_w)
       // (Modification: Use e = -exp(1) instead of log(r))
       double X_w = Rf_rexp(1.0) / T_w.first;
