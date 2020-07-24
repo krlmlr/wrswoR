@@ -17,6 +17,7 @@ Imports:
     Rcpp
 Suggests: 
     BatchExperiments,
+    BiocManager,
     dplyr,
     ggplot2,
     import,
