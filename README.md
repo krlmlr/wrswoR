@@ -1,6 +1,10 @@
 # wrswoR
 
-[![Travis CI status](https://travis-ci.org/krlmlr/wrswoR.svg?branch=master)](https://travis-ci.org/krlmlr/wrswoR) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/krlmlr/wrswoR?branch=master&svg=true)](https://ci.appveyor.com/project/krlmlr/wrswoR) [![codecov.io](https://codecov.io/github/krlmlr/wrswoR/coverage.svg?branch=master)](https://codecov.io/github/krlmlr/wrswoR?branch=master)
+<!-- badges: start -->
+[![R build status](https://github.com/krlmlr/wrswoR/workflows/rcc/badge.svg)](https://github.com/krlmlr/wrswoR/actions)
+[![codecov.io](https://codecov.io/github/krlmlr/wrswoR/coverage.svg?branch=master)](https://codecov.io/github/krlmlr/wrswoR?branch=master)
+[![CRAN status](https://www.r-pkg.org/badges/version/wrswoR)](https://CRAN.R-project.org/package=wrswoR)
+<!-- badges: end -->
 
 A package with different implementations of weighted random sampling without replacement in R.
 
