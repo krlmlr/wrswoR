@@ -5,7 +5,7 @@ author:
     address:
     - Stefano-Franscini-Platz 9,
     - CH-8093 Zürich
-    email: kirill.mueller@ivt.baug.ethz.ch
+    email: krlmlr@mailbox.org
     url: http://www.ivt.ethz.ch
 title:
   "Accelerating weighted random sampling without replacement"
@@ -21,15 +21,16 @@ abstract: >
   This paper presents four alternative implementations for the case of weighted
   sampling without replacement, with an analysis of their run time and
   correctness.
-preamble: >
+header-includes: >
   \usepackage{algorithm}
   \usepackage{algorithmic}
   \usepackage[capitalize]{cleveref}
   \usepackage{mathtools}
   \usepackage{latexsym}
   \newcommand{\proglang}{\relax}
+  \newcommand{\pkg}{\relax}
 output:
-  rticles::rjournal_article:
+  pdf_document:
     fig_crop: false
     citation_package: natbib
     fig_width: 5.5118
@@ -37,6 +38,9 @@ vignette: >
   %\VignetteIndexEntry{Accelerating weighted random sampling without replacement}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+pkgdown:
+  as_is: true
+  extension: pdf
 ---
 
 ```{r init-purl, echo=FALSE, message=FALSE}
@@ -71,7 +75,7 @@ set.seed(20150710L)
 
 ```{r init, echo=FALSE, message=FALSE, purl=FALSE}
 # Set on_cran to FALSE to get tikzDevice plots and citation
-on_cran <- Sys.getenv("USER") != "muelleki"
+on_cran <- (Sys.getenv("USER") != "kirill") && (Sys.getenv("IN_PKGDOWN") != "true")
 
 library(tikzDevice)
 options(tikzDocumentDeclaration = c(
@@ -924,9 +928,9 @@ skew. <- 1.0025
 alpha. <- 1.08
 N. <- 2 ** 22
 
-p_values_true <- wrswoR.benchmark::p_values_7 %>% filter(N == N., s == s., skew == 1, func == "crank")
+p_values_true <- wrswoR.benchmark::p_values_7 %>% ungroup() %>%  filter(N == N., s == s., skew == 1, func == "crank")
 
-p_values_false <- wrswoR.benchmark::p_values_7 %>% filter(N == N., s == s., skew == skew.)
+p_values_false <- wrswoR.benchmark::p_values_7 %>% ungroup() %>%  filter(N == N., s == s., skew == skew.)
 ```
 
 
