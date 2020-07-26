@@ -8,6 +8,7 @@
 \alias{sample_int_expj}
 \alias{sample_int_expjs}
 \alias{sample_int}
+\alias{sample_int_R}
 \alias{sample_int_rank}
 \alias{sample_int_rej}
 \title{Weighted sampling without replacement}

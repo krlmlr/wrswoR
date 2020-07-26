@@ -23,11 +23,7 @@
 #' @seealso [base::sample.int()]
 #' @references <https://stackoverflow.com/q/15113650/946850>
 #' @name sample_int
-NULL
-
 #' @export
-#' @rdname sample_int
-#' @aliases NULL
 #' @examples
 #' # Base R implementation
 #' s <- sample_int_R(2000, 1000, runif(2000))
