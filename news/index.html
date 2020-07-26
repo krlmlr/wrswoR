@@ -118,7 +118,7 @@
 <h1 class="page-header" data-toc-text="1.1.1">
 <a href="#wrswor-111-2020-07-26" class="anchor"></a>wrswoR 1.1.1 (2020-07-26)</h1>
 <ul>
-<li>In <code><a href="../reference/sample_int.html">sample_int_expj()</a></code>, move retrieval of top element into the loop, to make it independent from the actual implementation of the priority queue.</li>
+<li>In <code><a href="../reference/sample_int_crank.html">sample_int_expj()</a></code>, move retrieval of top element into the loop, to make it independent from the actual implementation of the priority queue.</li>
 </ul>
 </div>
     <div id="wrswor-11-2018-02-02" class="section level1">
@@ -148,13 +148,13 @@
 <li>Alternative implementations for weighted random sampling, as implemented by R’s <code><a href="https://rdrr.io/r/base/sample.html">sample.int(replace = FALSE, prob = ...)</a></code>
 <ul>
 <li>
-<code><a href="../reference/sample_int.html">sample_int_rej()</a></code>: A rejective algorithm, in R</li>
+<code><a href="../reference/sample_int_crank.html">sample_int_rej()</a></code>: A rejective algorithm, in R</li>
 <li>
-<code><a href="../reference/sample_int.html">sample_int_rank()</a></code>: One-pass sampling by Efraimidis and Spirakis, in R</li>
+<code><a href="../reference/sample_int_crank.html">sample_int_rank()</a></code>: One-pass sampling by Efraimidis and Spirakis, in R</li>
 <li>
-<code><a href="../reference/sample_int.html">sample_int_crank()</a></code>: One-pass sampling by Efraimidis and Spirakis, in C++</li>
+<code><a href="../reference/sample_int_crank.html">sample_int_crank()</a></code>: One-pass sampling by Efraimidis and Spirakis, in C++</li>
 <li>
-<code><a href="../reference/sample_int.html">sample_int_expj()</a></code>: Reservoir sampling with exponential jumps Efraimidis and Spirakis, in C++</li>
+<code><a href="../reference/sample_int_crank.html">sample_int_expj()</a></code>: Reservoir sampling with exponential jumps Efraimidis and Spirakis, in C++</li>
 <li>Two more experimental functions.</li>
 </ul>
 </li>

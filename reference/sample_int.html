@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Weighted sampling without replacement — sample_int • wrswoR</title>
+<title>Weighted sampling without replacement — sample_int_crank • wrswoR</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="Weighted sampling without replacement — sample_int" />
+<meta property="og:title" content="Weighted sampling without replacement — sample_int_crank" />
 <meta property="og:description" content="These functions implement weighted sampling without replacement using various
 algorithms, i.e., they take a sample of the specified
 size from the elements of 1:n without replacement, using the
@@ -124,7 +124,7 @@ size are large." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Weighted sampling without replacement</h1>
-    <small class="dont-index">Source: <a href='https://github.com/krlmlr/wrswoR/blob/master/R/sample_int_R.R'><code>R/sample_int_R.R</code></a>, <a href='https://github.com/krlmlr/wrswoR/blob/master/R/sample_int_ccrank.R'><code>R/sample_int_ccrank.R</code></a>, <a href='https://github.com/krlmlr/wrswoR/blob/master/R/sample_int_crank.R'><code>R/sample_int_crank.R</code></a>, and 4 more</small>
+    <small class="dont-index">Source: <a href='https://github.com/krlmlr/wrswoR/blob/master/R/RcppExports.R'><code>R/RcppExports.R</code></a>, <a href='https://github.com/krlmlr/wrswoR/blob/master/R/sample_int_R.R'><code>R/sample_int_R.R</code></a>, <a href='https://github.com/krlmlr/wrswoR/blob/master/R/sample_int_ccrank.R'><code>R/sample_int_ccrank.R</code></a>, and 5 more</small>
     <div class="hidden name"><code>sample_int.Rd</code></div>
     </div>
 
@@ -144,15 +144,15 @@ often run faster than R's implementation, especially when <code>n</code> and
 <code>size</code> are large.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>sample_int_R</span>(<span class='kw'>n</span>, <span class='kw'>size</span>, <span class='kw'>prob</span>)
+    <pre class="usage"><span class='fu'>sample_int_crank</span>(<span class='kw'>n</span>, <span class='kw'>size</span>, <span class='kw'>prob</span>)
 
 <span class='fu'>sample_int_ccrank</span>(<span class='kw'>n</span>, <span class='kw'>size</span>, <span class='kw'>prob</span>)
-
-<span class='fu'>sample_int_crank</span>(<span class='kw'>n</span>, <span class='kw'>size</span>, <span class='kw'>prob</span>)
 
 <span class='fu'>sample_int_expj</span>(<span class='kw'>n</span>, <span class='kw'>size</span>, <span class='kw'>prob</span>)
 
 <span class='fu'>sample_int_expjs</span>(<span class='kw'>n</span>, <span class='kw'>size</span>, <span class='kw'>prob</span>)
+
+<span class='fu'>sample_int_R</span>(<span class='kw'>n</span>, <span class='kw'>size</span>, <span class='kw'>prob</span>)
 
 <span class='fu'>sample_int_rank</span>(<span class='kw'>n</span>, <span class='kw'>size</span>, <span class='kw'>prob</span>)
 
@@ -213,7 +213,7 @@ smaller problem.  See also
 <a href='http://stats.stackexchange.com/q/20590/6432'>http://stats.stackexchange.com/q/20590/6432</a>.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p><a href='http://stackoverflow.com/q/15113650/946850'>http://stackoverflow.com/q/15113650/946850</a></p>
+    <p><a href='https://stackoverflow.com/q/15113650/946850'>https://stackoverflow.com/q/15113650/946850</a></p>
 <p>Efraimidis, Pavlos S., and Paul G. Spirakis. "Weighted
 random sampling with a reservoir." <em>Information Processing
 Letters</em> 97, no. 5 (2006): 181-185.</p>
