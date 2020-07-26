@@ -19,3 +19,4 @@
 ^_pkgdown\.yml$
 ^\.github$
 ^README\.Rmd$
+^CRAN-RELEASE$
