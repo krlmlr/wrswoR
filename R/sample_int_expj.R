@@ -1,3 +1,4 @@
+#' @name sample_int_expj
 #' @rdname sample_int
 #' @details `sample_int_expj()` and `sample_int_expjs()`
 #'   implement one-pass random sampling with a reservoir with exponential jumps
@@ -16,4 +17,4 @@
 #'                        n = n)) / n
 #' stopifnot(abs(tbl - c(1, rep(0.4, 5))) < 0.04)
 #'
-"sample_int_expj"
+NULL

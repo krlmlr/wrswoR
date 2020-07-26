@@ -3,10 +3,13 @@ Package: wrswoR
 Title: Weighted Random Sampling without Replacement
 Version: 1.1.1.9000
 Date: 2020-07-26
-Authors@R: person(given = "Kirill", family = "Müller", role = c("aut",
-        "cre"), email = "krlmlr+r@mailbox.org")
-Description: A collection of implementations of classical and novel
-        algorithms for weighted sampling without replacement.
+Authors@R: 
+    person(given = "Kirill",
+           family = "M\u00fcller",
+           role = c("aut", "cre"),
+           email = "krlmlr+r@mailbox.org")
+Description: A collection of implementations of classical and
+    novel algorithms for weighted sampling without replacement.
 License: GPL-3
 URL: http://krlmlr.github.io/wrswoR
 BugReports: https://github.com/krlmlr/wrswoR/issues
@@ -38,5 +41,5 @@ LinkingTo:
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.0.1.9000
+RoxygenNote: 7.1.1.9000
 URLNote: https://github.com/krlmlr/wrswoR

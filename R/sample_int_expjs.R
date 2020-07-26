@@ -1,3 +1,4 @@
+#' @name sample_int_expjs
 #' @rdname sample_int
 #' @examples
 #' ## Algorithm A-ExpJ (paper version)
@@ -10,4 +11,4 @@
 #'                        n = n)) / n
 #' stopifnot(abs(tbl - c(1, rep(0.4, 5))) < 0.04)
 #'
-"sample_int_expjs"
+NULL

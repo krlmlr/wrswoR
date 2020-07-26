@@ -7,14 +7,14 @@
 \title{Faster weighted sampling without replacement}
 \description{
 \R's default sampling without replacement using
-\code{\link[base:sample.int]{base::sample.int()}} seems to require quadratic run time,
+\code{\link[base:sample]{base::sample.int()}} seems to require quadratic run time,
 e.g., when using weights drawn from a uniform distribution. For large
 sample sizes, this is too slow.  This package contains several
 alternative implementations.
 }
 \details{
 Implementations are adapted from
-\url{http://stackoverflow.com/q/15113650/946850}.
+\url{https://stackoverflow.com/q/15113650/946850}.
 }
 \examples{
 sample_int_rej(100, 50, 1:100)

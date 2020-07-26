@@ -1,11 +1,15 @@
-## Test environments
-* local Ubuntu 17.10 install, R 3.4.3
-* win-builder (devel and release)
+wrswoR 1.1.1
+
+## Cran Repository Policy
+
+- [x] Reviewed CRP last edited 2020-07-11.
 
 ## R CMD check results
 
-OK
+- [x] Checked locally, R 4.0.2
+- [x] Checked on CI system, R 4.0.2
+- [x] Checked on win-builder, R devel
 
-## Reverse dependencies
+## Current CRAN check results
 
-rakeR check succeeded.
+- [x] Checked on 2020-07-26, no errors found.

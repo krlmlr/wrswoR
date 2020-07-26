@@ -14,8 +14,9 @@
 #' @author Dinre (for `*_rank()`), Kirill Müller
 #'   (for all other functions)
 #' @references Efraimidis, Pavlos S., and Paul G. Spirakis. "Weighted
-#' random sampling with a reservoir." \emph{Information Processing
-#' Letters} 97, no. 5 (2006): 181-185.
+#' random sampling with a reservoir." *Information Processing
+#' Letters* 97, no. 5 (2006): 181-185.
+#' @export
 #' @examples
 #' ## Algorithm A
 #' s <- sample_int_rank(20000, 10000, runif(20000))

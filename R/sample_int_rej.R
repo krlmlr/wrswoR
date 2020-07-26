@@ -4,11 +4,12 @@
 #'   replacement and a variant of rejection sampling. It is implemented purely
 #'   in R.
 #'   This function simulates weighted sampling without replacement using
-#'   somewhat more draws \emph{with} replacement, and then discarding
+#'   somewhat more draws *with* replacement, and then discarding
 #'   duplicate values (rejection sampling).  If too few items are
 #'   sampled, the routine calls itself recursively on a (hopefully) much
 #'   smaller problem.  See also
-#'   \url{http://stats.stackexchange.com/q/20590/6432}.
+#'   <http://stats.stackexchange.com/q/20590/6432>.
+#' @export
 #' @examples
 #' ## Rejection sampling
 #' s <- sample_int_rej(20000, 10000, runif(20000))

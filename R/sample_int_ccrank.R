@@ -1,3 +1,4 @@
+#' @name sample_int_ccrank
 #' @rdname sample_int
 #' @importFrom Rcpp evalCpp
 #' @examples
@@ -11,4 +12,4 @@
 #'                        n = n)) / n
 #' stopifnot(abs(tbl - c(1, rep(0.4, 5))) < 0.04)
 #'
-"sample_int_ccrank"
+NULL
