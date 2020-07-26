@@ -14,7 +14,7 @@ alternative implementations.
 }
 \details{
 Implementations are adapted from
-\url{http://stackoverflow.com/q/15113650/946850}.
+\url{https://stackoverflow.com/q/15113650/946850}.
 }
 \examples{
 sample_int_rej(100, 50, 1:100)

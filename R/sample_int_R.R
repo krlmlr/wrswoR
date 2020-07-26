@@ -21,8 +21,13 @@
 #' @return An integer vector of length `size` with elements from
 #'   `1:n`.
 #' @seealso [base::sample.int()]
-#' @references \url{http://stackoverflow.com/q/15113650/946850}
+#' @references \url{https://stackoverflow.com/q/15113650/946850}
+#' @name sample_int
+NULL
+
 #' @export
+#' @rdname sample_int
+#' @aliases NULL
 #' @examples
 #' # Base R implementation
 #' s <- sample_int_R(2000, 1000, runif(2000))
@@ -34,7 +39,6 @@
 #'                        n = n)) / n
 #' stopifnot(abs(tbl - c(1, rep(0.4, 5))) < 0.04)
 #'
-#' @rdname sample_int
 sample_int_R <- function(n, size, prob) {
   sample.int(n, size, replace = FALSE, prob)
 }

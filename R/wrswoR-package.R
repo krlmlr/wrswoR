@@ -7,7 +7,7 @@
 #'  sample sizes, this is too slow.  This package contains several
 #'  alternative implementations.
 #' @details Implementations are adapted from
-#'  \url{http://stackoverflow.com/q/15113650/946850}.
+#'  \url{https://stackoverflow.com/q/15113650/946850}.
 #'
 #' @name wrswoR-package
 #' @aliases wrswoR-package wrswoR

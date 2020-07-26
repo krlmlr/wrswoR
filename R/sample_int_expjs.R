@@ -1,5 +1,5 @@
+#' @name sample_int_expjs
 #' @rdname sample_int
-#' @export
 #' @examples
 #' ## Algorithm A-ExpJ (paper version)
 #' s <- sample_int_expjs(20000, 10000, runif(20000))
@@ -11,4 +11,4 @@
 #'                        n = n)) / n
 #' stopifnot(abs(tbl - c(1, rep(0.4, 5))) < 0.04)
 #'
-"sample_int_expjs"
+NULL
