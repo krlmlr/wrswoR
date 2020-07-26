@@ -5,6 +5,14 @@
 
 <!-- badges: start -->
 
+[![Lifecycle:
+stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
+[![R build
+status](https://github.com/krlmlr/wrswoR/workflows/rcc/badge.svg)](https://github.com/krlmlr/wrswoR/actions)
+[![Codecov test
+coverage](https://codecov.io/gh/krlmlr/wrswoR/branch/master/graph/badge.svg)](https://codecov.io/gh/krlmlr/wrswoR?branch=master)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/wrswoR)](https://CRAN.R-project.org/package=wrswoR)
 <!-- badges: end -->
 
 The goal of wrswoR is to provide faster implementations of weighted
