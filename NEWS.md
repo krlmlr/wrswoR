@@ -3,8 +3,7 @@
 - In `sample_int_expj()`, move retrieval of top element into the loop, to make it independent from the actual implementation of the priority queue.
 
 
-wrswoR 1.1 (2018-02-02)
-=======================
+# wrswoR 1.1 (2018-02-02)
 
 - Use microbenchmark package conditionally.
 - Remove dependency on cluster.
@@ -14,14 +13,12 @@ wrswoR 1.1 (2018-02-02)
 - Internal tweaks.
 
 
-Version 1.0-1 (2016-02-26)
-===
+# Version 1.0-1 (2016-02-26)
 
 - Finally submitted version of the paper.
 
 
-Version 1.0 (2016-02-22)
-===
+# Version 1.0 (2016-02-22)
 
 First CRAN release.
 
