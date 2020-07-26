@@ -1,8 +1,8 @@
 Type: Package
 Package: wrswoR
 Title: Weighted Random Sampling without Replacement
-Version: 1.1
-Date: 2018-02-02
+Version: 1.1.0.9000
+Date: 2020-07-26
 Authors@R: person(given = "Kirill", family = "Müller", role = c("aut",
         "cre"), email = "krlmlr+r@mailbox.org")
 Description: A collection of implementations of classical and novel

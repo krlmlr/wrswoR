@@ -1,3 +1,8 @@
+# wrswoR 1.1.0.9000 (2020-07-26)
+
+- In `sample_int_expj()`, move retrieval of top element into the loop, to make it independent from the actual implementation of the priority queue.
+
+
 wrswoR 1.1 (2018-02-02)
 =======================
 
