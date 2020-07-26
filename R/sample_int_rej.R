@@ -9,6 +9,7 @@
 #'   sampled, the routine calls itself recursively on a (hopefully) much
 #'   smaller problem.  See also
 #'   \url{http://stats.stackexchange.com/q/20590/6432}.
+#' @export
 #' @examples
 #' ## Rejection sampling
 #' s <- sample_int_rej(20000, 10000, runif(20000))

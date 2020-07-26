@@ -1,5 +1,6 @@
 #' @rdname sample_int
 #' @importFrom Rcpp evalCpp
+#' @export
 #' @examples
 #' ## Algorithm A, Rcpp version using std::vector
 #' s <- sample_int_ccrank(20000, 10000, runif(20000))

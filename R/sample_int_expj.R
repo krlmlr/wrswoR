@@ -5,6 +5,7 @@
 #'   implemented in `Rcpp`; `*_expj()` uses log-transformed keys,
 #'   `*_expjs()` implements the algorithm in the paper verbatim
 #'   (at the cost of numerical stability).
+#' @export
 #' @examples
 #' ## Algorithm A-ExpJ (with log-transformed keys)
 #' s <- sample_int_expj(20000, 10000, runif(20000))

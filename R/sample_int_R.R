@@ -22,6 +22,7 @@
 #'   `1:n`.
 #' @seealso [base::sample.int()]
 #' @references \url{http://stackoverflow.com/q/15113650/946850}
+#' @export
 #' @examples
 #' # Base R implementation
 #' s <- sample_int_R(2000, 1000, runif(2000))
@@ -34,7 +35,6 @@
 #' stopifnot(abs(tbl - c(1, rep(0.4, 5))) < 0.04)
 #'
 #' @rdname sample_int
-#' @aliases sample_int_R
 sample_int_R <- function(n, size, prob) {
   sample.int(n, size, replace = FALSE, prob)
 }

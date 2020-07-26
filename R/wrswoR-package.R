@@ -1,4 +1,3 @@
-#' @exportPattern "^[a-zA-Z][[:alpha:]]*"
 #' @useDynLib wrswoR, .registration = TRUE
 
 #' @title Faster weighted sampling without replacement
@@ -27,6 +26,3 @@
 #' @examples
 #' sample_int_rej(100, 50, 1:100)
 NULL
-
-
-

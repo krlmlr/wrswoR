@@ -2,7 +2,8 @@
 % Please edit documentation in R/sample_int_R.R, R/sample_int_ccrank.R,
 %   R/sample_int_crank.R, R/sample_int_expj.R, R/sample_int_expjs.R,
 %   R/sample_int_rank.R, R/sample_int_rej.R
-\name{sample_int_R}
+\name{sample_int}
+\alias{sample_int}
 \alias{sample_int_R}
 \alias{sample_int_ccrank}
 \alias{sample_int_crank}
@@ -44,7 +45,7 @@ These functions implement weighted sampling without replacement using various
 algorithms, i.e., they take a sample of the specified
 \code{size} from the elements of \code{1:n} without replacement, using the
 weights defined by \code{prob}.  The call
-\code{sample_int_*(n, size, prob)} is equivalent
+\verb{sample_int_*(n, size, prob)} is equivalent
 to \code{sample.int(n, size, replace = F, prob)}.  (The results will
 most probably be different for the same random seed, but the
 returned samples are distributed identically for both calls.)
@@ -55,21 +56,21 @@ often run faster than R's implementation, especially when \code{n} and
 \code{size} are large.
 }
 \details{
-\code{sample_int_R()} is a simple wrapper for \code{\link[base:sample.int]{base::sample.int()}}.
+\code{sample_int_R()} is a simple wrapper for \code{\link[base:sample]{base::sample.int()}}.
 
 \code{sample_int_expj()} and \code{sample_int_expjs()}
 implement one-pass random sampling with a reservoir with exponential jumps
 (Efraimidis and Spirakis, 2006, Algorithm A-ExpJ).  Both functions are
-implemented in \code{Rcpp}; \code{*_expj()} uses log-transformed keys,
-\code{*_expjs()} implements the algorithm in the paper verbatim
+implemented in \code{Rcpp}; \verb{*_expj()} uses log-transformed keys,
+\verb{*_expjs()} implements the algorithm in the paper verbatim
 (at the cost of numerical stability).
 
 \code{sample_int_rank()}, \code{sample_int_crank()} and
 \code{sample_int_ccrank()} implement one-pass random sampling
 (Efraimidis and Spirakis, 2006, Algorithm A).  The first function is
 implemented purely in R, the other two are optimized \code{Rcpp}
-implementations (\code{*_crank()} uses R vectors internally, while
-\code{*_ccrank()} uses \code{std::vector}; surprisingly, \code{*_crank()} seems
+implementations (\verb{*_crank()} uses R vectors internally, while
+\verb{*_ccrank()} uses \code{std::vector}; surprisingly, \verb{*_crank()} seems
 to be faster on most inputs). It can be
 shown that the order statistic of \eqn{U^{(1/w_i)}} has the same
 distribution as random sampling without replacement (\eqn{U=\mbox{uniform}(0,1)}{U=uniform(0,1)}
@@ -167,9 +168,9 @@ random sampling with a reservoir." \emph{Information Processing
 Letters} 97, no. 5 (2006): 181-185.
 }
 \seealso{
-\code{\link[base:sample.int]{base::sample.int()}}
+\code{\link[base:sample]{base::sample.int()}}
 }
 \author{
-Dinre (for \code{*_rank()}), Kirill Müller
+Dinre (for \verb{*_rank()}), Kirill Müller
 (for all other functions)
 }
