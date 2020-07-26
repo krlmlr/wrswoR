@@ -21,7 +21,7 @@
 #' @return An integer vector of length `size` with elements from
 #'   `1:n`.
 #' @seealso [base::sample.int()]
-#' @references \url{https://stackoverflow.com/q/15113650/946850}
+#' @references <https://stackoverflow.com/q/15113650/946850>
 #' @name sample_int
 NULL
 
