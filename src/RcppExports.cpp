@@ -31,6 +31,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// sample_int_cccrank
+IntegerVector sample_int_cccrank(size_t n, size_t size, NumericVector prob);
+RcppExport SEXP _wrswoR_sample_int_cccrank(SEXP nSEXP, SEXP sizeSEXP, SEXP probSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< size_t >::type n(nSEXP);
+    Rcpp::traits::input_parameter< size_t >::type size(sizeSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type prob(probSEXP);
+    rcpp_result_gen = Rcpp::wrap(sample_int_cccrank(n, size, prob));
+    return rcpp_result_gen;
+END_RCPP
+}
 // sample_int_expj
 IntegerVector sample_int_expj(int n, int size, NumericVector prob);
 RcppExport SEXP _wrswoR_sample_int_expj(SEXP nSEXP, SEXP sizeSEXP, SEXP probSEXP) {
@@ -61,6 +74,7 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_wrswoR_sample_int_crank", (DL_FUNC) &_wrswoR_sample_int_crank, 3},
     {"_wrswoR_sample_int_ccrank", (DL_FUNC) &_wrswoR_sample_int_ccrank, 3},
+    {"_wrswoR_sample_int_cccrank", (DL_FUNC) &_wrswoR_sample_int_cccrank, 3},
     {"_wrswoR_sample_int_expj", (DL_FUNC) &_wrswoR_sample_int_expj, 3},
     {"_wrswoR_sample_int_expjs", (DL_FUNC) &_wrswoR_sample_int_expjs, 3},
     {NULL, NULL, 0}
