@@ -5,6 +5,7 @@
 \name{sample_int_crank}
 \alias{sample_int_crank}
 \alias{sample_int_ccrank}
+\alias{sample_int_cccrank}
 \alias{sample_int_expj}
 \alias{sample_int_expjs}
 \alias{sample_int}
@@ -16,6 +17,8 @@
 sample_int_crank(n, size, prob)
 
 sample_int_ccrank(n, size, prob)
+
+sample_int_cccrank(n, size, prob)
 
 sample_int_expj(n, size, prob)
 
@@ -67,7 +70,8 @@ implemented in \code{Rcpp}; \verb{*_expj()} uses log-transformed keys,
 
 \code{sample_int_rank()}, \code{sample_int_crank()} and
 \code{sample_int_ccrank()} implement one-pass random sampling
-(Efraimidis and Spirakis, 2006, Algorithm A).  The first function is
+(Efraimidis and Spirakis, 2006, Algorithm A; see also Vieira, 2014, for an
+equivalent formulation).  The first function is
 implemented purely in R, the other two are optimized \code{Rcpp}
 implementations (\verb{*_crank()} uses R vectors internally, while
 \verb{*_ccrank()} uses \code{std::vector}; surprisingly, \verb{*_crank()} seems
@@ -166,6 +170,9 @@ stopifnot(abs(tbl - c(1, rep(0.4, 5))) < 0.04)
 Efraimidis, Pavlos S., and Paul G. Spirakis. "Weighted
 random sampling with a reservoir." \emph{Information Processing
 Letters} 97, no. 5 (2006): 181-185.
+
+Vieira, T. Gumbel-max trick and weighted reservoir sampling, 2014. URL
+\url{https://timvieira.github.io/blog/post/2014/08/01/gumbel-max-trick-and-weighted-reservoir-sampling/}.
 }
 \seealso{
 \code{\link[base:sample]{base::sample.int()}}
