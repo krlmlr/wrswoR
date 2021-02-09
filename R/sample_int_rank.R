@@ -1,7 +1,8 @@
 #' @rdname sample_int
 #' @details `sample_int_rank()`, `sample_int_crank()` and
 #'   `sample_int_ccrank()` implement one-pass random sampling
-#'   (Efraimidis and Spirakis, 2006, Algorithm A).  The first function is
+#'   (Efraimidis and Spirakis, 2006, Algorithm A; see also Vieira, 2014, for an
+#'   equivalent formulation).  The first function is
 #'   implemented purely in R, the other two are optimized `Rcpp`
 #'   implementations (`*_crank()` uses R vectors internally, while
 #'   `*_ccrank()` uses `std::vector`; surprisingly, `*_crank()` seems
@@ -16,6 +17,9 @@
 #' @references Efraimidis, Pavlos S., and Paul G. Spirakis. "Weighted
 #' random sampling with a reservoir." *Information Processing
 #' Letters* 97, no. 5 (2006): 181-185.
+#'
+#' Vieira, T. Gumbel-max trick and weighted reservoir sampling, 2014. URL
+#' <https://timvieira.github.io/blog/post/2014/08/01/gumbel-max-trick-and-weighted-reservoir-sampling/>.
 #' @export
 #' @examples
 #' ## Algorithm A
