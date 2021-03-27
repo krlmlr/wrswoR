@@ -39,7 +39,6 @@ Suggests:
 LinkingTo: 
     Rcpp (>= 0.11.5)
 Encoding: UTF-8
-LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1.9000
 URLNote: https://github.com/krlmlr/wrswoR
