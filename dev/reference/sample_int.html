@@ -70,6 +70,9 @@ size are large." />
 
 
 
+<!-- dependencies from examples -->
+
+
   
 
   
@@ -139,26 +142,26 @@ weights defined by <code>prob</code>.  The call
 to <code><a href='https://rdrr.io/r/base/sample.html'>sample.int(n, size, replace = F, prob)</a></code>.  (The results will
 most probably be different for the same random seed, but the
 returned samples are distributed identically for both calls.)
-Except for <code>sample_int_R()</code> (which
+Except for <code><a href='sample_int.html'>sample_int_R()</a></code> (which
 has quadratic complexity as of this writing), all functions have complexity
 \(O(n \log n)\) or better and
 often run faster than R's implementation, especially when <code>n</code> and
 <code>size</code> are large.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>sample_int_crank</span><span class='op'>(</span><span class='va'>n</span>, <span class='va'>size</span>, <span class='va'>prob</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'><a href='sample_int.html'>sample_int_crank</a></span><span class='op'>(</span><span class='va'>n</span>, <span class='va'>size</span>, <span class='va'>prob</span><span class='op'>)</span>
 
-<span class='fu'>sample_int_ccrank</span><span class='op'>(</span><span class='va'>n</span>, <span class='va'>size</span>, <span class='va'>prob</span><span class='op'>)</span>
+<span class='fu'><a href='sample_int.html'>sample_int_ccrank</a></span><span class='op'>(</span><span class='va'>n</span>, <span class='va'>size</span>, <span class='va'>prob</span><span class='op'>)</span>
 
-<span class='fu'>sample_int_expj</span><span class='op'>(</span><span class='va'>n</span>, <span class='va'>size</span>, <span class='va'>prob</span><span class='op'>)</span>
+<span class='fu'><a href='sample_int.html'>sample_int_expj</a></span><span class='op'>(</span><span class='va'>n</span>, <span class='va'>size</span>, <span class='va'>prob</span><span class='op'>)</span>
 
-<span class='fu'>sample_int_expjs</span><span class='op'>(</span><span class='va'>n</span>, <span class='va'>size</span>, <span class='va'>prob</span><span class='op'>)</span>
+<span class='fu'><a href='sample_int.html'>sample_int_expjs</a></span><span class='op'>(</span><span class='va'>n</span>, <span class='va'>size</span>, <span class='va'>prob</span><span class='op'>)</span>
 
-<span class='fu'>sample_int_R</span><span class='op'>(</span><span class='va'>n</span>, <span class='va'>size</span>, <span class='va'>prob</span><span class='op'>)</span>
+<span class='fu'><a href='sample_int.html'>sample_int_R</a></span><span class='op'>(</span><span class='va'>n</span>, <span class='va'>size</span>, <span class='va'>prob</span><span class='op'>)</span>
 
-<span class='fu'>sample_int_rank</span><span class='op'>(</span><span class='va'>n</span>, <span class='va'>size</span>, <span class='va'>prob</span><span class='op'>)</span>
+<span class='fu'><a href='sample_int.html'>sample_int_rank</a></span><span class='op'>(</span><span class='va'>n</span>, <span class='va'>size</span>, <span class='va'>prob</span><span class='op'>)</span>
 
-<span class='fu'>sample_int_rej</span><span class='op'>(</span><span class='va'>n</span>, <span class='va'>size</span>, <span class='va'>prob</span><span class='op'>)</span></pre>
+<span class='fu'><a href='sample_int.html'>sample_int_rej</a></span><span class='op'>(</span><span class='va'>n</span>, <span class='va'>size</span>, <span class='va'>prob</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -185,15 +188,15 @@ often run faster than R's implementation, especially when <code>n</code> and
 <code>1:n</code>.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>sample_int_R()</code> is a simple wrapper for <code><a href='https://rdrr.io/r/base/sample.html'>base::sample.int()</a></code>.</p>
-<p><code>sample_int_expj()</code> and <code>sample_int_expjs()</code>
+    <p><code><a href='sample_int.html'>sample_int_R()</a></code> is a simple wrapper for <code><a href='https://rdrr.io/r/base/sample.html'>base::sample.int()</a></code>.</p>
+<p><code><a href='sample_int.html'>sample_int_expj()</a></code> and <code><a href='sample_int.html'>sample_int_expjs()</a></code>
 implement one-pass random sampling with a reservoir with exponential jumps
 (Efraimidis and Spirakis, 2006, Algorithm A-ExpJ).  Both functions are
 implemented in <code>Rcpp</code>; <code>*_expj()</code> uses log-transformed keys,
 <code>*_expjs()</code> implements the algorithm in the paper verbatim
 (at the cost of numerical stability).</p>
-<p><code>sample_int_rank()</code>, <code>sample_int_crank()</code> and
-<code>sample_int_ccrank()</code> implement one-pass random sampling
+<p><code><a href='sample_int.html'>sample_int_rank()</a></code>, <code><a href='sample_int.html'>sample_int_crank()</a></code> and
+<code><a href='sample_int.html'>sample_int_ccrank()</a></code> implement one-pass random sampling
 (Efraimidis and Spirakis, 2006, Algorithm A).  The first function is
 implemented purely in R, the other two are optimized <code>Rcpp</code>
 implementations (<code>*_crank()</code> uses R vectors internally, while
@@ -204,7 +207,7 @@ distribution as random sampling without replacement (\(U=\mbox{uniform}(0,1)\)
 distribution). To increase numerical stability, \(\log(U) /
   w_i\) is computed instead; the log transform does not
 change the order statistic.</p>
-<p><code>sample_int_rej()</code> uses repeated weighted sampling with
+<p><code><a href='sample_int.html'>sample_int_rej()</a></code> uses repeated weighted sampling with
 replacement and a variant of rejection sampling. It is implemented purely
 in R.
 This function simulates weighted sampling without replacement using
@@ -229,72 +232,72 @@ Letters</em> 97, no. 5 (2006): 181-185.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Base R implementation</span>
-<span class='va'>s</span> <span class='op'>&lt;-</span> <span class='fu'>sample_int_R</span><span class='op'>(</span><span class='fl'>2000</span>, <span class='fl'>1000</span>, <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='op'>(</span><span class='fl'>2000</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>s</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sample_int.html'>sample_int_R</a></span><span class='op'>(</span><span class='fl'>2000</span>, <span class='fl'>1000</span>, <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='op'>(</span><span class='fl'>2000</span><span class='op'>)</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span><span class='op'>(</span><span class='va'>s</span><span class='op'>)</span> <span class='op'>==</span> <span class='va'>s</span><span class='op'>)</span>
 <span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>995</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>n</span> <span class='op'>&lt;-</span> <span class='fl'>1000</span>
 <span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>42</span><span class='op'>)</span>
-<span class='va'>tbl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>replicate</a></span><span class='op'>(</span><span class='fu'>sample_int_R</span><span class='op'>(</span><span class='fl'>6</span>, <span class='fl'>3</span>, <span class='va'>p</span><span class='op'>)</span>,
+<span class='va'>tbl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>replicate</a></span><span class='op'>(</span><span class='fu'><a href='sample_int.html'>sample_int_R</a></span><span class='op'>(</span><span class='fl'>6</span>, <span class='fl'>3</span>, <span class='va'>p</span><span class='op'>)</span>,
                        n <span class='op'>=</span> <span class='va'>n</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>/</span> <span class='va'>n</span>
 <span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>abs</a></span><span class='op'>(</span><span class='va'>tbl</span> <span class='op'>-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>0.4</span>, <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>&lt;</span> <span class='fl'>0.04</span><span class='op'>)</span>
 
 <span class='co'>## Algorithm A, Rcpp version using std::vector</span>
-<span class='va'>s</span> <span class='op'>&lt;-</span> <span class='fu'>sample_int_ccrank</span><span class='op'>(</span><span class='fl'>20000</span>, <span class='fl'>10000</span>, <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='op'>(</span><span class='fl'>20000</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>s</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sample_int.html'>sample_int_ccrank</a></span><span class='op'>(</span><span class='fl'>20000</span>, <span class='fl'>10000</span>, <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='op'>(</span><span class='fl'>20000</span><span class='op'>)</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span><span class='op'>(</span><span class='va'>s</span><span class='op'>)</span> <span class='op'>==</span> <span class='va'>s</span><span class='op'>)</span>
 <span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>995</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>n</span> <span class='op'>&lt;-</span> <span class='fl'>1000</span>
 <span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>42</span><span class='op'>)</span>
-<span class='va'>tbl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>replicate</a></span><span class='op'>(</span><span class='fu'>sample_int_ccrank</span><span class='op'>(</span><span class='fl'>6</span>, <span class='fl'>3</span>, <span class='va'>p</span><span class='op'>)</span>,
+<span class='va'>tbl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>replicate</a></span><span class='op'>(</span><span class='fu'><a href='sample_int.html'>sample_int_ccrank</a></span><span class='op'>(</span><span class='fl'>6</span>, <span class='fl'>3</span>, <span class='va'>p</span><span class='op'>)</span>,
                        n <span class='op'>=</span> <span class='va'>n</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>/</span> <span class='va'>n</span>
 <span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>abs</a></span><span class='op'>(</span><span class='va'>tbl</span> <span class='op'>-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>0.4</span>, <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>&lt;</span> <span class='fl'>0.04</span><span class='op'>)</span>
 
 <span class='co'>## Algorithm A, Rcpp version using R vectors</span>
-<span class='va'>s</span> <span class='op'>&lt;-</span> <span class='fu'>sample_int_crank</span><span class='op'>(</span><span class='fl'>20000</span>, <span class='fl'>10000</span>, <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='op'>(</span><span class='fl'>20000</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>s</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sample_int.html'>sample_int_crank</a></span><span class='op'>(</span><span class='fl'>20000</span>, <span class='fl'>10000</span>, <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='op'>(</span><span class='fl'>20000</span><span class='op'>)</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span><span class='op'>(</span><span class='va'>s</span><span class='op'>)</span> <span class='op'>==</span> <span class='va'>s</span><span class='op'>)</span>
 <span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>995</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>n</span> <span class='op'>&lt;-</span> <span class='fl'>1000</span>
 <span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>42</span><span class='op'>)</span>
-<span class='va'>tbl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>replicate</a></span><span class='op'>(</span><span class='fu'>sample_int_crank</span><span class='op'>(</span><span class='fl'>6</span>, <span class='fl'>3</span>, <span class='va'>p</span><span class='op'>)</span>,
+<span class='va'>tbl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>replicate</a></span><span class='op'>(</span><span class='fu'><a href='sample_int.html'>sample_int_crank</a></span><span class='op'>(</span><span class='fl'>6</span>, <span class='fl'>3</span>, <span class='va'>p</span><span class='op'>)</span>,
                        n <span class='op'>=</span> <span class='va'>n</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>/</span> <span class='va'>n</span>
 <span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>abs</a></span><span class='op'>(</span><span class='va'>tbl</span> <span class='op'>-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>0.4</span>, <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>&lt;</span> <span class='fl'>0.04</span><span class='op'>)</span>
 
 <span class='co'>## Algorithm A-ExpJ (with log-transformed keys)</span>
-<span class='va'>s</span> <span class='op'>&lt;-</span> <span class='fu'>sample_int_expj</span><span class='op'>(</span><span class='fl'>20000</span>, <span class='fl'>10000</span>, <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='op'>(</span><span class='fl'>20000</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>s</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sample_int.html'>sample_int_expj</a></span><span class='op'>(</span><span class='fl'>20000</span>, <span class='fl'>10000</span>, <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='op'>(</span><span class='fl'>20000</span><span class='op'>)</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span><span class='op'>(</span><span class='va'>s</span><span class='op'>)</span> <span class='op'>==</span> <span class='va'>s</span><span class='op'>)</span>
 <span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>995</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>n</span> <span class='op'>&lt;-</span> <span class='fl'>1000</span>
 <span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>42</span><span class='op'>)</span>
-<span class='va'>tbl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>replicate</a></span><span class='op'>(</span><span class='fu'>sample_int_expj</span><span class='op'>(</span><span class='fl'>6</span>, <span class='fl'>3</span>, <span class='va'>p</span><span class='op'>)</span>,
+<span class='va'>tbl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>replicate</a></span><span class='op'>(</span><span class='fu'><a href='sample_int.html'>sample_int_expj</a></span><span class='op'>(</span><span class='fl'>6</span>, <span class='fl'>3</span>, <span class='va'>p</span><span class='op'>)</span>,
                        n <span class='op'>=</span> <span class='va'>n</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>/</span> <span class='va'>n</span>
 <span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>abs</a></span><span class='op'>(</span><span class='va'>tbl</span> <span class='op'>-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>0.4</span>, <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>&lt;</span> <span class='fl'>0.04</span><span class='op'>)</span>
 
 <span class='co'>## Algorithm A-ExpJ (paper version)</span>
-<span class='va'>s</span> <span class='op'>&lt;-</span> <span class='fu'>sample_int_expjs</span><span class='op'>(</span><span class='fl'>20000</span>, <span class='fl'>10000</span>, <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='op'>(</span><span class='fl'>20000</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>s</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sample_int.html'>sample_int_expjs</a></span><span class='op'>(</span><span class='fl'>20000</span>, <span class='fl'>10000</span>, <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='op'>(</span><span class='fl'>20000</span><span class='op'>)</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span><span class='op'>(</span><span class='va'>s</span><span class='op'>)</span> <span class='op'>==</span> <span class='va'>s</span><span class='op'>)</span>
 <span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>995</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>n</span> <span class='op'>&lt;-</span> <span class='fl'>1000</span>
 <span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>42</span><span class='op'>)</span>
-<span class='va'>tbl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>replicate</a></span><span class='op'>(</span><span class='fu'>sample_int_expjs</span><span class='op'>(</span><span class='fl'>6</span>, <span class='fl'>3</span>, <span class='va'>p</span><span class='op'>)</span>,
+<span class='va'>tbl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>replicate</a></span><span class='op'>(</span><span class='fu'><a href='sample_int.html'>sample_int_expjs</a></span><span class='op'>(</span><span class='fl'>6</span>, <span class='fl'>3</span>, <span class='va'>p</span><span class='op'>)</span>,
                        n <span class='op'>=</span> <span class='va'>n</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>/</span> <span class='va'>n</span>
 <span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>abs</a></span><span class='op'>(</span><span class='va'>tbl</span> <span class='op'>-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>0.4</span>, <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>&lt;</span> <span class='fl'>0.04</span><span class='op'>)</span>
 
 <span class='co'>## Algorithm A</span>
-<span class='va'>s</span> <span class='op'>&lt;-</span> <span class='fu'>sample_int_rank</span><span class='op'>(</span><span class='fl'>20000</span>, <span class='fl'>10000</span>, <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='op'>(</span><span class='fl'>20000</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>s</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sample_int.html'>sample_int_rank</a></span><span class='op'>(</span><span class='fl'>20000</span>, <span class='fl'>10000</span>, <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='op'>(</span><span class='fl'>20000</span><span class='op'>)</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span><span class='op'>(</span><span class='va'>s</span><span class='op'>)</span> <span class='op'>==</span> <span class='va'>s</span><span class='op'>)</span>
 <span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>995</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>n</span> <span class='op'>&lt;-</span> <span class='fl'>1000</span>
 <span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>42</span><span class='op'>)</span>
-<span class='va'>tbl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>replicate</a></span><span class='op'>(</span><span class='fu'>sample_int_rank</span><span class='op'>(</span><span class='fl'>6</span>, <span class='fl'>3</span>, <span class='va'>p</span><span class='op'>)</span>,
+<span class='va'>tbl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>replicate</a></span><span class='op'>(</span><span class='fu'><a href='sample_int.html'>sample_int_rank</a></span><span class='op'>(</span><span class='fl'>6</span>, <span class='fl'>3</span>, <span class='va'>p</span><span class='op'>)</span>,
                        n <span class='op'>=</span> <span class='va'>n</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>/</span> <span class='va'>n</span>
 <span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>abs</a></span><span class='op'>(</span><span class='va'>tbl</span> <span class='op'>-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>0.4</span>, <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>&lt;</span> <span class='fl'>0.04</span><span class='op'>)</span>
 
 <span class='co'>## Rejection sampling</span>
-<span class='va'>s</span> <span class='op'>&lt;-</span> <span class='fu'>sample_int_rej</span><span class='op'>(</span><span class='fl'>20000</span>, <span class='fl'>10000</span>, <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='op'>(</span><span class='fl'>20000</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>s</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sample_int.html'>sample_int_rej</a></span><span class='op'>(</span><span class='fl'>20000</span>, <span class='fl'>10000</span>, <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='op'>(</span><span class='fl'>20000</span><span class='op'>)</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span><span class='op'>(</span><span class='va'>s</span><span class='op'>)</span> <span class='op'>==</span> <span class='va'>s</span><span class='op'>)</span>
 <span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>995</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>n</span> <span class='op'>&lt;-</span> <span class='fl'>1000</span>
 <span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>42</span><span class='op'>)</span>
-<span class='va'>tbl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>replicate</a></span><span class='op'>(</span><span class='fu'>sample_int_rej</span><span class='op'>(</span><span class='fl'>6</span>, <span class='fl'>3</span>, <span class='va'>p</span><span class='op'>)</span>,
+<span class='va'>tbl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>replicate</a></span><span class='op'>(</span><span class='fu'><a href='sample_int.html'>sample_int_rej</a></span><span class='op'>(</span><span class='fl'>6</span>, <span class='fl'>3</span>, <span class='va'>p</span><span class='op'>)</span>,
                        n <span class='op'>=</span> <span class='va'>n</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>/</span> <span class='va'>n</span>
 <span class='fu'><a href='https://rdrr.io/r/base/stopifnot.html'>stopifnot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>abs</a></span><span class='op'>(</span><span class='va'>tbl</span> <span class='op'>-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>0.4</span>, <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>&lt;</span> <span class='fl'>0.04</span><span class='op'>)</span>
 
@@ -314,7 +317,7 @@ Letters</em> 97, no. 5 (2006): 181-185.</p>
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
