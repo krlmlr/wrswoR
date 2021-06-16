@@ -2,7 +2,10 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
+#include <algorithm>
+#include <numeric>
 #include <queue>
+#include <vector>
 
 void check_args(int n, int size, const NumericVector& prob) {
   if (n < size) {
@@ -130,6 +133,8 @@ IntegerVector sample_int_expj(int n, int size, NumericVector prob) {
   // (Modification: Calculate and store -log k_i = e_i / w where e_i = exp(1),
   //  reservoir is a priority queue that pops the *maximum* elements)
   std::priority_queue<std::pair<double, int> > R;
+  std::vector<double> cum_sums(std::distance(std::begin(prob), std::end(prob)));
+  std::inclusive_scan(std::begin(prob), std::end(prob), std::begin(cum_sums));
 
   for (NumericVector::iterator iprob = prob.begin();
        iprob != prob.begin() + size; ++iprob) {
@@ -151,14 +156,9 @@ IntegerVector sample_int_expj(int n, int size, NumericVector prob) {
     double X_w = Rf_rexp(1.0) / T_w.first;
 
     // Step 6: From the current item v_c skip items until item v_i, such that:
-    double w = 0.0;
-
     // Step 7: w_c + w_{c+1} + ··· + w_{i−1} < X_w <= w_c + w_{c+1} + ··· + w_{i−1} + w_i
-    for (; iprob != prob.end(); ++iprob) {
-      w += *iprob;
-      if (X_w <= w)
-        break;
-    }
+    const std::size_t cur_index = std::distance(std::begin(prob), iprob);
+    iprob = std::upper_bound(std::begin(cum_sums) + cur_index, std::end(cum_sums), cum_sums[cur_index] + X_w);
 
     // Step 7: No such item, terminate
     if (iprob == prob.end())
