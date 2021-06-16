@@ -6,6 +6,7 @@ test_that("sample larger than population", {
   }
 })
 
+# This will fail if Sys.getlocale(category = "LC_MESSAGES") is not "en_*.*"
 test_that("number of probabilities", {
   for (funcname in funcnames) {
     expect_error(funcs[[funcname]](3, 2, 1:2), "incorrect number of probabilities", label = funcname)
