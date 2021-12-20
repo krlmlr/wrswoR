@@ -5,6 +5,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // sample_int_crank
 IntegerVector sample_int_crank(int n, int size, NumericVector prob);
 RcppExport SEXP _wrswoR_sample_int_crank(SEXP nSEXP, SEXP sizeSEXP, SEXP probSEXP) {
