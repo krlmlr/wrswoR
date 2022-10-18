@@ -10,7 +10,7 @@ stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://
 [![R build
 status](https://github.com/krlmlr/wrswoR/workflows/rcc/badge.svg)](https://github.com/krlmlr/wrswoR/actions)
 [![Codecov test
-coverage](https://codecov.io/gh/krlmlr/wrswoR/branch/master/graph/badge.svg)](https://codecov.io/gh/krlmlr/wrswoR?branch=master)
+coverage](https://codecov.io/gh/krlmlr/wrswoR/branch/main/graph/badge.svg)](https://codecov.io/gh/krlmlr/wrswoR?branch=main)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/wrswoR)](https://CRAN.R-project.org/package=wrswoR)
 <!-- badges: end -->
