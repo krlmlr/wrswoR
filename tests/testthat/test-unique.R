@@ -1,5 +1,3 @@
-context("unique")
-
 test_that("no dupes", {
   for (funcname in funcnames) {
     for (i in 1:20) {

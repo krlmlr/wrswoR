@@ -34,7 +34,7 @@ Suggests:
     roxygen2,
     rticles (>= 0.1),
     sampling,
-    testthat,
+    testthat (>= 3.0.0),
     tidyr,
     tikzDevice (>= 0.9-1)
 LinkingTo: 
@@ -44,3 +44,4 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.1
 URLNote: https://github.com/krlmlr/wrswoR
 Config/gha/extra-packages: metap=?ignore-before-r=4.0.0
+Config/testthat/edition: 3
