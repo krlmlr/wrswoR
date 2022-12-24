@@ -1,3 +1,30 @@
+<!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
+
+# wrswoR 1.1.1.9001 (2022-12-24)
+
+## Chore
+
+- Use testthat edition 3.
+
+- Fix CI/CD failures (@IndrajeetPatil, #10, #11).
+
+## Uncategorized
+
+- Harmonize yaml formatting.
+
+- Revert changes to matrix section.
+
+- Reduce parallelism.
+
+- Also check dev on cran-* branches.
+
+- Update hash key for dev.
+
+- Remove R 3.3.
+
+- Merge cran-1.1.1.
+
+
 # wrswoR 1.1.1.9000 (2020-07-26)
 
 - Internal changes only.
