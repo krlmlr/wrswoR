@@ -1,5 +1,10 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# wrswoR 1.1.1.9005 (2023-10-09)
+
+- Internal changes only.
+
+
 # wrswoR 1.1.1.9004 (2023-03-24)
 
 - Internal changes only.
