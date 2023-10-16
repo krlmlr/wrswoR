@@ -1,3 +1,50 @@
+<!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
+
+# wrswoR 1.1.1.9005 (2023-10-09)
+
+- Internal changes only.
+
+
+# wrswoR 1.1.1.9004 (2023-03-24)
+
+- Internal changes only.
+
+
+# wrswoR 1.1.1.9003 (2023-02-17)
+
+- Internal changes only.
+
+
+# wrswoR 1.1.1.9002 (2022-12-30)
+
+- Internal changes only.
+
+
+# wrswoR 1.1.1.9001 (2022-12-24)
+
+## Chore
+
+- Use testthat edition 3.
+
+- Fix CI/CD failures (@IndrajeetPatil, #10, #11).
+
+## Uncategorized
+
+- Harmonize yaml formatting.
+
+- Revert changes to matrix section.
+
+- Reduce parallelism.
+
+- Also check dev on cran-* branches.
+
+- Update hash key for dev.
+
+- Remove R 3.3.
+
+- Merge cran-1.1.1.
+
+
 # wrswoR 1.1.1.9000 (2020-07-26)
 
 - Internal changes only.
