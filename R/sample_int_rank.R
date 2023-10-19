@@ -1,12 +1,13 @@
 #' @rdname sample_int
-#' @details `sample_int_rank()`, `sample_int_crank()` and
-#'   `sample_int_ccrank()` implement one-pass random sampling
-#'   (Efraimidis and Spirakis, 2006, Algorithm A; see also Yellott, 1977,
-#'   and Vieira, 2014, for an equivalent formulation).  The first function is
-#'   implemented purely in R, the other two are optimized `Rcpp`
+#' @details `sample_int_rank()`, `sample_int_crank()`,
+#'   `sample_int_ccrank()` and `sample_int_cccrank()`implement one-pass random
+#'   sampling (Efraimidis and Spirakis, 2006, Algorithm A; see also Yellott,
+#'   1977, and Vieira, 2014, for an equivalent formulation).  The first function
+#'   is implemented purely in R, the other three are optimized `Rcpp`
 #'   implementations (`*_crank()` uses R vectors internally, while
-#'   `*_ccrank()` uses `std::vector`; surprisingly, `*_crank()` seems
-#'   to be faster on most inputs). It can be
+#'   `*_ccrank()` uses `std::vector`; `*_cccrank()` is a memory-optimized
+#'   implementation that only requires \eqn{O(\text{size})} extra space;
+#'   surprisingly, `*_crank()` seems to be faster on most inputs). It can be
 #'   shown that the order statistic of \eqn{U^{(1/w_i)}} has the same
 #'   distribution as random sampling without replacement (\eqn{U=\mbox{uniform}(0,1)}{U=uniform(0,1)}
 #'   distribution). To increase numerical stability, \eqn{\log(U) /
