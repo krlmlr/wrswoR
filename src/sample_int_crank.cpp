@@ -139,9 +139,11 @@ IntegerVector sample_int_cccrank(size_t n, size_t size, NumericVector prob)
   // Fill result with 'size' indexes k with largest g[k] - equivalent to
   // sampling w/o replacement (Gumbel-Max trick).
   // T ~ O(size * log(size))
+  // N.B.: popping iteratively from H returns sampled indexes in *inverse*
+  // order of sampling, so the array 'res' must be filled in reverse order.
   IntegerVector res(size);
   for (size_t k = 0; k < size; ++k) {
-    res[k] = H.top().index + 1;
+    res[size - 1 - k] = H.top().index + 1;
     H.pop();
   }
   return res;
