@@ -28,6 +28,14 @@ Wong, Chak-Kuen, and Malcolm C. Easton. "An efficient method for
 weighted sampling without replacement." \emph{SIAM Journal on Computing} 9,
 no. 1 (1980): 111-113.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{http://krlmlr.github.io/wrswoR}
+  \item Report bugs at \url{https://github.com/krlmlr/wrswoR/issues}
+}
+
+}
 \author{
 Kirill Müller
 }
