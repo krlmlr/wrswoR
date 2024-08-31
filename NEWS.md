@@ -1,5 +1,60 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# wrswoR 1.1.1.9006 (2024-08-31)
+
+## Chore
+
+  - Auto-update from GitHub Actions.
+    
+    Run: https://github.com/krlmlr/wrswoR/actions/runs/10425482869
+
+  - Auto-update from GitHub Actions.
+    
+    Run: https://github.com/krlmlr/wrswoR/actions/runs/10200111658
+
+  - Auto-update from GitHub Actions.
+    
+    Run: https://github.com/krlmlr/wrswoR/actions/runs/9727973836
+
+  - Auto-update from GitHub Actions.
+    
+    Run: https://github.com/krlmlr/wrswoR/actions/runs/9691616127
+
+## Continuous integration
+
+  - Install local package for pkgdown builds.
+
+  - Improve support for protected branches with fledge.
+
+  - Improve support for protected branches, without fledge.
+
+  - Sync with latest developments.
+
+  - Use v2 instead of master.
+
+  - Inline action.
+
+  - Use dev roxygen2 and decor.
+
+  - Fix on Windows, tweak lock workflow.
+
+  - Tweak lock workflow.
+
+  - More specific criterion for avoiding NOTEs.
+
+  - Avoid metap for R \< 4.3 due to unsatisfiable dependencies.
+
+  - Use token for installing packages.
+
+  - Avoid checking bashisms on Windows.
+
+  - Better commit message.
+
+  - Bump versions, better default, consume custom matrix.
+
+  - Recent updates.
+
+
 # wrswoR 1.1.1.9005 (2023-10-09)
 
 - Internal changes only.
