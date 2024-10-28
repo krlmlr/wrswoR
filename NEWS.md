@@ -1,5 +1,18 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# wrswoR 1.1.1.9008 (2024-10-28)
+
+## Continuous integration
+
+  - Use pkgdown branch (#13).
+    
+      - ci: Use pkgdown branch
+    
+      - ci: Updates from duckdb
+    
+      - ci: Trigger run
+
+
 # wrswoR 1.1.1.9007 (2024-09-15)
 
 ## Continuous integration
