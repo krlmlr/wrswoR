@@ -1,5 +1,16 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# wrswoR 1.1.1.9009 (2024-11-11)
+
+## Continuous integration
+
+  - Trigger run (#14).
+    
+      - ci: Trigger run
+    
+      - ci: Latest changes
+
+
 # wrswoR 1.1.1.9008 (2024-10-28)
 
 ## Continuous integration
