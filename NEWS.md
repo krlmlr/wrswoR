@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# wrswoR 1.1.1.9010 (2024-11-18)
+
+## Continuous integration
+
+  - Use stable pak (#15).
+
+
 # wrswoR 1.1.1.9009 (2024-11-11)
 
 ## Continuous integration
