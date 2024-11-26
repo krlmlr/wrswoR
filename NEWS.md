@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# wrswoR 1.1.1.9013 (2024-11-26)
+
+## Continuous integration
+
+- Use styler from main branch (#20).
+
+
 # wrswoR 1.1.1.9012 (2024-11-25)
 
 ## Continuous integration
