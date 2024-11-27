@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# wrswoR 1.1.1.9014 (2024-11-27)
+
+## Continuous integration
+
+- Explicit permissions (#21).
+
+
 # wrswoR 1.1.1.9013 (2024-11-26)
 
 ## Continuous integration
