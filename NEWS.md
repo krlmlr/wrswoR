@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# wrswoR 1.1.1.9018 (2024-12-09)
+
+## Continuous integration
+
+- Avoid failure in fledge workflow if no changes (#25).
+
+
 # wrswoR 1.1.1.9017 (2024-12-08)
 
 ## Continuous integration
