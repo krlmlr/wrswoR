@@ -41,7 +41,7 @@ LinkingTo:
     Rcpp (>= 0.11.5)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2.9000
+RoxygenNote: 7.3.3.9000
 URLNote: https://github.com/krlmlr/wrswoR
 Config/gha/extra-packages: metap=?ignore-before-r=4.3.0
 Config/testthat/edition: 3
