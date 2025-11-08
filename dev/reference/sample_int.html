@@ -81,6 +81,8 @@ often run faster than R's implementation, especially when <code>n</code> and
 <span></span>
 <span><span class="fu">sample_int_ccrank</span><span class="op">(</span><span class="va">n</span>, <span class="va">size</span>, <span class="va">prob</span><span class="op">)</span></span>
 <span></span>
+<span><span class="fu">sample_int_cccrank</span><span class="op">(</span><span class="va">n</span>, <span class="va">size</span>, <span class="va">prob</span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu">sample_int_expj</span><span class="op">(</span><span class="va">n</span>, <span class="va">size</span>, <span class="va">prob</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">sample_int_expjs</span><span class="op">(</span><span class="va">n</span>, <span class="va">size</span>, <span class="va">prob</span><span class="op">)</span></span>
@@ -124,13 +126,15 @@ implement one-pass random sampling with a reservoir with exponential jumps
 implemented in <code>Rcpp</code>; <code>*_expj()</code> uses log-transformed keys,
 <code>*_expjs()</code> implements the algorithm in the paper verbatim
 (at the cost of numerical stability).</p>
-<p><code>sample_int_rank()</code>, <code>sample_int_crank()</code> and
-<code>sample_int_ccrank()</code> implement one-pass random sampling
-(Efraimidis and Spirakis, 2006, Algorithm A).  The first function is
-implemented purely in R, the other two are optimized <code>Rcpp</code>
+<p><code>sample_int_rank()</code>, <code>sample_int_crank()</code>,
+<code>sample_int_ccrank()</code> and <code>sample_int_cccrank()</code> implement one-pass random
+sampling (Efraimidis and Spirakis, 2006, Algorithm A; see also Yellott,
+1977, and Vieira, 2014, for an equivalent formulation).  The first function
+is implemented purely in R, the other three are optimized <code>Rcpp</code>
 implementations (<code>*_crank()</code> uses R vectors internally, while
-<code>*_ccrank()</code> uses <code>std::vector</code>; surprisingly, <code>*_crank()</code> seems
-to be faster on most inputs). It can be
+<code>*_ccrank()</code> uses <code>std::vector</code>; <code>*_cccrank()</code> is a memory-optimized
+implementation that only requires \(O(\text{size})\) extra space;
+surprisingly, <code>*_crank()</code> seems to be faster on most inputs). It can be
 shown that the order statistic of \(U^{(1/w_i)}\) has the same
 distribution as random sampling without replacement (\(U=\mbox{uniform}(0,1)\)
 distribution). To increase numerical stability, \(\log(U) /
@@ -152,6 +156,11 @@ smaller problem.  See also
 <p>Efraimidis, Pavlos S., and Paul G. Spirakis. "Weighted
 random sampling with a reservoir." <em>Information Processing
 Letters</em> 97, no. 5 (2006): 181-185.</p>
+<p>John I. Yellott. "The relationship between Luce’s choice axiom,
+Thurstone’s theory of comparative judgment, and the double exponential
+distribution." <em>Journal of Mathematical Psychology</em>, 15(2):109 – 144, 1977.</p>
+<p>Vieira, T. Gumbel-max trick and weighted reservoir sampling, 2014. URL
+<a href="https://timvieira.github.io/blog/post/2014/08/01/gumbel-max-trick-and-weighted-reservoir-sampling/" class="external-link">https://timvieira.github.io/blog/post/2014/08/01/gumbel-max-trick-and-weighted-reservoir-sampling/</a>.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
