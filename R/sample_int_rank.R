@@ -36,6 +36,14 @@ sample_int_rank <- function(n, size, prob) {
 }
 
 .check_args <- function(n, size, prob) {
+  if (is.na(n)) {
+    stop("'n' must not be NA", call. = FALSE)
+  }
+  
+  if (is.na(size)) {
+    stop("'size' must not be NA", call. = FALSE)
+  }
+  
   if (n < size) {
     stop("cannot take a sample larger than the population", call. = FALSE)
   }

@@ -5,6 +5,14 @@ using namespace Rcpp;
 #include <queue>
 
 void check_args(int n, int size, const NumericVector& prob) {
+  if (n == NA_INTEGER) {
+    Rcpp::stop("'n' must not be NA");
+  }
+  
+  if (size == NA_INTEGER) {
+    Rcpp::stop("'size' must not be NA");
+  }
+  
   if (n < size) {
     Rcpp::stop("cannot take a sample larger than the population");
   }
