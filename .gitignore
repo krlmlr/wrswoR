@@ -23,3 +23,5 @@
 /vignettes/internal/RJournal.zip
 CRAN-RELEASE
 _codeql_detected_source_root
+compile_commands.json
+.cache
