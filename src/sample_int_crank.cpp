@@ -104,7 +104,7 @@ struct IndexScorePair {
 //' @rdname sample_int
 //' @export
 // [[Rcpp::export(sample_int_cccrank)]]
-IntegerVector sample_int_cccrank(size_t n, size_t size, NumericVector prob)
+IntegerVector sample_int_cccrank(int n, int size, NumericVector prob)
 {
   check_args(n, size, prob);
   if (size == 0) // Avoid going through the O(N) work below
@@ -119,7 +119,7 @@ IntegerVector sample_int_cccrank(size_t n, size_t size, NumericVector prob)
   // associated scores g[k]
   // T ~ O(size * log(size))
   // S ~ O(S)
-  for (size_t k = 0; k < size; k++) {
+  for (int k = 0; k < size; k++) {
       H.push(IndexScorePair(k, prob[k] / Rf_rexp(1.0)));
   }
   // Update the heap iff g[k] > H.min();
@@ -128,7 +128,7 @@ IntegerVector sample_int_cccrank(size_t n, size_t size, NumericVector prob)
   // N.B. here the hidden constant of the second term in T can be small on
   // average, if few heap updates are made.
   double g;
-  for (size_t k = size; k < n; k++) {
+  for (int k = size; k < n; k++) {
     g = prob[k] / Rf_rexp(1.0);
     if (g > H.top().score) {
       H.pop();
@@ -142,7 +142,7 @@ IntegerVector sample_int_cccrank(size_t n, size_t size, NumericVector prob)
   // N.B.: popping iteratively from H returns sampled indexes in *inverse*
   // order of sampling, so the array 'res' must be filled in reverse order.
   IntegerVector res(size);
-  for (size_t k = 0; k < size; ++k) {
+  for (int k = 0; k < size; ++k) {
     res[size - 1 - k] = H.top().index + 1;
     H.pop();
   }
