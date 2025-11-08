@@ -44,3 +44,5 @@ AllowShortLambdasOnASingleLine: Inline
 AllowShortLoopsOnASingleLine: false
 AlwaysBreakTemplateDeclarations: Yes
 AccessModifierOffset: -2
+RemoveBracesLLVM: false
+InsertBraces: true
