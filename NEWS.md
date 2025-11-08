@@ -1,5 +1,162 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# wrswoR 1.1.1.9018 (2024-12-09)
+
+## Continuous integration
+
+- Avoid failure in fledge workflow if no changes (#25).
+
+
+# wrswoR 1.1.1.9017 (2024-12-08)
+
+## Continuous integration
+
+- Fetch tags for fledge workflow to avoid unnecessary NEWS entries (#24).
+
+
+# wrswoR 1.1.1.9016 (2024-12-07)
+
+## Continuous integration
+
+- Use larger retry count for lock-threads workflow (#23).
+
+
+# wrswoR 1.1.1.9015 (2024-11-28)
+
+## Continuous integration
+
+- Ignore errors when removing pkg-config on macOS (#22).
+
+
+# wrswoR 1.1.1.9014 (2024-11-27)
+
+## Continuous integration
+
+- Explicit permissions (#21).
+
+
+# wrswoR 1.1.1.9013 (2024-11-26)
+
+## Continuous integration
+
+- Use styler from main branch (#20).
+
+
+# wrswoR 1.1.1.9012 (2024-11-25)
+
+## Continuous integration
+
+- Need to install R on Ubuntu 24.04 (#19).
+
+- Correctly detect branch protection (#16).
+
+- Use Ubuntu 24.04 and styler PR (#17).
+
+
+# wrswoR 1.1.1.9011 (2024-11-22)
+
+## Continuous integration
+
+  - Correctly detect branch protection (#16).
+
+
+# wrswoR 1.1.1.9010 (2024-11-18)
+
+## Continuous integration
+
+  - Use stable pak (#15).
+
+
+# wrswoR 1.1.1.9009 (2024-11-11)
+
+## Continuous integration
+
+  - Trigger run (#14).
+    
+      - ci: Trigger run
+    
+      - ci: Latest changes
+
+
+# wrswoR 1.1.1.9008 (2024-10-28)
+
+## Continuous integration
+
+  - Use pkgdown branch (#13).
+    
+      - ci: Use pkgdown branch
+    
+      - ci: Updates from duckdb
+    
+      - ci: Trigger run
+
+
+# wrswoR 1.1.1.9007 (2024-09-15)
+
+## Continuous integration
+
+  - Install via R CMD INSTALL ., not pak (#12).
+    
+      - ci: Install via R CMD INSTALL ., not pak
+    
+      - ci: Bump version of upload-artifact action
+
+
+# wrswoR 1.1.1.9006 (2024-08-31)
+
+## Chore
+
+  - Auto-update from GitHub Actions.
+    
+    Run: https://github.com/krlmlr/wrswoR/actions/runs/10425482869
+
+  - Auto-update from GitHub Actions.
+    
+    Run: https://github.com/krlmlr/wrswoR/actions/runs/10200111658
+
+  - Auto-update from GitHub Actions.
+    
+    Run: https://github.com/krlmlr/wrswoR/actions/runs/9727973836
+
+  - Auto-update from GitHub Actions.
+    
+    Run: https://github.com/krlmlr/wrswoR/actions/runs/9691616127
+
+## Continuous integration
+
+  - Install local package for pkgdown builds.
+
+  - Improve support for protected branches with fledge.
+
+  - Improve support for protected branches, without fledge.
+
+  - Sync with latest developments.
+
+  - Use v2 instead of master.
+
+  - Inline action.
+
+  - Use dev roxygen2 and decor.
+
+  - Fix on Windows, tweak lock workflow.
+
+  - Tweak lock workflow.
+
+  - More specific criterion for avoiding NOTEs.
+
+  - Avoid metap for R \< 4.3 due to unsatisfiable dependencies.
+
+  - Use token for installing packages.
+
+  - Avoid checking bashisms on Windows.
+
+  - Better commit message.
+
+  - Bump versions, better default, consume custom matrix.
+
+  - Recent updates.
+
+
 # wrswoR 1.1.1.9005 (2023-10-09)
 
 - Internal changes only.
