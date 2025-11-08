@@ -33,3 +33,25 @@ test_that("NA population size", {
     }
   }
 })
+
+test_that("negative sample size", {
+  for (funcname in funcnames) {
+    # sample_int_R uses base::sample.int which has different error messages
+    if (funcname == "sample_int_R") {
+      expect_error(funcs[[funcname]](5, -1, rep(1, 5)), "invalid.*size", label = funcname)
+    } else {
+      expect_error(funcs[[funcname]](5, -1, rep(1, 5)), "'size' must be non-negative", label = funcname)
+    }
+  }
+})
+
+test_that("negative population size", {
+  for (funcname in funcnames) {
+    # sample_int_R uses base::sample.int which has different error messages
+    if (funcname == "sample_int_R") {
+      expect_error(funcs[[funcname]](-1, 0, rep(1, 5)), "invalid.*first", label = funcname)
+    } else {
+      expect_error(funcs[[funcname]](-1, 0, rep(1, 5)), "'n' must be non-negative", label = funcname)
+    }
+  }
+})

@@ -44,6 +44,14 @@ sample_int_rank <- function(n, size, prob) {
     stop("'size' must not be NA", call. = FALSE)
   }
   
+  if (n < 0) {
+    stop("'n' must be non-negative", call. = FALSE)
+  }
+  
+  if (size < 0) {
+    stop("'size' must be non-negative", call. = FALSE)
+  }
+  
   if (n < size) {
     stop("cannot take a sample larger than the population", call. = FALSE)
   }
