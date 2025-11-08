@@ -8,19 +8,19 @@ void check_args(int n, int size, const NumericVector& prob) {
   if (n == NA_INTEGER) {
     Rcpp::stop("'n' must not be NA");
   }
-  
+
   if (size == NA_INTEGER) {
     Rcpp::stop("'size' must not be NA");
   }
-  
+
   if (n < 0) {
     Rcpp::stop("'n' must be non-negative");
   }
-  
+
   if (size < 0) {
     Rcpp::stop("'size' must be non-negative");
   }
-  
+
   if (n < size) {
     Rcpp::stop("cannot take a sample larger than the population");
   }
@@ -30,18 +30,24 @@ void check_args(int n, int size, const NumericVector& prob) {
   }
 }
 
-struct Comp{
-  Comp(const Rcpp::NumericVector& v ) : _v(v) {}
+struct Comp {
+  Comp(const Rcpp::NumericVector& v) : _v(v) {}
   // Inverted comparison!
-  bool operator ()(int a, int b) { return _v[a] > _v[b]; }
+  bool operator()(int a, int b) {
+    return _v[a] > _v[b];
+  }
   const Rcpp::NumericVector& _v;
 };
 
 template <class T>
-T _divide_by_rexp(T t) { return t / Rf_rexp(1.0); }
+T _divide_by_rexp(T t) {
+  return t / Rf_rexp(1.0);
+}
 
 template <class T>
-T _add_one(T t) { return t + 1; }
+T _add_one(T t) {
+  return t + 1;
+}
 
 //' @rdname sample_int
 //' @export
@@ -54,8 +60,8 @@ IntegerVector sample_int_crank(int n, int size, NumericVector prob) {
   //                ~ -Exp(1) / prob
   //                ~ prob / Exp(1)
   // Here, ~ means "doesn't change order statistics".
-  NumericVector rnd = NumericVector(prob.begin(), prob.end(),
-    &_divide_by_rexp<double>);
+  NumericVector rnd =
+    NumericVector(prob.begin(), prob.end(), &_divide_by_rexp<double>);
 
   // Find the indexes of the first "size" elements under inverted
   // comparison.  Here, vx is zero-based.
@@ -67,19 +73,24 @@ IntegerVector sample_int_crank(int n, int size, NumericVector prob) {
   return IntegerVector(vx.begin(), vx.begin() + size, &_add_one<int>);
 }
 
-struct CComp{
-  CComp(const std::vector<double>& v ) : _v(v) {}
+struct CComp {
+  CComp(const std::vector<double>& v) : _v(v) {}
   // Inverted comparison!
-  bool operator ()(int a, int b) { return _v[a] > _v[b]; }
+  bool operator()(int a, int b) {
+    return _v[a] > _v[b];
+  }
   const std::vector<double>& _v;
 };
 
 struct UniqueNumber {
   int current;
-  UniqueNumber(int start = 0) { current=start; }
-  int operator()() { return current++; }
+  UniqueNumber(int start = 0) {
+    current = start;
+  }
+  int operator()() {
+    return current++;
+  }
 };
-
 
 //' @rdname sample_int
 //' @export
@@ -95,7 +106,12 @@ SEXP sample_int_ccrank(int n, int size, NumericVector prob) {
   std::vector<double> rnd = std::vector<double>(n + 1);
 
   // Already shift by one, rnd[0] is uninitialized (and never accessed)
-  std::transform(prob.begin(), prob.end(), rnd.begin() + 1, &_divide_by_rexp<double>);
+  std::transform(
+    prob.begin(),
+    prob.end(),
+    rnd.begin() + 1,
+    &_divide_by_rexp<double>
+  );
 
   // Find the indexes of the first "size" elements under inverted
   // comparison.  Here, vx is zero-based.
@@ -112,19 +128,20 @@ SEXP sample_int_ccrank(int n, int size, NumericVector prob) {
 struct IndexScorePair {
   size_t index;
   double score;
-  IndexScorePair (size_t i, double s) : index(i), score(s) {}
-  friend bool operator<(const IndexScorePair& l, const IndexScorePair & r)
-    {return l.score > r.score;}
+  IndexScorePair(size_t i, double s) : index(i), score(s) {}
+  friend bool operator<(const IndexScorePair& l, const IndexScorePair& r) {
+    return l.score > r.score;
+  }
 };
 
 //' @rdname sample_int
 //' @export
 // [[Rcpp::export(sample_int_cccrank)]]
-IntegerVector sample_int_cccrank(int n, int size, NumericVector prob)
-{
+IntegerVector sample_int_cccrank(int n, int size, NumericVector prob) {
   check_args(n, size, prob);
-  if (size == 0) // Avoid going through the O(N) work below
+  if (size == 0) {  // Avoid going through the O(N) work below
     return IntegerVector(0);
+  }
   // Generate  g[k] = prob[k] / E[k], with E[k] ~ Exp(rate = 1)
   // Keep a heap of constant size 'size' with the largest values,
   // and corresponding indexes, obtained so far.
@@ -136,7 +153,7 @@ IntegerVector sample_int_cccrank(int n, int size, NumericVector prob)
   // T ~ O(size * log(size))
   // S ~ O(S)
   for (int k = 0; k < size; k++) {
-      H.push(IndexScorePair(k, prob[k] / Rf_rexp(1.0)));
+    H.push(IndexScorePair(k, prob[k] / Rf_rexp(1.0)));
   }
   // Update the heap iff g[k] > H.min();
   // T ~ O(N) [generate g[k]'s] + O(N * log(size)) [update heap]
@@ -163,26 +180,31 @@ IntegerVector sample_int_cccrank(int n, int size, NumericVector prob)
     H.pop();
   }
   return res;
-} // gsample_wor
+}  // gsample_wor
 
 template <class T>
-T _rexp_divide_by(T t) { return Rf_rexp(1.0) / t; }
+T _rexp_divide_by(T t) {
+  return Rf_rexp(1.0) / t;
+}
 
 template <class T>
 T find_min_item(T begin, T end) {
   T T_w = begin;
   for (T iT_w = T_w + 1; iT_w != end; ++iT_w) {
-    if (*iT_w < *T_w)
+    if (*iT_w < *T_w) {
       T_w = iT_w;
+    }
   }
 
   return T_w;
 }
 
-struct Indirection{
-  Indirection(const Rcpp::IntegerVector& v ) : _v(v) {}
+struct Indirection {
+  Indirection(const Rcpp::IntegerVector& v) : _v(v) {}
   // Inverted comparison!
-  int operator ()(int a) { return _v[a]; }
+  int operator()(int a) {
+    return _v[a];
+  }
   const Rcpp::IntegerVector& _v;
 };
 
@@ -193,8 +215,9 @@ IntegerVector sample_int_expj(int n, int size, NumericVector prob) {
   check_args(n, size, prob);
 
   // Corner case
-  if (size == 0)
+  if (size == 0) {
     return IntegerVector();
+  }
 
   // Step 1: The first m items of V are inserted into R
   // Step 2: For each item v_i ∈ R: Calculate a key k_i = u_i^(1/w),
@@ -204,7 +227,8 @@ IntegerVector sample_int_expj(int n, int size, NumericVector prob) {
   std::priority_queue<std::pair<double, int> > R;
 
   for (NumericVector::iterator iprob = prob.begin();
-       iprob != prob.begin() + size; ++iprob) {
+       iprob != prob.begin() + size;
+       ++iprob) {
     double k_i = _rexp_divide_by<double>(*iprob);
     R.push(std::make_pair(k_i, iprob - prob.begin() + 1));
   }
@@ -212,7 +236,8 @@ IntegerVector sample_int_expj(int n, int size, NumericVector prob) {
   // Step 4: Repeat Steps 5–10 until the population is exhausted
 
   // Incrementing iprob is part of Step 7
-  for (NumericVector::iterator iprob = prob.begin() + size; iprob != prob.end(); ++iprob) {
+  for (NumericVector::iterator iprob = prob.begin() + size; iprob != prob.end();
+       ++iprob) {
     // Step 3: The threshold T_w is the minimum key of R
     // (Modification: This is now the logarithm)
     // Step 10: The new threshold T w is the new minimum key of R
@@ -225,19 +250,23 @@ IntegerVector sample_int_expj(int n, int size, NumericVector prob) {
     // Step 6: From the current item v_c skip items until item v_i, such that:
     double w = 0.0;
 
-    // Step 7: w_c + w_{c+1} + ··· + w_{i−1} < X_w <= w_c + w_{c+1} + ··· + w_{i−1} + w_i
+    // Step 7: w_c + w_{c+1} + ··· + w_{i−1} < X_w <= w_c + w_{c+1} + ··· +
+    // w_{i−1} + w_i
     for (; iprob != prob.end(); ++iprob) {
       w += *iprob;
-      if (X_w <= w)
+      if (X_w <= w) {
         break;
+      }
     }
 
     // Step 7: No such item, terminate
-    if (iprob == prob.end())
+    if (iprob == prob.end()) {
       break;
+    }
 
-    // Step 9: Let t_w = T_w^{w_i}, r_2 = random(t_w, 1) and v_i’s key: k_i = (r_2)^{1/w_i}
-    // (Mod: Let t_w = log(T_w) * {w_i}, e_2 = log(random(e^{t_w}, 1)) and v_i’s key: k_i = -e_2 / w_i)
+    // Step 9: Let t_w = T_w^{w_i}, r_2 = random(t_w, 1) and v_i’s key: k_i =
+    // (r_2)^{1/w_i} (Mod: Let t_w = log(T_w) * {w_i}, e_2 = log(random(e^{t_w},
+    // 1)) and v_i’s key: k_i = -e_2 / w_i)
     double t_w = -T_w.first * *iprob;
     double e_2 = std::log(Rf_runif(std::exp(t_w), 1.0));
     double k_i = -e_2 / *iprob;
@@ -249,7 +278,7 @@ IntegerVector sample_int_expj(int n, int size, NumericVector prob) {
 
   IntegerVector ret(size);
 
-  for (IntegerVector::iterator iret = ret.end(); iret != ret.begin(); ) {
+  for (IntegerVector::iterator iret = ret.end(); iret != ret.begin(); /**/) {
     --iret;
 
     if (R.empty()) {
@@ -268,7 +297,9 @@ IntegerVector sample_int_expj(int n, int size, NumericVector prob) {
 }
 
 template <class T>
-T _runif_to_one_by(T t) { return std::pow(Rf_runif(0.0, 1.0), 1.0 / t); }
+T _runif_to_one_by(T t) {
+  return std::pow(Rf_runif(0.0, 1.0), 1.0 / t);
+}
 
 //' @rdname sample_int
 //' @export
@@ -277,16 +308,17 @@ IntegerVector sample_int_expjs(int n, int size, NumericVector prob) {
   check_args(n, size, prob);
 
   // Corner case
-  if (size == 0)
+  if (size == 0) {
     return IntegerVector();
+  }
 
   // Step 1: The first m items of V are inserted into R
   IntegerVector vx = seq(1, size);
 
   // Step 2: For each item v_i ∈ R: Calculate a key k_i = u_i^(1/w),
   // where u_i = random(0, 1)
-  NumericVector R = NumericVector(prob.begin(), prob.begin() + size,
-                                  &_runif_to_one_by<double>);
+  NumericVector R =
+    NumericVector(prob.begin(), prob.begin() + size, &_runif_to_one_by<double>);
 
   // Step 3: The threshold T_w is the minimum key of R
   NumericVector::iterator T_w = find_min_item(R.begin(), R.end());
@@ -294,35 +326,43 @@ IntegerVector sample_int_expjs(int n, int size, NumericVector prob) {
   // Step 4: Repeat Steps 5–10 until the population is exhausted
   {
     // Incrementing iprob is part of Step 7
-    for (NumericVector::iterator iprob = prob.begin() + size; iprob != prob.end(); ++iprob) {
-
+    for (NumericVector::iterator iprob = prob.begin() + size;
+         iprob != prob.end();
+         ++iprob) {
       // Step 5: Let r = random(0, 1) and X_w = log(r) / log(T_w)
       double X_w = std::log(Rf_runif(0.0, 1.0)) / std::log(*T_w);
 
-      if (X_w < 0)
+      if (X_w < 0) {
         Rcpp::stop("X_w < 0");
+      }
 
       // Step 6: From the current item v_c skip items until item v_i, such that:
       double w = 0.0;
 
-      // Step 7: w_c + w_{c+1} + ··· + w_{i−1} < X_w <= w_c + w_{c+1} + ··· + w_{i−1} + w_i
+      // Step 7: w_c + w_{c+1} + ··· + w_{i−1} < X_w <= w_c + w_{c+1} + ··· +
+      // w_{i−1} + w_i
       for (; iprob != prob.end(); ++iprob) {
         w += *iprob;
-        if (X_w <= w)
+        if (X_w <= w) {
           break;
+        }
       }
 
       // Step 7: No such item, terminate
-      if (iprob == prob.end())
+      if (iprob == prob.end()) {
         break;
+      }
 
-      // Step 9: Let t_w = T_w^{w_i}, r_2 = random(t_w, 1) and v_i’s key: k_i = (r_2)^{1/w_i}
-      // (Mod: Let t_w = log(T_w) * {w_i}, e_2 = log(random(e^{t_w}, 1)) and v_i’s key: k_i = e_2 / w_i)
+      // Step 9: Let t_w = T_w^{w_i}, r_2 = random(t_w, 1) and v_i’s key: k_i =
+      // (r_2)^{1/w_i} (Mod: Let t_w = log(T_w) * {w_i}, e_2 =
+      // log(random(e^{t_w}, 1)) and v_i’s key: k_i = e_2 / w_i)
       double t_w = std::pow(*T_w, *iprob);
-      if (t_w < 0.0)
+      if (t_w < 0.0) {
         Rcpp::stop("t_w < 0");
-      if (t_w > 1.0)
+      }
+      if (t_w > 1.0) {
         Rcpp::stop("t_w > 1");
+      }
       double r_2 = Rf_runif(t_w, 1.0);
       double k_i = std::pow(r_2, 1.0 / *iprob);
 
