@@ -5,6 +5,7 @@
 \name{sample_int_crank}
 \alias{sample_int_crank}
 \alias{sample_int_ccrank}
+\alias{sample_int_cccrank}
 \alias{sample_int_expj}
 \alias{sample_int_expjs}
 \alias{sample_int}
@@ -16,6 +17,8 @@
 sample_int_crank(n, size, prob)
 
 sample_int_ccrank(n, size, prob)
+
+sample_int_cccrank(n, size, prob)
 
 sample_int_expj(n, size, prob)
 
@@ -65,13 +68,15 @@ implemented in \code{Rcpp}; \verb{*_expj()} uses log-transformed keys,
 \verb{*_expjs()} implements the algorithm in the paper verbatim
 (at the cost of numerical stability).
 
-\code{sample_int_rank()}, \code{sample_int_crank()} and
-\code{sample_int_ccrank()} implement one-pass random sampling
-(Efraimidis and Spirakis, 2006, Algorithm A).  The first function is
-implemented purely in R, the other two are optimized \code{Rcpp}
+\code{sample_int_rank()}, \code{sample_int_crank()},
+\code{sample_int_ccrank()} and \code{sample_int_cccrank()} implement one-pass random
+sampling (Efraimidis and Spirakis, 2006, Algorithm A; see also Yellott,
+1977, and Vieira, 2014, for an equivalent formulation).  The first function
+is implemented purely in R, the other three are optimized \code{Rcpp}
 implementations (\verb{*_crank()} uses R vectors internally, while
-\verb{*_ccrank()} uses \code{std::vector}; surprisingly, \verb{*_crank()} seems
-to be faster on most inputs). It can be
+\verb{*_ccrank()} uses \code{std::vector}; \verb{*_cccrank()} is a memory-optimized
+implementation that only requires \eqn{O(\text{size})} extra space;
+surprisingly, \verb{*_crank()} seems to be faster on most inputs). It can be
 shown that the order statistic of \eqn{U^{(1/w_i)}} has the same
 distribution as random sampling without replacement (\eqn{U=\mbox{uniform}(0,1)}{U=uniform(0,1)}
 distribution). To increase numerical stability, \eqn{\log(U) /
@@ -166,6 +171,13 @@ stopifnot(abs(tbl - c(1, rep(0.4, 5))) < 0.04)
 Efraimidis, Pavlos S., and Paul G. Spirakis. "Weighted
 random sampling with a reservoir." \emph{Information Processing
 Letters} 97, no. 5 (2006): 181-185.
+
+John I. Yellott. "The relationship between Luce’s choice axiom,
+Thurstone’s theory of comparative judgment, and the double exponential
+distribution." \emph{Journal of Mathematical Psychology}, 15(2):109 – 144, 1977.
+
+Vieira, T. Gumbel-max trick and weighted reservoir sampling, 2014. URL
+\url{https://timvieira.github.io/blog/post/2014/08/01/gumbel-max-trick-and-weighted-reservoir-sampling/}.
 }
 \seealso{
 \code{\link[base:sample]{base::sample.int()}}

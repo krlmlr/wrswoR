@@ -15,6 +15,12 @@ sample_int_ccrank <- function(n, size, prob) {
 
 #' @rdname sample_int
 #' @export
+sample_int_cccrank <- function(n, size, prob) {
+    .Call(`_wrswoR_sample_int_cccrank`, n, size, prob)
+}
+
+#' @rdname sample_int
+#' @export
 sample_int_expj <- function(n, size, prob) {
     .Call(`_wrswoR_sample_int_expj`, n, size, prob)
 }
