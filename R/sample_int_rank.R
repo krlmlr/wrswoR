@@ -1,6 +1,6 @@
 #' @rdname sample_int
 #' @details `sample_int_rank()`, `sample_int_crank()`,
-#'   `sample_int_ccrank()` and `sample_int_cccrank()`implement one-pass random
+#'   `sample_int_ccrank()` and `sample_int_cccrank()` implement one-pass random
 #'   sampling (Efraimidis and Spirakis, 2006, Algorithm A; see also Yellott,
 #'   1977, and Vieira, 2014, for an equivalent formulation).  The first function
 #'   is implemented purely in R, the other three are optimized `Rcpp`

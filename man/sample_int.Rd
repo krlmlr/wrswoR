@@ -69,7 +69,7 @@ implemented in \code{Rcpp}; \verb{*_expj()} uses log-transformed keys,
 (at the cost of numerical stability).
 
 \code{sample_int_rank()}, \code{sample_int_crank()},
-\code{sample_int_ccrank()} and \code{sample_int_cccrank()}implement one-pass random
+\code{sample_int_ccrank()} and \code{sample_int_cccrank()} implement one-pass random
 sampling (Efraimidis and Spirakis, 2006, Algorithm A; see also Yellott,
 1977, and Vieira, 2014, for an equivalent formulation).  The first function
 is implemented purely in R, the other three are optimized \code{Rcpp}

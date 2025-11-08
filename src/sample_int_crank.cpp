@@ -112,7 +112,7 @@ IntegerVector sample_int_cccrank(size_t n, size_t size, NumericVector prob)
   // Generate  g[k] = prob[k] / E[k], with E[k] ~ Exp(rate = 1)
   // Keep a heap of constant size 'size' with the largest values,
   // and corresponding indexes, obtained so far.
-  // N.B.: This is a min-heap, as operator< is for IndexScorePair is defined
+  // N.B.: This is a min-heap, as operator< for IndexScorePair is defined
   // with inverted comparison
   std::priority_queue<IndexScorePair> H;
   // Initialize the heap with the first 'size' indexes 0:(size-1), and
@@ -129,7 +129,7 @@ IntegerVector sample_int_cccrank(size_t n, size_t size, NumericVector prob)
   // average, if few heap updates are made.
   double g;
   for (size_t k = size; k < n; k++) {
-    g = prob[k] / R::rexp(1.0);
+    g = prob[k] / Rf_rexp(1.0);
     if (g > H.top().score) {
       H.pop();
       H.push(IndexScorePair(k, g));
