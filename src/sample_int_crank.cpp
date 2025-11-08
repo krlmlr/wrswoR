@@ -106,7 +106,12 @@ SEXP sample_int_ccrank(int n, int size, NumericVector prob) {
   std::vector<double> rnd = std::vector<double>(n + 1);
 
   // Already shift by one, rnd[0] is uninitialized (and never accessed)
-  std::transform(prob.begin(), prob.end(), rnd.begin() + 1, &_divide_by_rexp<double>);
+  std::transform(
+    prob.begin(),
+    prob.end(),
+    rnd.begin() + 1,
+    &_divide_by_rexp<double>
+  );
 
   // Find the indexes of the first "size" elements under inverted
   // comparison.  Here, vx is zero-based.
@@ -273,7 +278,7 @@ IntegerVector sample_int_expj(int n, int size, NumericVector prob) {
 
   IntegerVector ret(size);
 
-  for (IntegerVector::iterator iret = ret.end(); iret != ret.begin(); ) {
+  for (IntegerVector::iterator iret = ret.end(); iret != ret.begin(); /**/) {
     --iret;
 
     if (R.empty()) {
