@@ -22,3 +22,4 @@
 /vignettes/internal/*_files
 /vignettes/internal/RJournal.zip
 CRAN-RELEASE
+_codeql_detected_source_root
