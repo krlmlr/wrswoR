@@ -1,0 +1,3 @@
+# Exclude auto-generated Rcpp files from formatting
+src/RcppExports.cpp
+R/RcppExports.R

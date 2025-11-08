@@ -22,3 +22,5 @@
 ^CRAN-RELEASE$
 ^compile_commands\.json$
 ^\.cache$
+^\.clang-format$
+^\.clang-format-ignore$
