@@ -22,3 +22,5 @@
 /vignettes/internal/*_files
 /vignettes/internal/RJournal.zip
 CRAN-RELEASE
+compile_commands.json
+.cache

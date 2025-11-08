@@ -20,3 +20,5 @@
 ^\.github$
 ^README\.Rmd$
 ^CRAN-RELEASE$
+^compile_commands\.json$
+^\.cache$
