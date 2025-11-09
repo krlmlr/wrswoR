@@ -1,5 +1,60 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# wrswoR 1.1.1.9019 (2025-11-09)
+
+## Bug fixes
+
+- Add input validation for `NA` and negative values in sampling functions (#9, #39).
+
+## Features
+
+- New memory-friendly `sample_int_cccrank()`, add references (@vgherard, #7).
+
+## Chore
+
+- Auto-format (#40).
+
+- Ignore.
+
+- Auto-update from GitHub Actions.
+
+  Run: https://github.com/krlmlr/wrswoR/actions/runs/17450837805
+
+- Auto-update from GitHub Actions.
+
+  Run: https://github.com/krlmlr/wrswoR/actions/runs/14636202646
+
+## Continuous integration
+
+- Use workflows for fledge (#41).
+
+- Sync (#38).
+
+- Use reviewdog for external PRs (#37).
+
+- Cleanup and fix macOS (#36).
+
+- Format with air, check detritus, better handling of `extra-packages` (#35).
+
+- Enhance permissions for workflow (#34).
+
+- Permissions, better tests for missing suggests, lints (#33).
+
+- Only fail covr builds if token is given (#32).
+
+- Always use `_R_CHECK_FORCE_SUGGESTS_=false` (#31).
+
+- Correct installation of xml2 (#30).
+
+- Explain (#29).
+
+- Add xml2 for covr, print testthat results (#28).
+
+- Fix (#27).
+
+- Sync (#26).
+
+
 # wrswoR 1.1.1.9018 (2024-12-09)
 
 ## Continuous integration
