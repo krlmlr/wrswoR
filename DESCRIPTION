@@ -12,7 +12,7 @@ Authors@R:
 Description: A collection of implementations of classical and
     novel algorithms for weighted sampling without replacement.
 License: GPL-3
-URL: http://krlmlr.github.io/wrswoR
+URL: http://krlmlr.github.io/wrswoR/
 BugReports: https://github.com/krlmlr/wrswoR/issues
 Depends: 
     R (>= 3.0.2)
