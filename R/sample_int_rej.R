@@ -8,7 +8,7 @@
 #'   duplicate values (rejection sampling).  If too few items are
 #'   sampled, the routine calls itself recursively on a (hopefully) much
 #'   smaller problem.  See also
-#'   <http://stats.stackexchange.com/q/20590/6432>.
+#'   <https://stats.stackexchange.com/q/20590/6432>.
 #' @export
 #' @examples
 #' ## Rejection sampling

@@ -91,7 +91,7 @@ somewhat more draws \emph{with} replacement, and then discarding
 duplicate values (rejection sampling).  If too few items are
 sampled, the routine calls itself recursively on a (hopefully) much
 smaller problem.  See also
-\url{http://stats.stackexchange.com/q/20590/6432}.
+\url{https://stats.stackexchange.com/q/20590/6432}.
 }
 \examples{
 # Base R implementation
