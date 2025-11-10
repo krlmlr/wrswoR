@@ -11,6 +11,9 @@ Authors@R:
            comment = c(ORCID = "0000-0002-1416-3412"))
 Description: A collection of implementations of classical and
     novel algorithms for weighted sampling without replacement.
+    Implementations include the algorithm of Efraimidis and Spirakis (2006)
+    <doi:10.1016/j.ipl.2005.11.003> and Wong and Easton (1980)
+    <doi:10.1137/0209009>.
 License: GPL-3
 URL: http://krlmlr.github.io/wrswoR/
 BugReports: https://github.com/krlmlr/wrswoR/issues
