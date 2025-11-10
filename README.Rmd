@@ -1,5 +1,7 @@
 ---
-output: github_document
+output:
+  github_document:
+    html_preview: false
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -17,7 +19,7 @@ pkgload::load_all()
 # wrswoR
 
 <!-- badges: start -->
-[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://tidyverse.org/lifecycle/)
+[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 [![R build status](https://github.com/krlmlr/wrswoR/workflows/rcc/badge.svg)](https://github.com/krlmlr/wrswoR/actions)
 [![Codecov test coverage](https://codecov.io/gh/krlmlr/wrswoR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/krlmlr/wrswoR?branch=main)
 [![CRAN status](https://www.r-pkg.org/badges/version/wrswoR)](https://CRAN.R-project.org/package=wrswoR)
