@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# wrswoR 1.2.0.9001 (2025-11-12)
+
+## Continuous integration
+
+- Fix reviewdog and add commenting workflow (#45).
+
+
 # wrswoR 1.2.0.9000 (2025-11-10)
 
 ## Chore
