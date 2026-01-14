@@ -1,5 +1,16 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# wrswoR 1.2.0.9003 (2026-01-14)
+
+## Continuous integration
+
+- Fix comment (#51).
+
+- Tweaks (#50).
+
+- Test all R versions on branches that start with cran- (#49).
+
+
 # wrswoR 1.2.0.9002 (2025-11-17)
 
 ## Continuous integration
