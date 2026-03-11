@@ -59,7 +59,7 @@ often run faster than R's implementation, especially when \code{n} and
 \code{size} are large.
 }
 \details{
-\code{sample_int_R()} is a simple wrapper for \code{\link[base:sample]{base::sample.int()}}.
+\code{sample_int_R()} is a simple wrapper for \code{\link[base:sample.int]{base::sample.int()}}.
 
 \code{sample_int_expj()} and \code{sample_int_expjs()}
 implement one-pass random sampling with a reservoir with exponential jumps
@@ -180,7 +180,7 @@ Vieira, T. Gumbel-max trick and weighted reservoir sampling, 2014. URL
 \url{https://timvieira.github.io/blog/post/2014/08/01/gumbel-max-trick-and-weighted-reservoir-sampling/}.
 }
 \seealso{
-\code{\link[base:sample]{base::sample.int()}}
+\code{\link[base:sample.int]{base::sample.int()}}
 }
 \author{
 Dinre (for \verb{*_rank()}), Kirill Müller
