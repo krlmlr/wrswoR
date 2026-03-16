@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# wrswoR 1.2.0.9005 (2026-03-16)
+
+## Chore
+
+- Remove deprecated Rcpp LdFlags from Makevars (#55, #56).
+
+
 # wrswoR 1.2.0.9004 (2026-03-12)
 
 ## Chore
