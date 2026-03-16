@@ -1,8 +1,8 @@
 Type: Package
 Package: wrswoR
 Title: Weighted Random Sampling without Replacement
-Version: 1.2.0.9004
-Date: 2026-03-12
+Version: 1.2.0.9005
+Date: 2026-03-16
 Authors@R: 
     person(given = "Kirill",
            family = "M\u00fcller",
