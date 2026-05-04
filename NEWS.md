@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# wrswoR 1.2.0.9006 (2026-05-04)
+
+## Chore
+
+- Auto-update from GitHub Actions (#58).
+
+
 # wrswoR 1.2.0.9005 (2026-03-16)
 
 ## Chore
