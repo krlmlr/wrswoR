@@ -1,5 +1,24 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# wrswoR 1.2.0.9007 (2026-05-06)
+
+## Chore
+
+- Auto-update from GitHub Actions (#60).
+
+## Continuous integration
+
+- Cosmetics.
+
+- Bump action versions.
+
+- Install clang-format-21.
+
+- Align fledge workflow.
+
+- Harmonize.
+
+
 # wrswoR 1.2.0.9006 (2026-05-04)
 
 ## Chore
