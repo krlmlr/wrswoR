@@ -42,7 +42,6 @@ sample_int_rej <- function(n, size, prob) {
   }
 }
 
-#' @importFrom otel start_local_active_span
 # Workhorse
 .sample_int_rej <- function(
   n, size, prob, MAX_OVERSHOOT, BIAS) {

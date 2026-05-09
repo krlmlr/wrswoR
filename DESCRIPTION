@@ -17,9 +17,8 @@ BugReports: https://github.com/krlmlr/wrswoR/issues
 Depends: 
     R (>= 3.0.2)
 Imports:
-    otel,
     Rcpp
-Suggests: 
+Suggests:
     BatchExperiments,
     BiocManager,
     dplyr,
@@ -30,6 +29,7 @@ Suggests:
     knitr,
     metap,
     microbenchmark,
+    otel,
     rmarkdown,
     roxygen2,
     rticles (>= 0.1),

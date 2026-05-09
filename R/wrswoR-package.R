@@ -1,7 +1,5 @@
 #' @useDynLib wrswoR, .registration = TRUE
 
-otel_tracer_name <- "io.github.krlmlr.wrswoR"
-
 #' @title Faster weighted sampling without replacement
 #' @description \R's default sampling without replacement using
 #'  [base::sample.int()] seems to require quadratic run time,
