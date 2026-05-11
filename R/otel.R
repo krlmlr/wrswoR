@@ -17,30 +17,13 @@ start_local_active_span <- function(name, attributes = NULL, ...) {
   }
 }
 
-#' Record otel spans emitted by wrswoR functions
+#' Record otel spans emitted by wrswoR functions.
 #'
-#' Creates an in-memory recorder that captures spans. Use it together with
-#' [testthat::local_mocked_bindings()] to swap `start_local_active_span` for
-#' the recorder's capture function in tests:
+#' Internal test helper. Use together with
+#' [testthat::local_mocked_bindings()] to swap `start_local_active_span`
+#' for the recorder's capture function.
 #'
-#' ```r
-#' recorder <- make_span_recorder()
-#' testthat::local_mocked_bindings(start_local_active_span = recorder$start)
-#' sample_int_rej(6, 3, c(995, rep(1, 5)))
-#' recorder$spans
-#' ```
-#'
-#' @return An environment with two members:
-#'   * `spans`: list of recorded spans, each a list with `name` and
-#'     `attributes`
-#'   * `start`: function with the same signature as
-#'     [otel::start_local_active_span()] that records into `spans`
-#' @export
-#' @examples
-#' recorder <- make_span_recorder()
-#' span <- recorder$start("demo", attributes = list(x = 1))
-#' span$set_attribute("y", 2)
-#' recorder$spans
+#' @noRd
 make_span_recorder <- function() {
   recorder <- new.env(parent = emptyenv())
   recorder$spans <- list()
