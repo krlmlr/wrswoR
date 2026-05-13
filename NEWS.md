@@ -4,55 +4,9 @@
 
 ## Chore
 
-- Auto-update from GitHub Actions (#71).
-
-- Add ccache to `.gitignore` and `.Rbuildignore`.
-
-- Auto-update from GitHub Actions (#60).
-
-- Auto-update from GitHub Actions (#58).
+- Replace logging dependency with otel (#67).
 
 - Remove deprecated Rcpp LdFlags from Makevars (#55, #56).
-
-- Auto-update from GitHub Actions (#53).
-
-- Auto-update from GitHub Actions (#43).
-
-## Continuous integration
-
-- Create snapshot update PR against correct branch.
-
-- Add reference to `/apply-patch` workflow in commit message.
-
-- Clarify rationale for not deploying on schedule.
-
-- Only run fledge on pushes to main.
-
-- Tweak fledge workflow and ccache action.
-
-- Cosmetics.
-
-- Bump action versions.
-
-- Install clang-format-21.
-
-- Align fledge workflow.
-
-- Harmonize.
-
-- Fix comment (#51).
-
-- Tweaks (#50).
-
-- Test all R versions on branches that start with cran- (#49).
-
-- Install binaries from r-universe for dev workflow (#47).
-
-- Fix reviewdog and add commenting workflow (#45).
-
-## Refactoring
-
-- Replace logging dependency with otel (#67).
 
 
 # wrswoR 1.2.0 (2025-11-09)
