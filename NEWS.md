@@ -1,5 +1,14 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# wrswoR 1.2.0.9008 (2026-05-13)
+
+## Continuous integration
+
+- Only run fledge on pushes to main.
+
+- Tweak fledge workflow and ccache action.
+
+
 # wrswoR 1.2.0.9007 (2026-05-06)
 
 ## Chore
