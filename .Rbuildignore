@@ -24,3 +24,4 @@
 ^\.cache$
 ^\.clang-format$
 ^\.clang-format-ignore$
+^\.ccache$
