@@ -1,100 +1,12 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
-# wrswoR 1.2.0.9008 (2026-05-13)
+# wrswoR 1.2.1 (2026-05-13)
 
 ## Chore
-
-- Auto-update from GitHub Actions (#71).
-
-- Add ccache to `.gitignore` and `.Rbuildignore`.
-
-## Continuous integration
-
-- Create snapshot update PR against correct branch.
-
-- Add reference to `/apply-patch` workflow in commit message.
-
-- Clarify rationale for not deploying on schedule.
-
-- Only run fledge on pushes to main.
-
-- Tweak fledge workflow and ccache action.
-
-## Refactoring
 
 - Replace logging dependency with otel (#67).
 
-
-# wrswoR 1.2.0.9007 (2026-05-06)
-
-## Chore
-
-- Auto-update from GitHub Actions (#60).
-
-## Continuous integration
-
-- Cosmetics.
-
-- Bump action versions.
-
-- Install clang-format-21.
-
-- Align fledge workflow.
-
-- Harmonize.
-
-
-# wrswoR 1.2.0.9006 (2026-05-04)
-
-## Chore
-
-- Auto-update from GitHub Actions (#58).
-
-
-# wrswoR 1.2.0.9005 (2026-03-16)
-
-## Chore
-
 - Remove deprecated Rcpp LdFlags from Makevars (#55, #56).
-
-
-# wrswoR 1.2.0.9004 (2026-03-12)
-
-## Chore
-
-- Auto-update from GitHub Actions (#53).
-
-
-# wrswoR 1.2.0.9003 (2026-01-14)
-
-## Continuous integration
-
-- Fix comment (#51).
-
-- Tweaks (#50).
-
-- Test all R versions on branches that start with cran- (#49).
-
-
-# wrswoR 1.2.0.9002 (2025-11-17)
-
-## Continuous integration
-
-- Install binaries from r-universe for dev workflow (#47).
-
-
-# wrswoR 1.2.0.9001 (2025-11-12)
-
-## Continuous integration
-
-- Fix reviewdog and add commenting workflow (#45).
-
-
-# wrswoR 1.2.0.9000 (2025-11-10)
-
-## Chore
-
-- Auto-update from GitHub Actions (#43).
 
 
 # wrswoR 1.2.0 (2025-11-09)
