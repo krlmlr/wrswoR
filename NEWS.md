@@ -1,5 +1,30 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# wrswoR 1.2.0.9008 (2026-05-13)
+
+## Chore
+
+- Auto-update from GitHub Actions (#71).
+
+- Add ccache to `.gitignore` and `.Rbuildignore`.
+
+## Continuous integration
+
+- Create snapshot update PR against correct branch.
+
+- Add reference to `/apply-patch` workflow in commit message.
+
+- Clarify rationale for not deploying on schedule.
+
+- Only run fledge on pushes to main.
+
+- Tweak fledge workflow and ccache action.
+
+## Refactoring
+
+- Replace logging dependency with otel (#67).
+
+
 # wrswoR 1.2.0.9007 (2026-05-06)
 
 ## Chore
