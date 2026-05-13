@@ -16,10 +16,9 @@ URL: http://krlmlr.github.io/wrswoR/
 BugReports: https://github.com/krlmlr/wrswoR/issues
 Depends: 
     R (>= 3.0.2)
-Imports: 
-    logging (>= 0.4-13),
+Imports:
     Rcpp
-Suggests: 
+Suggests:
     BatchExperiments,
     BiocManager,
     dplyr,
@@ -30,6 +29,7 @@ Suggests:
     knitr,
     metap,
     microbenchmark,
+    otel,
     rmarkdown,
     roxygen2,
     rticles (>= 0.1),

@@ -42,12 +42,14 @@ sample_int_rej <- function(n, size, prob) {
   }
 }
 
-#' @importFrom logging logdebug
 # Workhorse
 .sample_int_rej <- function(
   n, size, prob, MAX_OVERSHOOT, BIAS) {
 
-  logdebug('.sample_int_rej: parameters: %s, %s, %s', n, size, length(prob))
+  span <- start_local_active_span(
+    ".sample_int_rej",
+    attributes = list(n = n, size = size, prob_length = length(prob))
+  )
 
   # How many draws *with replacement* are required on average, assuming
   # *uniform* weights? (With non-uniform weights, this number can only
@@ -58,14 +60,14 @@ sample_int_rej <- function(n, size, prob) {
   # parameters, ideal values are still to be found through simulation.
   wr.size <- ceiling(n * min(BIAS * (.harmonic(n) - .harmonic(n - size)),
                              MAX_OVERSHOOT))
-  logdebug('.sample_int_rej: wr.size=%s', wr.size)
+  span$set_attribute("wr.size", wr.size)
 
   # Do the sampling with replacement...
   wr.sample <- sample.int(n, size=wr.size, replace=T, prob)
   # ...but keep only unique values.
   wr.sample <- unique(wr.sample)
   wr.sample.len <- length(wr.sample)
-  logdebug('.sample_int_rej: wr.sample.len=%s', wr.sample.len)
+  span$set_attribute("wr.sample.len", wr.sample.len)
 
   # How much still left to do?
   rem.size <- size - wr.sample.len
