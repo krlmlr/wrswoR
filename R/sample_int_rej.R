@@ -8,7 +8,7 @@
 #'   duplicate values (rejection sampling).  If too few items are
 #'   sampled, the routine calls itself recursively on a (hopefully) much
 #'   smaller problem.  See also
-#'   <http://stats.stackexchange.com/q/20590/6432>.
+#'   <https://stats.stackexchange.com/q/20590/6432>.
 #' @export
 #' @examples
 #' ## Rejection sampling
@@ -32,7 +32,7 @@ sample_int_rej <- function(n, size, prob) {
 # Computes the harmonic series. Exact for the first
 # .harmonic.series.max values (through table lookup), otherwise using
 # the approximation ln(a) + \gamma + 1 / (2a). Source:
-# http://en.wikipedia.org/wiki/Harmonic_number
+# https://en.wikipedia.org/wiki/Harmonic_number
 .harmonic <- function(a) {
   stopifnot(a >= 0)
   if (a < length(.harmonic.series)) {
@@ -54,7 +54,7 @@ sample_int_rej <- function(n, size, prob) {
   # How many draws *with replacement* are required on average, assuming
   # *uniform* weights? (With non-uniform weights, this number can only
   # increase.) The result is a general case of the coupon collector
-  # problem, see http://math.stackexchange.com/q/247569/16420 for an
+  # problem, see https://math.stackexchange.com/q/247569/16420 for an
   # analysis. BIAS can be supplied to correct the estimate by a factor,
   # at most n * MAX_OVERSHOOT samples will be drawn.  Both are tuning
   # parameters, ideal values are still to be found through simulation.

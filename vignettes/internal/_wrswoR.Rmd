@@ -6,7 +6,7 @@ author:
     - Stefano-Franscini-Platz 9,
     - CH-8093 Zürich
     email: krlmlr@mailbox.org
-    url: http://www.ivt.ethz.ch
+    url: https://www.ivt.ethz.ch
 title:
   "Accelerating weighted random sampling without replacement"
 abstract: >
@@ -45,19 +45,19 @@ pkgdown:
 
 ```{r init-purl, echo=FALSE, message=FALSE}
 # For installation of dependencies:
-# 
+#
 # install.packages(c("wrswoR", "dplyr", "tidyr", "ggplot2", "import", "wrswoR.benchmark", "kimisc"))
-# 
+#
 # The plots in the article were created with tikzDevice.
 # This code creates the plots with the default plot device, some labels contain
 # LaTeX markup.
 # The .zip archive also contains an .Rmd file that can be used to create the
 # article with all plots using
-# 
+#
 # rmarkdown::render("wrswoR.Rmd")
-# 
+#
 # This requires more packages to run successfully:
-# 
+#
 # install.packages("wrswoR", dependencies = TRUE)
 
 
@@ -200,7 +200,7 @@ it is possible to construct a subdivision
 $(l_i, r_i, s_i)$ with $i, l_i, r_i \in \{1,\ldots,n\}$
 and $0 < s_i \leq 1$ so that
 $$p_i = \sum_{j:l_j=i}{s_j} + \sum_{j:r_j=i}{(1-s_j)}.$$
-Sampling an item requires sampling from $\{1,\ldots,n\}$ (to choose $i$) 
+Sampling an item requires sampling from $\{1,\ldots,n\}$ (to choose $i$)
 and then sampling from $\left[0, 1\right)$ (to choose $l_i$ or $r_i$):
 If the random number is less than $s_i$, item $l_i$ is chosen,
 otherwise item $r_i$.
@@ -370,7 +370,7 @@ that operates on the logarithmic scale for increased numerical stability.
     \REQUIRE $p_i$: Weight of each item for $i \in \{1,\ldots,n\}$
     \ENSURE Returns a vector $k_j \in \{1,\ldots,n\}$ for
       $j \in \{1,\ldots,s\}$ that contains the indexes of the items sampled
-    \STATE 
+    \STATE
       $r_i \leftarrow \text{Exp}(1) / p_i$ for all $i \in \{1,\ldots,n\}$ \hfill \pairadice{}
       \label{alg:sample-rank:sample}
     \RETURN the positions of the $s$ smallest elements in $r_i$\label{alg:sample-rank:rec}
@@ -535,11 +535,11 @@ REMOVE_PROB <- c("linear_double", "linear_half")
 combine_prob_mix <- function(prob, mix) {
   prob <- as.character(prob)
   mix <- as.character(mix)
-  
+
   ifelse(prob == "uniform", prob, paste(prob, mix))
 }
 
-timings <- 
+timings <-
   wrswoR.benchmark::timings %>%
   tbl_df %>%
   filter(expr %in% ALGOS) %>%
@@ -547,20 +547,20 @@ timings <-
   mutate(expr = factor(expr, levels = ALGOS)) %>%
   mutate(prob = factor(
     prob, levels = c("uniform", "linear", "exp"),
-    labels = c("uniform", "linear", "geometric"))) %>% 
+    labels = c("uniform", "linear", "geometric"))) %>%
   mutate(mix = factor(
     mix, levels = c("asc", "desc", "shuffle"),
     labels = c("$\\nearrow$", "$\\searrow$", "$\\leadsto$"))) %>%
   mutate(prob_mix = kimisc::ofactor(combine_prob_mix(prob, mix)))
 
-timings_sort <- 
+timings_sort <-
   wrswoR.benchmark::timings_sort %>%
   tbl_df %>%
   filter(!(prob %in% REMOVE_PROB)) %>%
   mutate(expr = gsub("sort_", "", expr)) %>%
   mutate(prob = factor(
     prob, levels = c("uniform", "linear", "exp"),
-    labels = c("uniform", "linear", "geometric"))) %>% 
+    labels = c("uniform", "linear", "geometric"))) %>%
   mutate(mix = factor(
     mix, levels = c("asc", "desc", "shuffle"),
     labels = c("$\\nearrow$", "$\\searrow$", "$\\leadsto$"))) %>%
@@ -571,7 +571,7 @@ N <- max(timings$n)
 ```
 
 ```{r break-even-base, echo=FALSE, dependson = "timing-base"}
-break_even <- 
+break_even <-
   wrswoR.benchmark::break_even %>%
   tbl_df %>%
   filter(expr %in% ALGOS) %>%
@@ -579,7 +579,7 @@ break_even <-
   mutate(expr = factor(expr, levels = ALGOS)) %>%
   mutate(prob = factor(
     prob, levels = c("uniform", "linear", "exp"),
-    labels = c("uniform", "linear", "geometric"))) %>% 
+    labels = c("uniform", "linear", "geometric"))) %>%
   mutate(mix = factor(
     mix, levels = c("asc", "desc", "shuffle"),
     labels = c("$\\nearrow$", "$\\searrow$", "$\\leadsto$"))) %>%
@@ -784,7 +784,7 @@ with a speedup of at most
 
 
 ```{r point-break-even, echo=FALSE, fig.cap="Break-even point of \\proglang{R} and \\emph{expj} run times", dependson=c("break-even-base", "ggplot-base", "break-even-point")}
-break_even_point_min_n %>% 
+break_even_point_min_n %>%
   ggplot(aes(x=r, y=smallest_n_where_expj_is_better, color=prob, linetype=mix)) +
   ggplot_base +
   geom_line() +
@@ -813,7 +813,7 @@ median_timings <-
 
 median_timings_sort <-
   timings_sort %>%
-  filter(expr == "radix") %>% 
+  filter(expr == "radix") %>%
   select(-expr) %>%
   group_by(prob, mix, n) %>%
   summarize(sort_time = median(time) / 1e9) %>%
@@ -822,11 +822,11 @@ median_timings_sort <-
 
 timings_filter <- . %>%
   filter(prob != "uniform") %>%
-  filter(mix != "$\\nearrow$") %>% 
+  filter(mix != "$\\nearrow$") %>%
   filter(n > 10000)
 
 median_timings %>%
-  timings_filter %>% 
+  timings_filter %>%
   spread(mix, time) %>%
   gather(mix, time, `$\\leadsto$`) %>%
   filter(expr %in% c("crank", "expj")) %>%
@@ -973,8 +973,8 @@ schweder_height <- 3.8
 p_values_true %>%
   rename(`p-value` = p_value) %>%
   arrange(`p-value`) %>%
-  mutate(`Rank` = seq_along(`p-value`)) %>% 
-  mutate_at(vars(i, j), funs(factor)) %>% 
+  mutate(`Rank` = seq_along(`p-value`)) %>%
+  mutate_at(vars(i, j), funs(factor)) %>%
   ggplot(aes(y = `Rank`, x = `p-value`, color = i, shape = j)) +
   ggplot_base +
   geom_abline(slope = nrow(p_values_true), intercept = 0, linetype = 3) +
@@ -991,8 +991,8 @@ p_values_true %>%
 p_values_false %>%
   rename(`p-value` = p_value) %>%
   arrange(`p-value`) %>%
-  mutate(`Rank` = seq_along(`p-value`)) %>% 
-  mutate_at(vars(i, j), funs(factor)) %>% 
+  mutate(`Rank` = seq_along(`p-value`)) %>%
+  mutate_at(vars(i, j), funs(factor)) %>%
   ggplot(aes(y = `Rank`, x = `p-value`, color = i, shape = j)) +
   ggplot_base +
   geom_abline(slope = nrow(p_values_false), intercept = 0, linetype = 3) +
@@ -1037,7 +1037,7 @@ the smaller the skew, the larger the $N$ that is required for rejection.
 
 ```{r comprehensive-base, echo = FALSE, dependson="ggplot-base"}
 p_value_breakpoints <- c(0, 1e-100, 1e-4, 1e-2, 1e-1, 9e-1, 1)
-  
+
 cut_p <- function(x) {
   stopifnot(x >= 0)
   stopifnot(x <= 1)
@@ -1089,7 +1089,7 @@ later as $N$ increases.
 
 ```{r comprehensive-true, echo=FALSE, fig.cap="Combined p-values for different values of $n$ and $N$, resulting from comparing each new code to the stock implementation", fig.height=3.8, dependson = "comprehensive-base"}
 wrswoR.benchmark::p_values_agg %>%
-  ungroup %>% 
+  ungroup %>%
   arrange_by_func %>%
   filter(skew == 1 & func != "R") %>%
   mutate(func = kimisc::ofactor(format_expr(func))) %>%
