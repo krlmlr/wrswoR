@@ -1,5 +1,14 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# wrswoR 1.2.1.9002 (2026-05-24)
+
+## Continuous integration
+
+- Update ccache-action reference.
+
+- Bump action version.
+
+
 # wrswoR 1.2.1.9001 (2026-05-16)
 
 - Ci: Unify fledge.yaml across cynkratemplate and fledge (#86).
