@@ -42,6 +42,6 @@ LinkingTo:
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 URLNote: https://github.com/krlmlr/wrswoR
-Config/gha/extra-packages: metap=?ignore-before-r=4.3.0
+Config/gha/extra-packages: metap=?ignore
 Config/testthat/edition: 3
 Config/roxygen2/version: 8.0.0.9000
