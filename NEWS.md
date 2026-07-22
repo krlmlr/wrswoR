@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# wrswoR 1.2.1.9003 (2026-07-22)
+
+## Continuous integration
+
+- Ignore `metap` in CI dependency resolution to avoid retired Bioconductor dep (#76).
+
+
 # wrswoR 1.2.1.9002 (2026-05-24)
 
 ## Continuous integration
