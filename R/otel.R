@@ -20,7 +20,7 @@ start_local_active_span <- function(name, attributes = NULL, ...) {
 #' Record otel spans emitted by wrswoR functions.
 #'
 #' Internal test helper.
-#'  Use together with [testthat::local_mocked_bindings()] to swap `start_local_active_span` for the recorder's capture function.
+#' Use together with [testthat::local_mocked_bindings()] to swap `start_local_active_span` for the recorder's capture function.
 #'
 #' @noRd
 make_span_recorder <- function() {

@@ -6,14 +6,14 @@
 #'   the log transform does not change the order statistic.
 #' @author Dinre (for `*_rank()`), Kirill Müller (for all other functions)
 #' @references Efraimidis, Pavlos S., and Paul G. Spirakis. "Weighted random sampling with a reservoir."
-#'  *Information Processing Letters* 97, no. 5 (2006): 181-185.
+#' *Information Processing Letters* 97, no. 5 (2006): 181-185.
 #'
 #' John I. Yellott. "The relationship between Luce’s choice axiom,
-#'  Thurstone’s theory of comparative judgment, and the double exponential distribution."
-#'  *Journal of Mathematical Psychology*, 15(2):109 – 144, 1977.
+#' Thurstone’s theory of comparative judgment, and the double exponential distribution."
+#' *Journal of Mathematical Psychology*, 15(2):109 – 144, 1977.
 #'
 #' Vieira, T. Gumbel-max trick and weighted reservoir sampling, 2014.
-#'  URL <https://timvieira.github.io/blog/post/2014/08/01/gumbel-max-trick-and-weighted-reservoir-sampling/>.
+#' URL <https://timvieira.github.io/blog/post/2014/08/01/gumbel-max-trick-and-weighted-reservoir-sampling/>.
 #'
 #' @export
 #' @examples
