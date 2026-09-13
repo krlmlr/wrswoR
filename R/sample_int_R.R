@@ -1,6 +1,11 @@
 #' Weighted sampling without replacement
 #'
-#' These functions implement weighted sampling without replacement using various algorithms, i.e., they take a sample of the specified `size` from the elements of `1:n` without replacement, using the weights defined by `prob`.  The call `sample_int_*(n, size, prob)` is equivalent to `sample.int(n, size, replace = F, prob)`.  (The results will most probably be different for the same random seed, but the returned samples are distributed identically for both calls.)
+#' These functions implement weighted sampling without replacement using various algorithms,
+#' i.e., they take a sample of the specified `size` from the elements of `1:n` without replacement,
+#' using the weights defined by `prob`.
+#' The call `sample_int_*(n, size, prob)` is equivalent to `sample.int(n, size, replace = F, prob)`.
+#' (The results will most probably be different for the same random seed,
+#' but the returned samples are distributed identically for both calls.)
 #' Except for `sample_int_R()` (which has quadratic complexity as of this writing),
 #' all functions have complexity \eqn{O(n \log n)}{O(n log n)} or better
 #' and often run faster than R's implementation, especially when `n` and `size` are large.
