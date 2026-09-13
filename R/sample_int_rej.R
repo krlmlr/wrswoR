@@ -1,14 +1,10 @@
 #' @rdname sample_int
 #'
-#' @details `sample_int_rej()` uses repeated weighted sampling with
-#'   replacement and a variant of rejection sampling. It is implemented purely
-#'   in R.
-#'   This function simulates weighted sampling without replacement using
-#'   somewhat more draws *with* replacement, and then discarding
-#'   duplicate values (rejection sampling).  If too few items are
-#'   sampled, the routine calls itself recursively on a (hopefully) much
-#'   smaller problem.  See also
-#'   <https://stats.stackexchange.com/q/20590/6432>.
+#' @details `sample_int_rej()` uses repeated weighted sampling with replacement and a variant of rejection sampling.
+#'   It is implemented purely in R.
+#'   This function simulates weighted sampling without replacement using somewhat more draws *with* replacement,
+#'   and then discarding duplicate values (rejection sampling).  If too few items are sampled,
+#'   the routine calls itself recursively on a (hopefully) much smaller problem.  See also <https://stats.stackexchange.com/q/20590/6432>.
 #' @export
 #' @examples
 #' ## Rejection sampling
@@ -29,10 +25,10 @@ sample_int_rej <- function(n, size, prob) {
 # Euler-Mascheroni constant
 .EM = 0.57721566490153286060651209008240243104215933593992
 
-# Computes the harmonic series. Exact for the first
-# .harmonic.series.max values (through table lookup), otherwise using
-# the approximation ln(a) + \gamma + 1 / (2a). Source:
-# https://en.wikipedia.org/wiki/Harmonic_number
+# Computes the harmonic series.
+# Exact for the first .harmonic.series.max values (through table lookup),
+# otherwise using the approximation ln(a) + \gamma + 1 / (2a).
+# Source: https://en.wikipedia.org/wiki/Harmonic_number
 .harmonic <- function(a) {
   stopifnot(a >= 0)
   if (a < length(.harmonic.series)) {
@@ -51,13 +47,13 @@ sample_int_rej <- function(n, size, prob) {
     attributes = list(n = n, size = size, prob_length = length(prob))
   )
 
-  # How many draws *with replacement* are required on average, assuming
-  # *uniform* weights? (With non-uniform weights, this number can only
-  # increase.) The result is a general case of the coupon collector
-  # problem, see https://math.stackexchange.com/q/247569/16420 for an
-  # analysis. BIAS can be supplied to correct the estimate by a factor,
-  # at most n * MAX_OVERSHOOT samples will be drawn.  Both are tuning
-  # parameters, ideal values are still to be found through simulation.
+  # How many draws *with replacement* are required on average, assuming *uniform* weights?
+  # (With non-uniform weights, this number can only increase.)
+  # The result is a general case of the coupon collector problem,
+  # see https://math.stackexchange.com/q/247569/16420 for an analysis.
+  # BIAS can be supplied to correct the estimate by a factor,
+  # at most n * MAX_OVERSHOOT samples will be drawn.
+  # Both are tuning parameters, ideal values are still to be found through simulation.
   wr.size <- ceiling(n * min(BIAS * (.harmonic(n) - .harmonic(n - size)),
                              MAX_OVERSHOOT))
   span$set_attribute("wr.size", wr.size)
@@ -75,20 +71,17 @@ sample_int_rej <- function(n, size, prob) {
   if (rem.size <= 0)
     return (head(wr.sample, size))
 
-  # Not yet: Find out which indexes haven't been sampled yet.  Recall
-  # that negative indexes in a vector subscription mean "all but
-  # the selected".
+  # Not yet: Find out which indexes haven't been sampled yet.
+  # Recall that negative indexes in a vector subscription mean "all but the selected".
   rem.indexes <- (1:n)[-wr.sample]
   rem.n <- length(rem.indexes)
   stopifnot(rem.n == n - wr.sample.len)
 
-  # Recursive call to sample without replacement from the remaining
-  # weights
+  # Recursive call to sample without replacement from the remaining weights
   rem.sample <- .sample_int_rej(rem.n, rem.size,
                                 prob[rem.indexes],
                                 MAX_OVERSHOOT, BIAS)
 
-  # Combine the results, substitute the indexes from 1:rem.n obtained
-  # from the recursive call using the rem.indexes map
+  # Combine the results, substitute the indexes from 1:rem.n obtained from the recursive call using the rem.indexes map
   c(wr.sample, rem.indexes[rem.sample])
 }
