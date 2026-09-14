@@ -1,5 +1,14 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# wrswoR 1.2.1.9014 (2026-09-14)
+
+## Bug fixes
+
+### ci
+
+- Only remove a suggested package that is actually installed (#96).
+
+
 # wrswoR 1.2.1.9013 (2026-09-13)
 
 ## Chore
