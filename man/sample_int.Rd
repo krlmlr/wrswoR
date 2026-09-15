@@ -46,10 +46,10 @@ An integer vector of length \code{size} with elements from \code{1:n}.
 These functions implement weighted sampling without replacement using various algorithms,
 i.e., they take a sample of the specified \code{size} from the elements of \code{1:n} without replacement,
 using the weights defined by \code{prob}.
-The call \verb{sample_int_*(n, size, prob)} is equivalent to \code{sample.int(n, size, replace = F, prob)}.
-(The results will most probably be different for the same random seed,
+ The call \verb{sample_int_*(n, size, prob)} is equivalent to \code{sample.int(n, size, replace = F, prob)}.
+ (The results will most probably be different for the same random seed,
 but the returned samples are distributed identically for both calls.)
-Except for \code{sample_int_R()} (which has quadratic complexity as of this writing),
+ Except for \code{sample_int_R()} (which has quadratic complexity as of this writing),
 all functions have complexity \eqn{O(n \log n)}{O(n log n)} or better
 and often run faster than R's implementation, especially when \code{n} and \code{size} are large.
 }
@@ -58,28 +58,28 @@ and often run faster than R's implementation, especially when \code{n} and \code
 
 \code{sample_int_expj()} and \code{sample_int_expjs()} implement one-pass random sampling with a reservoir with exponential jumps
 (Efraimidis and Spirakis, 2006, Algorithm A-ExpJ).
-Both functions are implemented in \code{Rcpp};
+ Both functions are implemented in \code{Rcpp};
 \verb{*_expj()} uses log-transformed keys,
 \verb{*_expjs()} implements the algorithm in the paper verbatim (at the cost of numerical stability).
 
 \code{sample_int_rank()}, \code{sample_int_crank()}, \code{sample_int_ccrank()} and \code{sample_int_cccrank()} implement one-pass random sampling
 (Efraimidis and Spirakis, 2006, Algorithm A; see also Yellott, 1977, and Vieira, 2014, for an equivalent formulation).
-The first function is implemented purely in R,
+ The first function is implemented purely in R,
 the other three are optimized \code{Rcpp} implementations
 (\verb{*_crank()} uses R vectors internally, while \verb{*_ccrank()} uses \code{std::vector};
 \verb{*_cccrank()} is a memory-optimized implementation that only requires \eqn{O(\text{size})} extra space;
 surprisingly, \verb{*_crank()} seems to be faster on most inputs).
-It can be shown that the order statistic of \eqn{U^{(1/w_i)}} has the same distribution as random sampling without replacement
+ It can be shown that the order statistic of \eqn{U^{(1/w_i)}} has the same distribution as random sampling without replacement
 (\eqn{U=\mbox{uniform}(0,1)}{U=uniform(0,1)} distribution).
-To increase numerical stability, \eqn{\log(U) / w_i}{log(U) / w_i} is computed instead;
+ To increase numerical stability, \eqn{\log(U) / w_i}{log(U) / w_i} is computed instead;
 the log transform does not change the order statistic.
 
 \code{sample_int_rej()} uses repeated weighted sampling with replacement and a variant of rejection sampling.
-It is implemented purely in R.
+ It is implemented purely in R.
 This function simulates weighted sampling without replacement using somewhat more draws \emph{with} replacement,
 and then discarding duplicate values (rejection sampling).
-If too few items are sampled, the routine calls itself recursively on a (hopefully) much smaller problem.
-See also \url{https://stats.stackexchange.com/q/20590/6432}.
+ If too few items are sampled, the routine calls itself recursively on a (hopefully) much smaller problem.
+ See also \url{https://stats.stackexchange.com/q/20590/6432}.
 }
 \examples{
 # Base R implementation
@@ -157,14 +157,14 @@ stopifnot(abs(tbl - c(1, rep(0.4, 5))) < 0.04)
 \url{https://stackoverflow.com/q/15113650/946850}
 
 Efraimidis, Pavlos S., and Paul G. Spirakis. "Weighted random sampling with a reservoir."
-\emph{Information Processing Letters} 97, no. 5 (2006): 181-185.
+ \emph{Information Processing Letters} 97, no. 5 (2006): 181-185.
 
 John I. Yellott. "The relationship between Luce’s choice axiom,
 Thurstone’s theory of comparative judgment, and the double exponential distribution."
-\emph{Journal of Mathematical Psychology}, 15(2):109 – 144, 1977.
+ \emph{Journal of Mathematical Psychology}, 15(2):109 – 144, 1977.
 
 Vieira, T. Gumbel-max trick and weighted reservoir sampling, 2014.
-URL \url{https://timvieira.github.io/blog/post/2014/08/01/gumbel-max-trick-and-weighted-reservoir-sampling/}.
+ URL \url{https://timvieira.github.io/blog/post/2014/08/01/gumbel-max-trick-and-weighted-reservoir-sampling/}.
 }
 \seealso{
 \code{\link[base:sample.int]{base::sample.int()}}
