@@ -1,5 +1,18 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# wrswoR 1.2.1.9015 (2026-09-26)
+
+## Documentation
+
+- Break lines at meaning boundaries (#91).
+
+- Drop the branch from the coverage badge (#90).
+
+- Harmonize README and pkgdown front page rendering (#89).
+
+- Use `pak::pak()` for the development install (#87).
+
+
 # wrswoR 1.2.1.9014 (2026-09-14)
 
 ## Bug fixes
