@@ -261,8 +261,8 @@ the reader is referred to the original paper for details.
 
 @Tille_Sampl.Algorithms_2006b defines a more rigorous framework for sampling
 algorithms from the perspective of the likelihood that a sample is selected
-based on a given sampling design.  In the context of that framework,
-\cref{alg:sample} belongs to the class of "draw by draw" algorithms.
+based on a given sampling design.
+In the context of that framework, \cref{alg:sample} belongs to the class of "draw by draw" algorithms.
 For the application of sampling theory, the order of the selected elements
 is not important and usually ignored; in contrast, \cref{alg:sample}
 returns an ordered sequence of sampled elements.
@@ -1157,10 +1157,9 @@ So far, the detection of non-systematic errors or other failure modes
 have not been tested.
 
 In order to include a faster sampling algorithm into base \proglang{R},
-an implementation in \proglang{C}
-seems necessary.  Other platforms for scientific computing, such as
-\proglang{Python} or \proglang{Julia}, would also benefit if this implementation
-was provided in an open-source library with a documented interface.
+an implementation in \proglang{C} seems necessary.
+Other platforms for scientific computing, such as \proglang{Python} or \proglang{Julia},
+would also benefit if this implementation was provided in an open-source library with a documented interface.
 
 For the current implementation in \proglang{R}, a user might not expect
 a natural operation such as random sampling
@@ -1170,11 +1169,9 @@ Allowing to interrupt execution in the current implementation
 would at least save the unaware user
 the frustration of a lost workspace.
 
-The algorithms presented here generate an ordered sample of items based on
-relative weights.  If the relative importance is instead given as inclusion
-probabilities, and the order of the items is irrelevant, e.g.,
-as in the application of
-survey sampling, the `UPxxx()` functions in the \pkg{sampling} package
+The algorithms presented here generate an ordered sample of items based on relative weights.
+If the relative importance is instead given as inclusion probabilities, and the order of the items is irrelevant, e.g.,
+as in the application of survey sampling, the `UPxxx()` functions in the \pkg{sampling} package
 `r knitcitations::citep(citation("sampling"))` offer a viable alternative.
 
 
