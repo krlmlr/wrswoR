@@ -30,8 +30,8 @@ install.packages("wrswoR")
 And the development version from [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("krlmlr/wrswoR")
+# install.packages("pak")
+pak::pak("krlmlr/wrswoR")
 ```
 
 ## Example
