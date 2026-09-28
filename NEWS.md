@@ -1,5 +1,26 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# wrswoR 1.2.1.9017 (2026-09-28)
+
+## Bug fixes
+
+### ci
+
+- Restore the custom `after-install` action (#101).
+
+## Chore
+
+- Auto-update from GitHub Actions (#103).
+
+## Continuous integration
+
+- Run coverage checks after pkgdown push.
+
+## Uncategorized
+
+- Feat(ci): Render `README.md` and `index.md` in CI (cynkra/cynkratemplate#118).
+
+
 # wrswoR 1.2.1.9016 (2026-09-26)
 
 - Refactor(ci): Serve the revdep scripts with the actions instead of copying them (cynkra/cynkratemplate#149).
