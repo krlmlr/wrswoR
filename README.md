@@ -33,7 +33,7 @@ pak::pak("krlmlr/wrswoR")
 ## Example
 
 The functions in this package are a drop-in replacement to `sample.int(n, size, replace = FALSE, prob = prob)`.
-With large `n`, `sample.int()` becomes too slow to be practical, unlike the functions in this package.
+With large `n`, [`sample.int()`](https://rdrr.io/r/base/sample.html) becomes too slow to be practical, unlike the functions in this package.
 
 ``` r
 library(wrswoR)
