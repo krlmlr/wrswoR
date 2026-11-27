@@ -1,5 +1,12 @@
 <!-- NEWS.md is maintained by https://fledge.cynkra.com, contributors should not edit this file -->
 
+# wrswoR 1.2.1.9020 (2026-11-27)
+
+## Chore
+
+- Tidy DESCRIPTION with usethis::use_tidy_description() (#108).
+
+
 # wrswoR 1.2.1.9019 (2026-11-27)
 
 ## Continuous integration
