@@ -4,13 +4,10 @@ Title: Weighted Random Sampling without Replacement
 Version: 1.2.1.9019
 Date: 2026-11-27
 Authors@R: 
-    person(given = "Kirill",
-           family = "M\u00fcller",
-           role = c("aut", "cre"),
-           email = "kirill@cynkra.com",
+    person("Kirill", "Müller", , "kirill@cynkra.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-1416-3412"))
-Description: A collection of implementations of classical and
-    novel algorithms for weighted sampling without replacement.
+Description: A collection of implementations of classical and novel
+    algorithms for weighted sampling without replacement.
 License: GPL-3
 URL: https://krlmlr.github.io/wrswoR/
 BugReports: https://github.com/krlmlr/wrswoR/issues
@@ -39,9 +36,9 @@ Suggests:
     tikzDevice (>= 0.9-1)
 LinkingTo: 
     Rcpp (>= 0.11.5)
+Config/gha/extra-packages: metap=?ignore
+Config/roxygen2/version: 8.1.1.9000
+Config/testthat/edition: 3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 URLNote: https://github.com/krlmlr/wrswoR
-Config/gha/extra-packages: metap=?ignore
-Config/testthat/edition: 3
-Config/roxygen2/version: 8.1.1.9000
